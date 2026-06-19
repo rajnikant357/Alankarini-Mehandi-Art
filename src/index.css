@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Georgia", serif;
+  --font-sans: "Helvetica Neue", Arial, sans-serif;
+  --color-maroon-950: #3a050a;
+  --color-maroon-900: #5d0e0e;
+  --color-maroon-805: #7c1818;
+  --color-maroon-700: #9a2424;
+  --color-gold-500: #c5a059;
+  --color-gold-400: #d3b575;
+  --color-gold-300: #e1cb94;
+  --color-gold-200: #efe1b4;
+  --color-gold-100: #faf3df;
+  --color-cream-50: #faf7f2;
+  --color-cream-100: #f5efe4;
+  --color-cream-200: #ece2cd;
+}
+
+@layer utilities {
+  .mehndi-pattern-bg {
+    background-color: #faf7f2;
+    background-image: radial-gradient(#c5a059 0.5px, transparent 0.5px), radial-gradient(#c5a059 0.5px, #faf7f2 0.5px);
+    background-size: 20px 20px;
+    background-position: 0 0, 10px 10px;
+    opacity: 0.03;
+  }
+}
+
+/* Custom scrollbar to keep layout elegant */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #faf7f2;
+}
+::-webkit-scrollbar-thumb {
+  background: #c5a059;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #5d0e0e;
+}
