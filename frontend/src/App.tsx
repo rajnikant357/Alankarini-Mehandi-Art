@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { FeaturedServices } from './components/FeaturedServices';
@@ -16,13 +16,43 @@ import {
   Heart, 
   User, 
   Sparkles, 
-  CheckCircle2, 
-  Bookmark,
-  ShieldCheck
+  CheckCircle2
 } from 'lucide-react';
 
 export default function App() {
-  const [currentView, setView] = useState<string>('home');
+  // Hash-based routing: check if URL hash is #/admin on load
+  const getInitialView = () => {
+    if (typeof window !== 'undefined' && window.location.hash === '#/admin') {
+      return 'admin';
+    }
+    return 'home';
+  };
+
+  const [currentView, setCurrentView] = useState<string>(getInitialView);
+
+  // Sync view with URL hash for admin route
+  const setView = (view: string) => {
+    setCurrentView(view);
+    if (view === 'admin') {
+      window.location.hash = '#/admin';
+    } else {
+      // Clear hash for non-admin views without triggering hashchange
+      if (window.location.hash) {
+        history.replaceState(null, '', window.location.pathname + window.location.search);
+      }
+    }
+  };
+
+  // Listen for hash changes (e.g. user types /#/admin manually)
+  useEffect(() => {
+    const handleHashChange = () => {
+      if (window.location.hash === '#/admin') {
+        setCurrentView('admin');
+      }
+    };
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
   const {
     profile,
     services,
@@ -157,87 +187,119 @@ export default function App() {
           </div>
         )}
 
-        {/* VIEW 4: DETAILED ABOUT ARTIST STORY */}
+        {/* VIEW 4: ABOUT US — Artist Story + Business Mission */}
         {currentView === 'about' && (
-          <section className="py-12 lg:py-20 bg-[#faf7f2] animate-fade-in">
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
-                
-                {/* Image side left */}
-                <div className="md:col-span-5 relative flex justify-center">
-                  <div className="absolute top-4 left-4 right-4 bottom-4 border-2 border-[#c5a059]/30 rounded-2xl transform translate-x-2.5 translate-y-2.5"></div>
-                  <div className="relative aspect-[4/5] w-full max-w-md rounded-2xl overflow-hidden border-[6px] border-[#f5efe4] shadow-xl">
-                    <img
-                      src={profile.coverPhoto}
-                      alt="Sandhya - Alankarini Artist Head"
-                      className="w-full h-full object-cover object-center"
-                      referrerPolicy="no-referrer"
-                    />
-                    <div className="absolute bottom-4 left-4 right-4 bg-[#5d0e0e]/90 text-[#faf3df] p-4 rounded-xl backdrop-blur-sm border border-[#c5a059]/20">
-                      <p className="font-serif text-base font-bold leading-none">{profile.artistName}</p>
-                      <p className="text-[10px] uppercase font-bold tracking-widest text-[#c5a059] mt-1">Lead Henna Craftsman</p>
+          <div className="animate-fade-in">
+            {/* Artist Profile Section (About Sandhya - TOP) */}
+            <section className="py-12 lg:py-20 bg-[#faf7f2] border-b border-[#c5a059]/10">
+              <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+                  
+                  {/* Image side left */}
+                  <div className="md:col-span-5 relative flex justify-center">
+                    <div className="absolute top-4 left-4 right-4 bottom-4 border-2 border-[#c5a059]/30 rounded-2xl transform translate-x-2.5 translate-y-2.5"></div>
+                    <div className="relative aspect-[4/5] w-full max-w-md rounded-2xl overflow-hidden border-[6px] border-[#f5efe4] shadow-xl">
+                      <img
+                        src={profile.aboutPhoto}
+                        alt="Sandhya - Alankarini Artist Head"
+                        className="w-full h-full object-cover object-center"
+                        referrerPolicy="no-referrer"
+                      />
+                      <div className="absolute bottom-4 left-4 right-4 bg-[#5d0e0e]/90 text-[#faf3df] p-4 rounded-xl backdrop-blur-sm border border-[#c5a059]/20">
+                        <p className="font-serif text-base font-bold leading-none">{profile.artistName}</p>
+                        <p className="text-[10px] uppercase font-bold tracking-widest text-[#c5a059] mt-1">Lead Henna Craftsman</p>
+                      </div>
                     </div>
                   </div>
+
+                  {/* Text Content right */}
+                  <div className="md:col-span-7 space-y-6">
+                    <div className="inline-flex items-center gap-1 bg-[#efe1b4]/40 text-[#5d0e0e] text-xs font-bold px-3 py-1 rounded-full border border-[#c5a059]/20 font-sans">
+                      <Award size={14} className="text-[#c5a059]" />
+                      <span>Certified Mehndi Artist in Varanasi</span>
+                    </div>
+
+                    <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#5d0e0e]">
+                      Meet Artist {profile.artistName}
+                    </h2>
+
+                    <p className="text-[#2d2d2d] font-sans text-sm sm:text-base leading-relaxed">
+                      Alankarini Mehndi Art represents the highest quality of traditional hand-drawn ornamentation. Artist Sandhya is a seasoned professional with more than three years of dedicated specialization within bridal sketches, portraits, baby shower patterns, and complex Rajasthani-Indian lattices.
+                    </p>
+
+                    <p className="text-[#2d2d2d] font-sans text-sm sm:text-base leading-relaxed">
+                      Based in the holy city of Varanasi, Uttar Pradesh, Alankarini caters to national and local destination wedding ceremonies alike. Every single batch of Henna paste is mixed fresh in-studio using certified triple-filtered organic Lawsonia inermis powder, premium essential oils, and zero chemicals. This provides an eye-catching, robust maroon-black color shade that lasts beautifully over your auspicious rituals.
+                    </p>
+
+                    <div className="border-t border-[#efe1b4]/30 pt-6">
+                      <h3 className="font-serif font-semibold text-lg text-[#5d0e0e] mb-4">Why Select Alankarini Henna Art?</h3>
+                      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {[
+                          'Over 3+ Years of Wedding Art Excellence',
+                          'Expert custom bridal figures & portrait sketch drawings',
+                          '100% natural, certified skin-friendly organic henna',
+                          'Neat, precise geometric symmetry grids',
+                          'Highly responsive Varanasi home travel service',
+                          'Budget-friendly packages for every family event'
+                        ].map((item, index) => (
+                          <li key={index} className="flex gap-2 items-start text-xs text-[#2d2d2d] font-sans">
+                            <CheckCircle2 size={14} className="text-[#c5a059] shrink-0 mt-0.5" />
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div className="pt-4 flex flex-col sm:flex-row gap-3">
+                      <button
+                        onClick={() => setView('contact')}
+                        className="bg-[#5d0e0e] hover:bg-[#7c1818] text-[#faf3df] hover:text-white px-6 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors shadow-md cursor-pointer"
+                      >
+                        Book Free consultation
+                      </button>
+                      <button
+                        onClick={() => setView('gallery')}
+                        className="bg-transparent hover:bg-gray-100 text-[#5d0e0e] border border-gray-300 px-6 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors shadow-md cursor-pointer"
+                      >
+                        View Real Masterpieces
+                      </button>
+                    </div>
+
+                  </div>
+
                 </div>
-
-                {/* Text Content right */}
-                <div className="md:col-span-7 space-y-6">
-                  <div className="inline-flex items-center gap-1 bg-[#efe1b4]/40 text-[#5d0e0e] text-xs font-bold px-3 py-1 rounded-full border border-[#c5a059]/20 font-sans">
-                    <Award size={14} className="text-[#c5a059]" />
-                    <span>Certified Mehndi Artist in Varanasi</span>
-                  </div>
-
-                  <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#5d0e0e]">
-                    Meet Artist {profile.artistName}
-                  </h2>
-
-                  <p className="text-[#2d2d2d] font-sans text-sm sm:text-base leading-relaxed">
-                    Alankarini Mehndi Art represents the highest quality of traditional hand-drawn ornamentation. Artist Sandhya is a seasoned professional with more than three years of dedicated specialization within bridal sketches, portraits, baby shower patterns, and complex Rajasthani-Indian lattices.
-                  </p>
-
-                  <p className="text-[#2d2d2d] font-sans text-sm sm:text-base leading-relaxed">
-                    Based in the holy city of Varanasi, Uttar Pradesh, Alankarini caters to national and local destination wedding ceremonies alike. Every single batch of Henna paste is mixed fresh in-studio using certified triple-filtered organic Lawsonia inermis powder, premium essential oils, and zero chemicals. This provides an eye-catching, robust maroon-black color shade that lasts beautifully over your auspicious rituals.
-                  </p>
-
-                  <div className="border-t border-[#efe1b4]/30 pt-6">
-                    <h3 className="font-serif font-semibold text-lg text-[#5d0e0e] mb-4">Why Select Alankarini Henna Art?</h3>
-                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      {[
-                        'Over 3+ Years of Wedding Art Excellence',
-                        'Expert custom bridal figures & portrait sketch drawings',
-                        '100% natural, certified skin-friendly organic henna',
-                        'Neat, precise geometric symmetry grids',
-                        'Highly responsive Varanasi home travel service',
-                        'Budget-friendly packages for every family event'
-                      ].map((item, index) => (
-                        <li key={index} className="flex gap-2 items-start text-xs text-[#2d2d2d] font-sans">
-                          <CheckCircle2 size={14} className="text-[#c5a059] shrink-0 mt-0.5" />
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="pt-4 flex flex-col sm:flex-row gap-3">
-                    <button
-                      onClick={() => setView('contact')}
-                      className="bg-[#5d0e0e] hover:bg-[#7c1818] text-[#faf3df] hover:text-white px-6 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors shadow-md cursor-pointer"
-                    >
-                      Book Free consultation
-                    </button>
-                    <button
-                      onClick={() => setView('gallery')}
-                      className="bg-transparent hover:bg-gray-100 text-[#5d0e0e] border border-gray-300 px-6 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer"
-                    >
-                      View Real Masterpieces
-                    </button>
-                  </div>
-
-                </div>
-
               </div>
-            </div>
-          </section>
+            </section>
+
+            {/* About Us Business Section (BOTTOM) */}
+            <section className="py-14 lg:py-20 bg-white">
+              <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <span className="text-[#c5a059] italic text-sm font-serif">Our Story & Mission</span>
+                <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#5d0e0e] mt-2 mb-6">About Alankarini Mehndi Art</h2>
+                <p className="text-[#2d2d2d] font-sans text-sm sm:text-base leading-relaxed max-w-3xl mx-auto mb-6">
+                  Alankarini Mehndi Art was born from a deep-rooted love for the ancient art of henna — a tradition that has graced celebrations across generations. Founded in the heart of Varanasi, one of India's most sacred and culturally rich cities, Alankarini carries forward the timeless beauty of Mehndi with a commitment to precision, creativity, and authenticity.
+                </p>
+                <p className="text-[#2d2d2d] font-sans text-sm sm:text-base leading-relaxed max-w-3xl mx-auto mb-8">
+                  Our mission is simple: to transform your most cherished occasions — weddings, engagements, festivals, and family celebrations — into visually stunning memories through the art of henna. We believe every design tells a story, and every hand we adorn becomes a canvas of love, tradition, and joy.
+                </p>
+
+                {/* Values grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                  {[
+                    { icon: <Heart size={20} className="text-[#5d0e0e]" />, title: 'Passion & Craft', desc: 'Every stroke is hand-drawn with love and meticulous attention to detail.' },
+                    { icon: <Sparkles size={20} className="text-[#5d0e0e]" />, title: '100% Organic Henna', desc: 'Premium Lawsonia inermis powder mixed fresh — zero chemicals, deep lasting stain.' },
+                    { icon: <Award size={20} className="text-[#5d0e0e]" />, title: 'Trusted Excellence', desc: '3+ years of bridal art expertise with hundreds of happy clients across Varanasi.' }
+                  ].map((value, i) => (
+                    <div key={i} className="bg-[#faf7f2] p-6 rounded-2xl border border-[#c5a059]/15 flex flex-col items-center text-center gap-3 hover:shadow-md transition-shadow">
+                      <div className="w-12 h-12 rounded-full bg-[#efe1b4]/40 flex items-center justify-center">{value.icon}</div>
+                      <h4 className="font-serif font-bold text-[#5d0e0e] text-sm">{value.title}</h4>
+                      <p className="text-gray-600 text-xs leading-relaxed font-sans">{value.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
+          </div>
         )}
 
         {/* VIEW 5: CONTACT & BOOKING FORM */}
@@ -301,7 +363,7 @@ export default function App() {
               <button onClick={() => { setView('home'); window.scrollTo(0,0); }} className="hover:text-[#faf3df] transition-colors text-left self-center md:self-start">🌿 Home Dashboard</button>
               <button onClick={() => { setView('gallery'); window.scrollTo(0,0); }} className="hover:text-[#faf3df] transition-colors text-left self-center md:self-start">🌸 Portfolio Gallery</button>
               <button onClick={() => { setView('services'); window.scrollTo(0,0); }} className="hover:text-[#faf3df] transition-colors text-left self-center md:self-start">🌿 Services & Prices</button>
-              <button onClick={() => { setView('about'); window.scrollTo(0,0); }} className="hover:text-[#faf3df] transition-colors text-left self-center md:self-start">🌸 Meet Sandhya</button>
+              <button onClick={() => { setView('about'); window.scrollTo(0,0); }} className="hover:text-[#faf3df] transition-colors text-left self-center md:self-start">🌸 About Us</button>
               <button onClick={() => { setView('contact'); window.scrollTo(0,0); }} className="hover:text-[#faf3df] transition-colors text-left self-center md:self-start">📞 Coordinate Bookings</button>
             </div>
           </div>

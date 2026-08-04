@@ -1,8 +1,41 @@
-node_modules/
-build/
-dist/
-coverage/
-.DS_Store
-*.log
-.env*
+# Environment files & Secret Credentials
+.env
+.env.*
 !.env.example
+*.pem
+*.key
+*.cert
+*.crt
+*.pfx
+*.p12
+
+# Memory & Agent Logs / Context
+memory.md
+.agents/
+.gemini/
+.antigravity/
+.brain/
+*.log
+
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Build Outputs
+dist/
+**/dist/
+build/
+**/build/
+.output/
+
+# OS & Editor Files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Test & Coverage
+coverage/
+**/coverage/

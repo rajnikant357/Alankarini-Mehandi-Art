@@ -9,6 +9,7 @@ export interface ProfileInfo {
   experience: string;
   bio: string;
   coverPhoto: string;
+  aboutPhoto: string;
 }
 
 export type GalleryCategory = 'bridal' | 'portrait' | 'arabic' | 'indo-arabic' | 'festival' | 'customized';

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Sparkles, Eye, X, MessageSquare, Tag, ImageOff } from 'lucide-react';
 import { GalleryItem, GalleryCategory, ProfileInfo } from '../types';
 import { WhatsAppIcon } from './WhatsAppIcon';
+import { formatRupeeAmount } from '../lib/format';
 
 interface GallerySectionProps {
   gallery: GalleryItem[];
@@ -127,7 +128,7 @@ export function GallerySection({ gallery, profile, setView, previewOnly = false 
                     <h3 className="text-sm font-serif font-bold text-[#5d0e0e] flex items-center justify-between gap-1">
                       <span className="line-clamp-1">{item.title}</span>
                       {item.price && (
-                        <span className="text-xs font-semibold text-[#c5a059] shrink-0 font-sans">{item.price}</span>
+                        <span className="text-xs font-semibold text-[#c5a059] shrink-0 font-sans">{formatRupeeAmount(item.price) ?? item.price}</span>
                       )}
                     </h3>
                   </div>
@@ -193,7 +194,7 @@ export function GallerySection({ gallery, profile, setView, previewOnly = false 
                 <h3 className="text-2xl font-serif font-black text-[#5d0e0e] leading-snug flex items-center justify-between gap-2">
                   <span>{activeLightbox.title}</span>
                   {activeLightbox.price && (
-                    <span className="text-lg font-bold text-[#c5a059] shrink-0 font-sans bg-[#efe1b4]/30 px-2 py-0.5 rounded-lg border border-[#c5a059]/15">{activeLightbox.price}</span>
+                    <span className="text-lg font-bold text-[#c5a059] shrink-0 font-sans bg-[#efe1b4]/30 px-2 py-0.5 rounded-lg border border-[#c5a059]/15">{formatRupeeAmount(activeLightbox.price) ?? activeLightbox.price}</span>
                   )}
                 </h3>
 

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Menu, X, Phone, MessageSquare, ShieldAlert } from 'lucide-react';
+import { Menu, X, Phone, MessageSquare } from 'lucide-react';
 import { ProfileInfo } from '../types';
 import { WhatsAppIcon } from './WhatsAppIcon';
 
@@ -16,9 +16,8 @@ export function Navbar({ profile, currentView, setView }: NavbarProps) {
     { label: 'Home', view: 'home' },
     { label: 'Portfolio Gallery', view: 'gallery' },
     { label: 'Services', view: 'services' },
-    { label: 'About Sandhya', view: 'about' },
+    { label: 'About Us', view: 'about' },
     { label: 'Contact', view: 'contact' },
-    { label: 'Admin Panel', view: 'admin' },
   ];
 
   const handleNavigate = (view: string) => {

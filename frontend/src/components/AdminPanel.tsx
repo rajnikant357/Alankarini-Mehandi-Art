@@ -1,20 +1,23 @@
-import React, { useState, useRef } from 'react';
-import { Shield, Key, Check, Plus, Trash2, Edit2, RotateCcw, Save, Smartphone, MapPin, Instagram, Trash, Image, AlertCircle, FileText } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { Shield, Mail, Lock, Check, Plus, Trash2, Edit2, RotateCcw, Save, Smartphone, MapPin, Instagram, Trash, Image, AlertCircle, FileText, LogOut, KeyRound, Send, CheckCircle2, Crop } from 'lucide-react';
 import { ProfileInfo, GalleryItem, MehndiService, GalleryCategory } from '../types';
-import { DEFAULT_PASSCODE, checkAdminPasscode, setAdminPasscode } from '../lib/store';
+import { supabase } from '../lib/supabase';
+import { extractRupeeAmount } from '../lib/format';
+import type { Session } from '@supabase/supabase-js';
+import { ImageCropperModal, AspectRatioType } from './ImageCropperModal';
 
 interface AdminPanelProps {
   profile: ProfileInfo;
   services: MehndiService[];
   gallery: GalleryItem[];
-  updateProfile: (fields: Partial<ProfileInfo>) => void;
-  addGalleryItem: (item: Omit<GalleryItem, 'id'>) => void;
-  editGalleryItem: (id: string, fields: Partial<GalleryItem>) => void;
-  deleteGalleryItem: (id: string) => void;
-  addService: (service: Omit<MehndiService, 'id'>) => void;
-  updateService: (id: string, fields: Partial<MehndiService>) => void;
-  deleteService: (id: string) => void;
-  resetToDefaults: () => void;
+  updateProfile: (fields: Partial<ProfileInfo>) => Promise<unknown>;
+  addGalleryItem: (item: Omit<GalleryItem, 'id'>) => Promise<unknown>;
+  editGalleryItem: (id: string, fields: Partial<GalleryItem>) => Promise<unknown>;
+  deleteGalleryItem: (id: string) => Promise<unknown>;
+  addService: (service: Omit<MehndiService, 'id'>) => Promise<unknown>;
+  updateService: (id: string, fields: Partial<MehndiService>) => Promise<unknown>;
+  deleteService: (id: string) => Promise<unknown>;
+  resetToDefaults: () => Promise<unknown>;
 }
 
 export function AdminPanel({
@@ -30,11 +33,51 @@ export function AdminPanel({
   deleteService,
   resetToDefaults
 }: AdminPanelProps) {
-  
-  // Auth state
-  const [passcode, setPasscode] = useState('');
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // Supabase auth state
+  const [session, setSession] = useState<Session | null>(null);
+  const [authLoading, setAuthLoading] = useState(true);
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
   const [authError, setAuthError] = useState('');
+  const [loginLoading, setLoginLoading] = useState(false);
+
+  // Password reset state
+  const [resetEmail, setResetEmail] = useState('');
+  const [resetLoading, setResetLoading] = useState(false);
+  const [resetStatus, setResetStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+  const [isForgotMode, setIsForgotMode] = useState(false);
+
+  // Image Cropper Modal State
+  const [cropperState, setCropperState] = useState<{
+    isOpen: boolean;
+    rawImageSrc: string;
+    targetAspect: AspectRatioType;
+    onComplete: (croppedDataUrl: string) => void;
+    title?: string;
+  }>({
+    isOpen: false,
+    rawImageSrc: '',
+    targetAspect: 'square',
+    onComplete: () => {},
+  });
+
+  // Listen for Supabase auth state changes (session persistence)
+  useEffect(() => {
+    // Get initial session
+    supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
+      setSession(currentSession);
+      setAuthLoading(false);
+    });
+
+    // Subscribe to auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, newSession) => {
+      setSession(newSession);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const isAuthenticated = !!session;
 
   // Active admin tab: 'profile' | 'services' | 'gallery' | 'settings'
   const [activeTab, setActiveTab] = useState<'profile' | 'services' | 'gallery' | 'settings'>('profile');
@@ -69,63 +112,177 @@ export function AdminPanel({
   const [profCoverPhoto, setProfCoverPhoto] = useState(profile.coverPhoto);
   const coverFileRef = useRef<HTMLInputElement>(null);
 
-  // Password alteration state
-  const [newPass, setNewPass] = useState('');
+  const [profAboutPhoto, setProfAboutPhoto] = useState(profile.aboutPhoto || profile.coverPhoto);
+  const aboutFileRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setProfBusinessName(profile.businessName);
+    setProfArtistName(profile.artistName);
+    setProfPhone(profile.phone);
+    setProfWhatsapp(profile.whatsapp);
+    setProfInstagram(profile.instagram);
+    setProfInstagramUrl(profile.instagramUrl);
+    setProfLocation(profile.location);
+    setProfExperience(profile.experience);
+    setProfBio(profile.bio);
+    setProfCoverPhoto(profile.coverPhoto);
+    setProfAboutPhoto(profile.aboutPhoto || profile.coverPhoto);
+  }, [profile]);
+
   const [succMessage, setSuccMessage] = useState('');
 
-  const handleLogin = (e: React.FormEvent) => {
+  // Security Rate Limiter (5 failed attempts = 5 min lockout)
+  const MAX_FAILED_ATTEMPTS = 5;
+  const LOCKOUT_MS = 5 * 60 * 1000;
+
+  const [failedAttempts, setFailedAttempts] = useState<number>(() => {
+    const saved = sessionStorage.getItem('admin_failed_attempts');
+    return saved ? parseInt(saved, 10) : 0;
+  });
+
+  const [lockoutUntil, setLockoutUntil] = useState<number | null>(() => {
+    const saved = sessionStorage.getItem('admin_lockout_until');
+    if (!saved) return null;
+    const lockTime = parseInt(saved, 10);
+    return lockTime > Date.now() ? lockTime : null;
+  });
+
+  const [secondsRemaining, setSecondsRemaining] = useState<number>(0);
+
+  useEffect(() => {
+    if (!lockoutUntil) {
+      setSecondsRemaining(0);
+      return;
+    }
+
+    const updateTimer = () => {
+      const remaining = Math.max(0, Math.ceil((lockoutUntil - Date.now()) / 1000));
+      setSecondsRemaining(remaining);
+      if (remaining === 0) {
+        setLockoutUntil(null);
+        setFailedAttempts(0);
+        sessionStorage.removeItem('admin_failed_attempts');
+        sessionStorage.removeItem('admin_lockout_until');
+      }
+    };
+
+    updateTimer();
+    const interval = setInterval(updateTimer, 1000);
+    return () => clearInterval(interval);
+  }, [lockoutUntil]);
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (checkAdminPasscode(passcode)) {
-      setIsAuthenticated(true);
-      setAuthError('');
+    if (lockoutUntil && Date.now() < lockoutUntil) return;
+
+    setLoginLoading(true);
+    setAuthError('');
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email: loginEmail,
+      password: loginPassword,
+    });
+
+    setLoginLoading(false);
+
+    if (error) {
+      const nextAttempts = failedAttempts + 1;
+      setFailedAttempts(nextAttempts);
+      sessionStorage.setItem('admin_failed_attempts', nextAttempts.toString());
+
+      if (nextAttempts >= MAX_FAILED_ATTEMPTS) {
+        const lockUntil = Date.now() + LOCKOUT_MS;
+        setLockoutUntil(lockUntil);
+        sessionStorage.setItem('admin_lockout_until', lockUntil.toString());
+        setAuthError('Too many failed login attempts. Security lockout engaged for 5 minutes.');
+      } else {
+        setAuthError(`${error.message} (${MAX_FAILED_ATTEMPTS - nextAttempts} attempts remaining)`);
+      }
+    } else {
+      setFailedAttempts(0);
+      setLockoutUntil(null);
+      sessionStorage.removeItem('admin_failed_attempts');
+      sessionStorage.removeItem('admin_lockout_until');
       setSuccMessage('Successfully unlocked admin dashboard!');
       setTimeout(() => setSuccMessage(''), 3000);
-    } else {
-      setAuthError('Incorrect Admin Passcode. Please try again.');
     }
   };
 
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    setPasscode('');
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setLoginEmail('');
+    setLoginPassword('');
   };
 
   // Profile save helper
-  const handleSaveProfile = (e: React.FormEvent) => {
+  const handleSaveProfile = async (e: React.FormEvent) => {
     e.preventDefault();
-    updateProfile({
-      businessName: profBusinessName,
-      artistName: profArtistName,
-      phone: profPhone,
-      whatsapp: profWhatsapp,
-      instagram: profInstagram,
-      instagramUrl: profInstagramUrl,
-      location: profLocation,
-      experience: profExperience,
-      bio: profBio,
-      coverPhoto: profCoverPhoto
-    });
-    setSuccMessage('Profile Information Saved successfully!');
-    setTimeout(() => setSuccMessage(''), 3000);
+    try {
+      await updateProfile({
+        businessName: profBusinessName,
+        artistName: profArtistName,
+        phone: profPhone,
+        whatsapp: profWhatsapp,
+        instagram: profInstagram,
+        instagramUrl: profInstagramUrl,
+        location: profLocation,
+        experience: profExperience,
+        bio: profBio,
+        coverPhoto: profCoverPhoto,
+        aboutPhoto: profAboutPhoto,
+      });
+      setSuccMessage('Profile Information Saved successfully!');
+      setTimeout(() => setSuccMessage(''), 3000);
+    } catch (error) {
+      alert('Profile could not be saved to the database.');
+      console.error(error);
+    }
   };
 
-  // Convert files to Base64 easily for clientside uploads
-  const handleFileChange = (
+  // File & Crop Handlers
+  const handleFileSelectForCropping = (
     e: React.ChangeEvent<HTMLInputElement>,
-    setImageState: (val: string) => void
+    targetAspect: AspectRatioType,
+    onComplete: (croppedDataUrl: string) => void,
+    title?: string
   ) => {
     const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImageState(reader.result as string);
+        setCropperState({
+          isOpen: true,
+          rawImageSrc: reader.result as string,
+          targetAspect,
+          onComplete,
+          title,
+        });
       };
       reader.readAsDataURL(file);
     }
   };
 
+  const openCropperForUrl = (
+    url: string,
+    targetAspect: AspectRatioType,
+    onComplete: (croppedDataUrl: string) => void,
+    title?: string
+  ) => {
+    if (!url) {
+      alert('Please enter or select an image first.');
+      return;
+    }
+    setCropperState({
+      isOpen: true,
+      rawImageSrc: url,
+      targetAspect,
+      onComplete,
+      title,
+    });
+  };
+
   // Service form saving
-  const handleSaveService = (e: React.FormEvent) => {
+  const handleSaveService = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!serviceTitle || !serviceDesc) {
       alert("Please fill out Title and Description.");
@@ -135,26 +292,31 @@ export function AdminPanel({
     const payload = {
       title: serviceTitle,
       description: serviceDesc,
-      startingPrice: servicePrice,
+      startingPrice: extractRupeeAmount(servicePrice),
       imageUrl: serviceImage || 'https://images.unsplash.com/photo-1610444383437-020df1ae9d9b?auto=format&fit=crop&q=80&w=800'
     };
 
-    if (serviceEditingId) {
-      updateService(serviceEditingId, payload);
-      setSuccMessage('Service Package updated successfully!');
-    } else {
-      addService(payload);
-      setSuccMessage('New Service Package added successfully!');
-    }
+    try {
+      if (serviceEditingId) {
+        await updateService(serviceEditingId, payload);
+        setSuccMessage('Service Package updated successfully!');
+      } else {
+        await addService(payload);
+        setSuccMessage('New Service Package added successfully!');
+      }
 
-    // Reset Service form
-    setServiceEditingId(null);
-    setServiceTitle('');
-    setServiceDesc('');
-    setServicePrice('');
-    setServiceImage('');
-    if (serviceFileRef.current) serviceFileRef.current.value = '';
-    setTimeout(() => setSuccMessage(''), 3000);
+      // Reset Service form
+      setServiceEditingId(null);
+      setServiceTitle('');
+      setServiceDesc('');
+      setServicePrice('');
+      setServiceImage('');
+      if (serviceFileRef.current) serviceFileRef.current.value = '';
+      setTimeout(() => setSuccMessage(''), 3000);
+    } catch (error) {
+      alert('Service could not be published to the database.');
+      console.error(error);
+    }
   };
 
   // Fill Service Form for editing
@@ -162,7 +324,7 @@ export function AdminPanel({
     setServiceEditingId(srv.id);
     setServiceTitle(srv.title);
     setServiceDesc(srv.description);
-    setServicePrice(srv.startingPrice || '');
+    setServicePrice(extractRupeeAmount(srv.startingPrice));
     setServiceImage(srv.imageUrl);
     window.scrollTo({ top: 300, behavior: 'smooth' });
   };
@@ -177,7 +339,7 @@ export function AdminPanel({
   };
 
   // Gallery form saving
-  const handleSaveGallery = (e: React.FormEvent) => {
+  const handleSaveGallery = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!galleryTitle || !galleryImage) {
       alert("Please provide a Title and upload or enter an Image.");
@@ -188,27 +350,32 @@ export function AdminPanel({
       title: galleryTitle,
       category: galleryCategory,
       description: galleryDesc,
-      price: galleryPrice,
+      price: extractRupeeAmount(galleryPrice),
       imageUrl: galleryImage
     };
 
-    if (galleryEditingId) {
-      editGalleryItem(galleryEditingId, payload);
-      setSuccMessage('Gallery Masterpiece updated successfully!');
-    } else {
-      addGalleryItem(payload);
-      setSuccMessage('New Photo added successfully to your Gallery!');
-    }
+    try {
+      if (galleryEditingId) {
+        await editGalleryItem(galleryEditingId, payload);
+        setSuccMessage('Gallery Masterpiece updated successfully!');
+      } else {
+        await addGalleryItem(payload);
+        setSuccMessage('New Photo added successfully to your Gallery!');
+      }
 
-    // Reset Gallery form
-    setGalleryEditingId(null);
-    setGalleryTitle('');
-    setGalleryCategory('bridal');
-    setGalleryDesc('');
-    setGalleryPrice('');
-    setGalleryImage('');
-    if (galleryFileRef.current) galleryFileRef.current.value = '';
-    setTimeout(() => setSuccMessage(''), 3000);
+      // Reset Gallery form
+      setGalleryEditingId(null);
+      setGalleryTitle('');
+      setGalleryCategory('bridal');
+      setGalleryDesc('');
+      setGalleryPrice('');
+      setGalleryImage('');
+      if (galleryFileRef.current) galleryFileRef.current.value = '';
+      setTimeout(() => setSuccMessage(''), 3000);
+    } catch (error) {
+      alert('Gallery item could not be published to the database.');
+      console.error(error);
+    }
   };
 
   // Edit Gallery
@@ -217,7 +384,7 @@ export function AdminPanel({
     setGalleryTitle(item.title);
     setGalleryCategory(item.category);
     setGalleryDesc(item.description || '');
-    setGalleryPrice(item.price || '');
+    setGalleryPrice(extractRupeeAmount(item.price));
     setGalleryImage(item.imageUrl);
     window.scrollTo({ top: 300, behavior: 'smooth' });
   };
@@ -232,31 +399,48 @@ export function AdminPanel({
     if (galleryFileRef.current) galleryFileRef.current.value = '';
   };
 
-  // Passcode revision saving
-  const handleUpdatePasscode = (e: React.FormEvent) => {
+  // Passcode revision is no longer needed — auth is via Supabase
+
+  const handleSendPasswordReset = async (e: React.FormEvent, targetEmailInput?: string) => {
     e.preventDefault();
-    if (newPass.length < 4) {
-      alert("Password must be at least 4 characters long.");
+    const targetEmail = targetEmailInput || resetEmail || loginEmail || session?.user?.email;
+    if (!targetEmail) {
+      setResetStatus({ type: 'error', message: 'Please enter your admin email address.' });
       return;
     }
-    setAdminPasscode(newPass);
-    setSuccMessage('Security Passcode updated successfully! Please keep this password safe.');
-    setNewPass('');
-    setTimeout(() => setSuccMessage(''), 4000);
-  };
 
-  const handleResetData = () => {
-    if (confirm("Are you sure you want to reset everything back to Sandhya's original curated portfolio assets? Your uploaded photos and customizations will be erased.")) {
-      resetToDefaults();
-      // Reload states
-      setSuccMessage('All settings have been successfully reset to factory defaults.');
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
+    setResetLoading(true);
+    setResetStatus(null);
+
+    const { error } = await supabase.auth.resetPasswordForEmail(targetEmail, {
+      redirectTo: `${window.location.origin}/#/admin`,
+    });
+
+    setResetLoading(false);
+
+    if (error) {
+      setResetStatus({ type: 'error', message: error.message });
+    } else {
+      setResetStatus({
+        type: 'success',
+        message: `Password reset email sent to ${targetEmail}! Please check your inbox for the reset link.`
+      });
     }
   };
 
-  // LOGIN SCREEN (if not authenticated)
+  // LOADING STATE while checking Supabase session
+  if (authLoading) {
+    return (
+      <section className="py-16 md:py-24 bg-[#faf7f2] flex justify-center items-center min-h-[60vh] px-4">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-10 h-10 border-4 border-[#5d0e0e] border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-sm text-[#5d0e0e] font-sans font-medium">Verifying authentication...</p>
+        </div>
+      </section>
+    );
+  }
+
+  // LOGIN SCREEN (if not authenticated via Supabase)
   if (!isAuthenticated) {
     return (
       <section className="py-16 md:py-24 bg-[#faf7f2] flex justify-center items-center min-h-[60vh] px-4">
@@ -269,7 +453,7 @@ export function AdminPanel({
               <Shield size={26} />
             </div>
             <h2 className="font-serif text-2xl font-black text-[#5d0e0e]">Sandhya's Workspace</h2>
-            <p className="text-xs text-gray-550 font-sans mt-1">Authentication required to edit gallery, profile and services.</p>
+            <p className="text-xs text-gray-550 font-sans mt-1">Admin authentication required to edit gallery, profile and services.</p>
           </div>
 
           {authError && (
@@ -279,39 +463,129 @@ export function AdminPanel({
             </div>
           )}
 
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div>
-              <label htmlFor="admin-pass" className="block text-[10px] font-bold text-gray-770 uppercase tracking-widest mb-1.5 font-sans">Enter Security Passcode</label>
-              <div className="relative">
-                <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-450 pointer-events-none">
-                  <Key size={16} />
-                </span>
-                <input
-                  id="admin-pass"
-                  type="password"
-                  required
-                  placeholder="••••••••••••••"
-                  value={passcode}
-                  onChange={(e) => setPasscode(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#5d0e0e] focus:border-[#5d0e0e] text-sm bg-white font-sans text-gray-900"
-                />
-              </div>
+          {secondsRemaining > 0 && (
+            <div className="mb-4 p-3.5 bg-[#5d0e0e]/10 border border-[#5d0e0e]/30 rounded-xl text-xs text-[#5d0e0e] font-sans font-semibold flex items-center gap-2 animate-pulse">
+              <Lock size={16} className="shrink-0 text-[#5d0e0e]" />
+              <span>Security Lockout Engaged: Try again in {Math.floor(secondsRemaining / 60)}m {secondsRemaining % 60}s</span>
             </div>
-            
-            <button
-              type="submit"
-              className="w-full inline-flex items-center justify-center bg-[#5d0e0e] hover:bg-[#7c1818] text-[#faf3df] hover:text-white py-3 px-4 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors shadow-md active:scale-98 cursor-pointer"
-            >
-              Unlock Dashboard
-            </button>
-          </form>
+          )}
 
-          {/* DEMO CRITICAL: Let the user know the default password so they can explore this amazing dashboard! */}
-          <div className="mt-8 pt-6 border-t border-gray-200 text-center">
-            <span className="text-[11px] bg-amber-50 border border-amber-200 text-amber-900 px-3 py-1.5 rounded-lg block font-sans">
-              ℹ️ Standard Admin demonstration passcode:<br />
-              <strong className="text-[#5d0e0e] font-bold text-xs">{DEFAULT_PASSCODE}</strong>
-            </span>
+          {isForgotMode ? (
+            <form onSubmit={(e) => handleSendPasswordReset(e, loginEmail)} className="space-y-4">
+              <div className="text-center mb-2">
+                <h3 className="font-serif text-lg font-bold text-[#5d0e0e]">Reset Password</h3>
+                <p className="text-xs text-gray-500 font-sans mt-0.5">Enter your email to receive a password reset link.</p>
+              </div>
+
+              {resetStatus && (
+                <div className={`p-3 rounded-xl text-xs font-sans font-medium flex items-center gap-2 ${
+                  resetStatus.type === 'success' ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' : 'bg-red-50 text-red-800 border border-red-200'
+                }`}>
+                  {resetStatus.type === 'success' ? <CheckCircle2 size={16} className="text-emerald-600 shrink-0" /> : <AlertCircle size={16} className="text-red-600 shrink-0" />}
+                  <span>{resetStatus.message}</span>
+                </div>
+              )}
+
+              <div>
+                <label htmlFor="reset-admin-email" className="block text-[10px] font-bold text-gray-770 uppercase tracking-widest mb-1.5 font-sans">Admin Email</label>
+                <div className="relative">
+                  <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-450 pointer-events-none">
+                    <Mail size={16} />
+                  </span>
+                  <input
+                    id="reset-admin-email"
+                    type="email"
+                    required
+                    placeholder="admin@example.com"
+                    value={loginEmail}
+                    onChange={(e) => setLoginEmail(e.target.value)}
+                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#5d0e0e] focus:border-[#5d0e0e] text-sm bg-white font-sans text-gray-900"
+                  />
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                disabled={resetLoading}
+                className="w-full inline-flex items-center justify-center gap-2 bg-[#5d0e0e] hover:bg-[#7c1818] text-[#faf3df] hover:text-white py-3 px-4 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors shadow-md active:scale-98 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                <Send size={14} />
+                {resetLoading ? 'Sending Reset Email...' : 'Send Reset Link'}
+              </button>
+
+              <div className="text-center pt-2">
+                <button
+                  type="button"
+                  onClick={() => { setIsForgotMode(false); setResetStatus(null); }}
+                  className="text-xs text-[#5d0e0e] hover:underline font-sans font-medium cursor-pointer"
+                >
+                  ← Back to Sign In
+                </button>
+              </div>
+            </form>
+          ) : (
+            <form onSubmit={handleLogin} className="space-y-4">
+              <div>
+                <label htmlFor="admin-email" className="block text-[10px] font-bold text-gray-770 uppercase tracking-widest mb-1.5 font-sans">Admin Email</label>
+                <div className="relative">
+                  <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-450 pointer-events-none">
+                    <Mail size={16} />
+                  </span>
+                  <input
+                    id="admin-email"
+                    type="email"
+                    required
+                    disabled={secondsRemaining > 0}
+                    placeholder="admin@example.com"
+                    value={loginEmail}
+                    onChange={(e) => setLoginEmail(e.target.value)}
+                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#5d0e0e] focus:border-[#5d0e0e] text-sm bg-white font-sans text-gray-900 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <div className="flex justify-between items-center mb-1.5">
+                  <label htmlFor="admin-password" className="block text-[10px] font-bold text-gray-770 uppercase tracking-widest font-sans">Password</label>
+                  <button
+                    type="button"
+                    onClick={() => { setIsForgotMode(true); setResetStatus(null); }}
+                    className="text-[10px] text-[#5d0e0e] font-semibold hover:underline font-sans cursor-pointer"
+                  >
+                    Forgot password?
+                  </button>
+                </div>
+                <div className="relative">
+                  <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-450 pointer-events-none">
+                    <Lock size={16} />
+                  </span>
+                  <input
+                    id="admin-password"
+                    type="password"
+                    required
+                    disabled={secondsRemaining > 0}
+                    placeholder="••••••••••••••"
+                    value={loginPassword}
+                    onChange={(e) => setLoginPassword(e.target.value)}
+                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#5d0e0e] focus:border-[#5d0e0e] text-sm bg-white font-sans text-gray-900 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                  />
+                </div>
+              </div>
+              
+              <button
+                type="submit"
+                disabled={loginLoading || secondsRemaining > 0}
+                className="w-full inline-flex items-center justify-center bg-[#5d0e0e] hover:bg-[#7c1818] text-[#faf3df] hover:text-white py-3 px-4 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors shadow-md active:scale-98 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                {loginLoading ? 'Signing in...' : secondsRemaining > 0 ? `Locked (${secondsRemaining}s)` : 'Unlock Dashboard'}
+              </button>
+            </form>
+          )}
+
+          <div className="mt-6 pt-4 border-t border-gray-200 text-center">
+            <p className="text-[11px] text-gray-500 font-sans">
+              🔒 Access is restricted to the site owner only.
+            </p>
           </div>
 
         </div>
@@ -332,11 +606,13 @@ export function AdminPanel({
           </div>
           
           <div className="flex items-center gap-3">
+            <span className="text-xs text-gray-500 font-sans hidden sm:inline">{session?.user?.email}</span>
             <button
               onClick={handleLogout}
-              className="bg-gray-100 hover:bg-gray-250 text-gray-750 font-sans text-xs font-bold py-2 px-4 rounded-lg transition-colors border border-gray-300 cursor-pointer"
+              className="inline-flex items-center gap-1.5 bg-gray-100 hover:bg-gray-250 text-gray-750 font-sans text-xs font-bold py-2 px-4 rounded-lg transition-colors border border-gray-300 cursor-pointer"
             >
-              Lock Dashboard
+              <LogOut size={13} />
+              Sign Out
             </button>
           </div>
         </div>
@@ -355,7 +631,7 @@ export function AdminPanel({
             { id: 'profile', label: '1. Profile Info & Cover' },
             { id: 'gallery', label: '2. Design Gallery' },
             { id: 'services', label: '3. Service Pricing' },
-            { id: 'settings', label: '4. Passcode Security' }
+            { id: 'settings', label: '4. Data & Security' }
           ].map(tab => (
             <button
               key={tab.id}
@@ -481,35 +757,103 @@ export function AdminPanel({
                 ></textarea>
               </div>
 
-              {/* Cover Photo */}
+              {/* 1. Hero Section Photo */}
               <div className="border-t border-[#efe1b4]/40 pt-6">
-                <h4 className="font-serif font-bold text-[#5d0e0e] text-base mb-4">Hero Cover Photograph</h4>
+                <h4 className="font-serif font-bold text-[#5d0e0e] text-base mb-1">1. Hero Section Banner Photograph</h4>
+                <p className="text-xs text-gray-600 mb-4 font-sans">
+                  This image is displayed on the main homepage banner at the top of the website.
+                </p>
                 <div className="flex flex-col md:flex-row gap-6 items-start">
                   <div className="w-48 aspect-square rounded-2xl overflow-hidden border-2 border-[#c5a059]/35 shrink-0 bg-gray-100">
                     <img 
                       src={profCoverPhoto} 
-                      alt="Current Cover preview" 
+                      alt="Hero Banner preview" 
                       className="w-full h-full object-cover"
                       referrerPolicy="no-referrer"
                     />
                   </div>
                   <div className="flex-1 space-y-4 w-full">
                     <div>
-                      <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Manual image URL</label>
-                      <input
-                        type="url"
-                        value={profCoverPhoto}
-                        onChange={(e) => setProfCoverPhoto(e.target.value)}
-                        className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#5d0e0e] focus:border-[#5d0e0e] text-sm bg-white font-sans text-gray-800"
-                      />
+                      <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Hero Image URL</label>
+                      <div className="flex gap-2">
+                        <input
+                          type="url"
+                          value={profCoverPhoto}
+                          onChange={(e) => setProfCoverPhoto(e.target.value)}
+                          className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#5d0e0e] focus:border-[#5d0e0e] text-sm bg-white font-sans text-gray-800"
+                        />
+                        {profCoverPhoto && (
+                          <button
+                            type="button"
+                            onClick={() => openCropperForUrl(profCoverPhoto, 'portrait', setProfCoverPhoto, 'Crop Hero Banner Photo (4:5 Card Shape)')}
+                            className="inline-flex items-center gap-1 bg-[#efe1b4]/60 hover:bg-[#efe1b4] text-[#5d0e0e] px-3 py-2 rounded-xl text-xs font-bold shrink-0 border border-[#c5a059]/30 transition-colors cursor-pointer"
+                            title="Crop & Fit Photo"
+                          >
+                            <Crop size={14} />
+                            <span>Crop / Fit</span>
+                          </button>
+                        )}
+                      </div>
                     </div>
                     <div>
-                      <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Or choose custom file to upload directly *</label>
+                      <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Or choose custom file to upload & crop for Hero *</label>
                       <input
                         type="file"
                         ref={coverFileRef}
                         accept="image/*"
-                        onChange={(e) => handleFileChange(e, setProfCoverPhoto)}
+                        onChange={(e) => handleFileSelectForCropping(e, 'portrait', setProfCoverPhoto, 'Crop Hero Banner Photo (4:5 Card Shape)')}
+                        className="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#5d0e0e] file:text-[#faf3df] hover:file:bg-[#7c1818] file:cursor-pointer"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* 2. About Sandhya Photo */}
+              <div className="border-t border-[#efe1b4]/40 pt-6">
+                <h4 className="font-serif font-bold text-[#5d0e0e] text-base mb-1">2. About Sandhya Portrait Photograph</h4>
+                <p className="text-xs text-gray-600 mb-4 font-sans">
+                  This portrait image is displayed at the top of the <strong>About Us</strong> page ("Meet Artist Sandhya").
+                </p>
+                <div className="flex flex-col md:flex-row gap-6 items-start">
+                  <div className="w-48 aspect-square rounded-2xl overflow-hidden border-2 border-[#c5a059]/35 shrink-0 bg-gray-100">
+                    <img 
+                      src={profAboutPhoto} 
+                      alt="About Sandhya portrait preview" 
+                      className="w-full h-full object-cover"
+                      referrerPolicy="no-referrer"
+                    />
+                  </div>
+                  <div className="flex-1 space-y-4 w-full">
+                    <div>
+                      <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">About Image URL</label>
+                      <div className="flex gap-2">
+                        <input
+                          type="url"
+                          value={profAboutPhoto}
+                          onChange={(e) => setProfAboutPhoto(e.target.value)}
+                          className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#5d0e0e] focus:border-[#5d0e0e] text-sm bg-white font-sans text-gray-800"
+                        />
+                        {profAboutPhoto && (
+                          <button
+                            type="button"
+                            onClick={() => openCropperForUrl(profAboutPhoto, 'portrait', setProfAboutPhoto, 'Crop About Sandhya Photo (4:5 Card Shape)')}
+                            className="inline-flex items-center gap-1 bg-[#efe1b4]/60 hover:bg-[#efe1b4] text-[#5d0e0e] px-3 py-2 rounded-xl text-xs font-bold shrink-0 border border-[#c5a059]/30 transition-colors cursor-pointer"
+                            title="Crop & Fit Photo"
+                          >
+                            <Crop size={14} />
+                            <span>Crop / Fit</span>
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Or choose custom file to upload & crop for About Sandhya *</label>
+                      <input
+                        type="file"
+                        ref={aboutFileRef}
+                        accept="image/*"
+                        onChange={(e) => handleFileSelectForCropping(e, 'portrait', setProfAboutPhoto, 'Crop About Sandhya Photo (4:5 Card Shape)')}
                         className="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#5d0e0e] file:text-[#faf3df] hover:file:bg-[#7c1818] file:cursor-pointer"
                       />
                     </div>
@@ -595,28 +939,41 @@ export function AdminPanel({
                   <div className="md:col-span-8 space-y-3">
                     <div>
                       <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Direct Image URL</label>
-                      <input
-                        type="url"
-                        placeholder="https://..."
-                        value={galleryImage}
-                        onChange={(e) => setGalleryImage(e.target.value)}
-                        className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#5d0e0e] focus:border-[#5d0e0e] text-sm bg-white font-sans text-gray-800"
-                      />
+                      <div className="flex gap-2">
+                        <input
+                          type="url"
+                          placeholder="https://..."
+                          value={galleryImage}
+                          onChange={(e) => setGalleryImage(e.target.value)}
+                          className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#5d0e0e] focus:border-[#5d0e0e] text-sm bg-white font-sans text-gray-800"
+                        />
+                        {galleryImage && (
+                          <button
+                            type="button"
+                            onClick={() => openCropperForUrl(galleryImage, 'square', setGalleryImage, 'Crop Gallery Item Photo (1:1 Square Card Shape)')}
+                            className="inline-flex items-center gap-1 bg-[#efe1b4]/60 hover:bg-[#efe1b4] text-[#5d0e0e] px-3 py-2 rounded-xl text-xs font-bold shrink-0 border border-[#c5a059]/30 transition-colors cursor-pointer"
+                            title="Crop & Fit Photo"
+                          >
+                            <Crop size={14} />
+                            <span>Crop / Fit</span>
+                          </button>
+                        )}
+                      </div>
                     </div>
                     <div>
-                      <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Or choose file from device to upload directly *</label>
+                      <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Or choose file from device to upload & crop *</label>
                       <input
                         type="file"
                         ref={galleryFileRef}
                         accept="image/*"
-                        onChange={(e) => handleFileChange(e, setGalleryImage)}
+                        onChange={(e) => handleFileSelectForCropping(e, 'square', setGalleryImage, 'Crop Gallery Item Photo (1:1 Square Card Shape)')}
                         className="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#5d0e0e] file:text-[#faf3df] hover:file:bg-[#7c1818] file:cursor-pointer"
                       />
                     </div>
                   </div>
                   
                   {/* Image preview box */}
-                  <div className="md:col-span-4 flex justify-center">
+                  <div className="md:col-span-4 flex flex-col items-center gap-2">
                     <div className="w-28 aspect-square rounded-xl overflow-hidden border border-gray-300 bg-gray-50 flex items-center justify-center relative">
                       {galleryImage ? (
                         <img 
@@ -629,6 +986,15 @@ export function AdminPanel({
                         <span className="text-[10px] text-gray-400 font-sans text-center px-2">No photo uploaded</span>
                       )}
                     </div>
+                    {galleryImage && (
+                      <button
+                        type="button"
+                        onClick={() => openCropperForUrl(galleryImage, 'square', setGalleryImage, 'Crop Gallery Item Photo (1:1 Square Card Shape)')}
+                        className="text-[11px] font-bold text-[#5d0e0e] hover:underline flex items-center gap-1 cursor-pointer font-sans"
+                      >
+                        <Crop size={12} /> Adjust Crop / Fit
+                      </button>
+                    )}
                   </div>
                 </div>
 
@@ -764,28 +1130,41 @@ export function AdminPanel({
                   <div className="md:col-span-8 space-y-3">
                     <div>
                       <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Service Cover Photo Image URL</label>
-                      <input
-                        type="url"
-                        placeholder="https://..."
-                        value={serviceImage}
-                        onChange={(e) => setServiceImage(e.target.value)}
-                        className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#5d0e0e] focus:border-[#5d0e0e] text-sm bg-white font-sans text-gray-800"
-                      />
+                      <div className="flex gap-2">
+                        <input
+                          type="url"
+                          placeholder="https://..."
+                          value={serviceImage}
+                          onChange={(e) => setServiceImage(e.target.value)}
+                          className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#5d0e0e] focus:border-[#5d0e0e] text-sm bg-white font-sans text-gray-800"
+                        />
+                        {serviceImage && (
+                          <button
+                            type="button"
+                            onClick={() => openCropperForUrl(serviceImage, 'service', setServiceImage, 'Crop Service Package Photo (4:3 Card Shape)')}
+                            className="inline-flex items-center gap-1 bg-[#efe1b4]/60 hover:bg-[#efe1b4] text-[#5d0e0e] px-3 py-2 rounded-xl text-xs font-bold shrink-0 border border-[#c5a059]/30 transition-colors cursor-pointer"
+                            title="Crop & Fit Photo"
+                          >
+                            <Crop size={14} />
+                            <span>Crop / Fit</span>
+                          </button>
+                        )}
+                      </div>
                     </div>
                     <div>
-                      <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Or choose custom file to upload directly *</label>
+                      <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Or choose custom file to upload & crop *</label>
                       <input
                         type="file"
                         ref={serviceFileRef}
                         accept="image/*"
-                        onChange={(e) => handleFileChange(e, setServiceImage)}
+                        onChange={(e) => handleFileSelectForCropping(e, 'service', setServiceImage, 'Crop Service Package Photo (4:3 Card Shape)')}
                         className="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#5d0e0e] file:text-[#faf3df] hover:file:bg-[#7c1818] file:cursor-pointer"
                       />
                     </div>
                   </div>
                   
                   {/* Preview box */}
-                  <div className="md:col-span-4 flex justify-center">
+                  <div className="md:col-span-4 flex flex-col items-center gap-2">
                     <div className="w-28 aspect-square rounded-xl overflow-hidden border border-gray-300 bg-gray-50 flex items-center justify-center relative">
                       {serviceImage ? (
                         <img 
@@ -795,9 +1174,18 @@ export function AdminPanel({
                           referrerPolicy="no-referrer"
                         />
                       ) : (
-                        <span className="text-[10px] text-gray-400 font-sans text-center px-2">No cover loaded</span>
+                        <span className="text-[10px] text-gray-400 font-sans text-center px-2">No photo uploaded</span>
                       )}
                     </div>
+                    {serviceImage && (
+                      <button
+                        type="button"
+                        onClick={() => openCropperForUrl(serviceImage, 'service', setServiceImage, 'Crop Service Package Photo (4:3 Card Shape)')}
+                        className="text-[11px] font-bold text-[#5d0e0e] hover:underline flex items-center gap-1 cursor-pointer font-sans"
+                      >
+                        <Crop size={12} /> Adjust Crop / Fit
+                      </button>
+                    )}
                   </div>
                 </div>
 
@@ -881,60 +1269,103 @@ export function AdminPanel({
           </div>
         )}
 
-        {/* TAB 4: SECURITY CONTROLS */}
+        {/* TAB 4: DATA & SECURITY CONTROLS */}
         {activeTab === 'settings' && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            
-            {/* Password Update */}
-            <div className="bg-[#f5efe4]/60 rounded-3xl p-6 md:p-8 border border-[#c5a059]/15">
-              <h3 className="text-xl font-serif font-bold text-[#5d0e0e] mb-4">Update Workspace Passcode</h3>
-              
-              <form onSubmit={handleUpdatePasscode} className="space-y-4">
-                <div>
-                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Type New Administrative Passcode *</label>
-                  <input
-                    type="password"
-                    required
-                    placeholder="Enter at least 4 chars"
-                    value={newPass}
-                    onChange={(e) => setNewPass(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#5d0e0e] focus:border-[#5d0e0e] text-sm bg-white font-sans text-gray-800"
-                  />
-                  <p className="text-xs text-gray-500 mt-1 font-sans">Changing this saves immediately to this browser's secure security storage.</p>
-                </div>
 
+            {/* Auth info */}
+            <div className="bg-[#f5efe4]/60 rounded-3xl p-6 md:p-8 border border-[#c5a059]/15">
+              <h3 className="text-xl font-serif font-bold text-[#5d0e0e] mb-4">Authentication Info</h3>
+              <div className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <Mail size={14} className="text-[#c5a059]" />
+                  <span className="text-sm text-gray-700 font-sans">Signed in as: <strong className="text-[#5d0e0e]">{session?.user?.email}</strong></span>
+                </div>
+                <p className="text-xs text-gray-500 font-sans leading-relaxed">
+                  Authentication is managed via Supabase. To change your password or email, visit the Supabase dashboard.
+                </p>
                 <button
-                  type="submit"
-                  className="bg-[#5d0e0e] hover:bg-[#7c1818] text-[#faf3df] hover:text-white py-2.5 px-6 rounded-lg text-xs font-semibold uppercase tracking-wider transition-colors shadow"
+                  type="button"
+                  onClick={handleLogout}
+                  className="inline-flex items-center gap-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 py-2.5 px-5 rounded-lg text-xs font-bold uppercase tracking-wider transition-colors border border-gray-300 cursor-pointer"
                 >
-                  Confirm New Passcode
+                  <LogOut size={13} />
+                  Sign Out
                 </button>
-              </form>
+              </div>
             </div>
 
-            {/* factory state reset */}
-            <div className="bg-red-50/50 rounded-3xl p-6 md:p-8 border border-red-200 flex flex-col justify-between">
+            {/* Reset Password Card */}
+            <div className="bg-[#f5efe4]/60 rounded-3xl p-6 md:p-8 border border-[#c5a059]/15 flex flex-col justify-between">
               <div>
-                <h3 className="text-xl font-serif font-bold text-red-800 mb-3">Restore Master Defaults</h3>
-                <p className="text-xs text-gray-600 font-sans leading-relaxed mb-6">
-                  Warning: Triggering the default factory reset instantly deletes all your local modifications to Sandhya's phone numbers, bio description paragraph, added custom bridal photographs or services. Ideal for cleaning up draft mock entries.
+                <div className="flex items-center gap-2 mb-3">
+                  <KeyRound size={20} className="text-[#5d0e0e]" />
+                  <h3 className="text-xl font-serif font-bold text-[#5d0e0e]">Reset Admin Password</h3>
+                </div>
+                <p className="text-xs text-gray-600 font-sans leading-relaxed mb-4">
+                  Send a secure password reset link via Supabase Authentication to update your admin credentials.
                 </p>
-              </div>
 
-              <button
-                type="button"
-                onClick={handleResetData}
-                className="w-full inline-flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white py-3 px-6 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors shadow cursor-pointer"
-              >
-                <RotateCcw size={14} />
-                Restore Default Seed Catalog
-              </button>
+                {resetStatus && (
+                  <div className={`mb-4 p-3 rounded-xl text-xs font-sans font-medium flex items-center gap-2 ${
+                    resetStatus.type === 'success' ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' : 'bg-red-50 text-red-800 border border-red-200'
+                  }`}>
+                    {resetStatus.type === 'success' ? <CheckCircle2 size={16} className="text-emerald-600 shrink-0" /> : <AlertCircle size={16} className="text-red-600 shrink-0" />}
+                    <span>{resetStatus.message}</span>
+                  </div>
+                )}
+
+                <form onSubmit={(e) => handleSendPasswordReset(e, resetEmail || session?.user?.email)} className="space-y-4">
+                  <div>
+                    <label htmlFor="reset-email-input" className="block text-[10px] font-bold text-gray-700 uppercase tracking-widest mb-1.5 font-sans">
+                      Admin Account Email
+                    </label>
+                    <div className="relative">
+                      <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400 pointer-events-none">
+                        <Mail size={16} />
+                      </span>
+                      <input
+                        id="reset-email-input"
+                        type="email"
+                        required
+                        placeholder="admin@example.com"
+                        value={resetEmail || session?.user?.email || ''}
+                        onChange={(e) => setResetEmail(e.target.value)}
+                        className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#5d0e0e] focus:border-[#5d0e0e] text-sm bg-white font-sans text-gray-900"
+                      />
+                    </div>
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={resetLoading}
+                    className="w-full inline-flex items-center justify-center gap-2 bg-[#5d0e0e] hover:bg-[#7c1818] text-[#faf3df] hover:text-white py-3 px-6 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors shadow cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+                  >
+                    <Send size={14} />
+                    {resetLoading ? 'Sending Reset Link...' : 'Send Password Reset Email'}
+                  </button>
+                </form>
+              </div>
             </div>
 
           </div>
         )}
 
       </div>
+
+      {/* Image Cropper Modal */}
+      {cropperState.isOpen && (
+        <ImageCropperModal
+          imageSrc={cropperState.rawImageSrc}
+          targetAspect={cropperState.targetAspect}
+          title={cropperState.title}
+          onCropComplete={(croppedUrl) => {
+            cropperState.onComplete(croppedUrl);
+            setCropperState((prev) => ({ ...prev, isOpen: false }));
+          }}
+          onCancel={() => setCropperState((prev) => ({ ...prev, isOpen: false }))}
+        />
+      )}
     </section>
   );
 }

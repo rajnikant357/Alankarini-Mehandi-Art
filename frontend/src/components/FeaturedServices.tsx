@@ -1,6 +1,7 @@
 import { Sparkles, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { MehndiService, ProfileInfo } from '../types';
 import { WhatsAppIcon } from './WhatsAppIcon';
+import { formatRupeeAmount } from '../lib/format';
 
 interface FeaturedServicesProps {
   services: MehndiService[];
@@ -56,7 +57,7 @@ export function FeaturedServices({ services, profile, setView, previewOnly = fal
                 {/* Float Badge */}
                 {service.startingPrice && (
                   <div className="absolute top-4 right-4 bg-[#5d0e0e] text-[#faf3df] text-xs font-semibold py-1.5 px-3 rounded-full border border-[#c5a059]/30 shadow-md">
-                    {service.startingPrice}
+                    {formatRupeeAmount(service.startingPrice) ?? service.startingPrice}
                   </div>
                 )}
               </div>
