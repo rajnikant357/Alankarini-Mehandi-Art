@@ -1,10 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
-import { FeaturedServices } from './components/FeaturedServices';
-import { GallerySection } from './components/GallerySection';
-import { ContactForm } from './components/ContactForm';
-import { AdminPanel } from './components/AdminPanel';
 import { useMehndiData } from './lib/store';
 import { WhatsAppIcon } from './components/WhatsAppIcon';
 import { 
@@ -19,40 +15,98 @@ import {
   CheckCircle2
 } from 'lucide-react';
 
+const FeaturedServices = lazy(() => import('./components/FeaturedServices').then(m => ({ default: m.FeaturedServices })));
+const GallerySection = lazy(() => import('./components/GallerySection').then(m => ({ default: m.GallerySection })));
+const ContactForm = lazy(() => import('./components/ContactForm').then(m => ({ default: m.ContactForm })));
+const AdminPanel = lazy(() => import('./components/AdminPanel').then(m => ({ default: m.AdminPanel })));
+
+function SectionSkeleton() {
+  return (
+    <div className="py-16 text-center bg-[#faf7f2] flex flex-col justify-center items-center gap-3">
+      <div className="w-8 h-8 border-3 border-[#5d0e0e] border-t-transparent rounded-full animate-spin"></div>
+      <span className="text-xs font-serif text-[#5d0e0e] font-semibold tracking-wider uppercase animate-pulse">Loading content...</span>
+    </div>
+  );
+}
+
 export default function App() {
-  // Hash-based routing: check if URL hash is #/admin on load
-  const getInitialView = () => {
-    if (typeof window !== 'undefined' && window.location.hash === '#/admin') {
-      return 'admin';
-    }
+  // URL-based & Hash-based routing: match pathnames (/about, /services, etc.) and hash (#/admin)
+  const getViewFromLocation = (): string => {
+    if (typeof window === 'undefined') return 'home';
+
+    const hash = window.location.hash.replace(/^#\/?/, '').toLowerCase();
+    if (hash === 'admin') return 'admin';
+    if (hash === 'about') return 'about';
+    if (hash === 'services') return 'services';
+    if (hash === 'gallery') return 'gallery';
+    if (hash === 'contact') return 'contact';
+
+    const path = window.location.pathname.replace(/^\/|\/$/g, '').toLowerCase();
+    if (path === 'admin') return 'admin';
+    if (path === 'about') return 'about';
+    if (path === 'services') return 'services';
+    if (path === 'gallery') return 'gallery';
+    if (path === 'contact') return 'contact';
+
     return 'home';
   };
 
-  const [currentView, setCurrentView] = useState<string>(getInitialView);
+  const [currentView, setCurrentView] = useState<string>(getViewFromLocation);
 
-  // Sync view with URL hash for admin route
+  // Sync view state with browser URL path and history
   const setView = (view: string) => {
     setCurrentView(view);
+    if (typeof window === 'undefined') return;
+
+    let targetPath = '/';
     if (view === 'admin') {
       window.location.hash = '#/admin';
-    } else {
-      // Clear hash for non-admin views without triggering hashchange
-      if (window.location.hash) {
-        history.replaceState(null, '', window.location.pathname + window.location.search);
-      }
+      return;
+    } else if (view === 'about') {
+      targetPath = '/about';
+    } else if (view === 'services') {
+      targetPath = '/services';
+    } else if (view === 'gallery') {
+      targetPath = '/gallery';
+    } else if (view === 'contact') {
+      targetPath = '/contact';
+    }
+
+    if (window.location.hash && view !== 'admin') {
+      history.pushState(null, '', targetPath);
+    } else if (window.location.pathname !== targetPath) {
+      history.pushState(null, '', targetPath);
     }
   };
 
-  // Listen for hash changes (e.g. user types /#/admin manually)
+  // Listen for browser navigation (back/forward) and URL changes
   useEffect(() => {
-    const handleHashChange = () => {
-      if (window.location.hash === '#/admin') {
-        setCurrentView('admin');
-      }
+    const handleLocationChange = () => {
+      setCurrentView(getViewFromLocation());
     };
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+
+    window.addEventListener('popstate', handleLocationChange);
+    window.addEventListener('hashchange', handleLocationChange);
+    return () => {
+      window.removeEventListener('popstate', handleLocationChange);
+      window.removeEventListener('hashchange', handleLocationChange);
+    };
   }, []);
+
+  // Update dynamic page title for SEO on route change
+  useEffect(() => {
+    const titles: Record<string, string> = {
+      home: 'Alankarini Mehndi Art - Sandhya | Varanasi',
+      about: 'About Us | Alankarini Mehndi Art - Varanasi',
+      services: 'Packages & Services | Alankarini Mehndi Art - Varanasi',
+      gallery: 'Portfolio Gallery | Alankarini Mehndi Art - Varanasi',
+      contact: 'Contact & Booking | Alankarini Mehndi Art - Varanasi',
+      admin: 'Admin Panel | Alankarini Mehndi Art',
+    };
+    if (titles[currentView]) {
+      document.title = titles[currentView];
+    }
+  }, [currentView]);
   const {
     profile,
     services,
@@ -92,8 +146,8 @@ export default function App() {
       </div>
 
       <main className="flex-1 relative z-10">
-        
-        {/* VIEW 1: HOME PANEL */}
+        <Suspense fallback={<SectionSkeleton />}>
+          {/* VIEW 1: HOME PANEL */}
         {currentView === 'home' && (
           <div className="animate-fade-in">
             {/* Hero Section */}
@@ -327,7 +381,7 @@ export default function App() {
             />
           </div>
         )}
-
+        </Suspense>
       </main>
 
       {/* MAJESTIC GOLD & MAROON FOOTER */}

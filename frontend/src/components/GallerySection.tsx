@@ -107,6 +107,8 @@ export function GallerySection({ gallery, profile, setView, previewOnly = false 
                   <img
                     src={item.imageUrl}
                     alt={item.title}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover object-center transition-transform duration-750 group-hover:scale-105"
                     referrerPolicy="no-referrer"
                   />

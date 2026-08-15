@@ -45,11 +45,21 @@ export function getDatabaseUrl(): string {
   return requiredEnv('DATABASE_URL');
 }
 
+const DEFAULT_ALLOWED_ORIGINS = [
+  'https://alankarini-mehandi-art.vercel.app',
+  'https://*.vercel.app',
+  'http://localhost:3000',
+  'http://localhost:5173',
+  'http://127.0.0.1:3000',
+  'http://127.0.0.1:5173',
+];
+
 export function getAllowedCorsOrigin(requestOrigin: string | undefined): string | undefined {
   if (!requestOrigin) {
     return undefined;
   }
 
-  const allowedOrigins = env.corsOrigins.length ? env.corsOrigins : ['http://localhost:3000'];
+  const allowedOrigins = [...env.corsOrigins, ...DEFAULT_ALLOWED_ORIGINS];
   return allowedOrigins.find((pattern) => matchesOrigin(pattern, requestOrigin));
 }
+

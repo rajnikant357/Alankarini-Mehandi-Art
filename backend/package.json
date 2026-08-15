@@ -13,6 +13,8 @@
     "@neondatabase/serverless": "^0.10.4",
     "@supabase/server": "^1.4.1",
     "@supabase/supabase-js": "^2.112.0",
+    "@types/cors": "^2.8.19",
+    "cors": "^2.8.6",
     "dotenv": "^17.2.3",
     "express": "^4.21.2"
   },

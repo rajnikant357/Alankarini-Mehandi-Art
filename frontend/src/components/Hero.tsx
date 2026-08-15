@@ -94,7 +94,9 @@ export function Hero({ profile, setView }: HeroProps) {
               {/* Actual photo */}
               <img
                 src={profile.coverPhoto}
-                alt={`${profile.businessName} Portfolio Cover`}
+                alt="Alankarini Mehndi Art - Sandhya Bridal Mehndi Specialist in Varanasi"
+                fetchPriority="high"
+                decoding="async"
                 className="w-full h-full object-cover select-none object-center hover:scale-105 transition-transform duration-700"
                 referrerPolicy="no-referrer"
               />

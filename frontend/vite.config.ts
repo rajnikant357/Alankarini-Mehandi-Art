@@ -13,6 +13,21 @@ export default defineConfig(() => ({
       '@': path.resolve(frontendRoot, 'src'),
     },
   },
+  build: {
+    target: 'esnext',
+    minify: 'esbuild',
+    cssCodeSplit: true,
+    chunkSizeWarningLimit: 600,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor-react': ['react', 'react-dom'],
+          'vendor-icons': ['lucide-react'],
+          'vendor-supabase': ['@supabase/supabase-js'],
+        },
+      },
+    },
+  },
   server: {
     // Keep file watching predictable while we are reshaping the repo.
     hmr: process.env.DISABLE_HMR !== 'true',
