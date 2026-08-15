@@ -8,24 +8,34 @@ type ApiContent = {
   gallery: Array<Record<string, unknown>>;
 };
 
-async function requestJson<T>(path: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(`${API_BASE_URL}/api${path}`, {
-    headers: {
-      'Content-Type': 'application/json',
-      ...(init?.headers ?? {}),
-    },
-    ...init,
-  });
+async function requestJson<T>(path: string, init?: RequestInit, timeoutMs = 2000): Promise<T> {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
-  if (!response.ok) {
-    throw new Error(`API request failed: ${response.status} ${response.statusText}`);
+  try {
+    const response = await fetch(`${API_BASE_URL}/api${path}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        ...(init?.headers ?? {}),
+      },
+      signal: controller.signal,
+      ...init,
+    });
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      throw new Error(`API request failed: ${response.status} ${response.statusText}`);
+    }
+
+    if (response.status === 204) {
+      return undefined as T;
+    }
+
+    return (await response.json()) as T;
+  } catch (err) {
+    clearTimeout(timeoutId);
+    throw err;
   }
-
-  if (response.status === 204) {
-    return undefined as T;
-  }
-
-  return (await response.json()) as T;
 }
 
 export function getApiBaseUrl() {
@@ -33,47 +43,55 @@ export function getApiBaseUrl() {
 }
 
 export async function fetchContent(): Promise<ApiContent> {
+  // Fast path: Fetch directly from Supabase first (~50ms) to avoid Render free tier cold-start delay (50s)
   try {
-    return await requestJson<ApiContent>('/content');
-  } catch (err) {
-    console.warn('Backend API request failed, reading directly from Supabase:', err);
-    
     const { data: profileRow } = await supabase.from('profile').select('*').eq('id', 'default').maybeSingle();
     const { data: servicesRows } = await supabase.from('services').select('*').order('sort_order', { ascending: true });
     const { data: galleryRows } = await supabase.from('gallery').select('*').order('sort_order', { ascending: true });
 
-    return {
-      profile: profileRow
-        ? {
-            businessName: profileRow.business_name,
-            artistName: profileRow.artist_name,
-            phone: profileRow.phone,
-            whatsapp: profileRow.whatsapp,
-            instagram: profileRow.instagram,
-            instagramUrl: profileRow.instagram_url,
-            location: profileRow.location,
-            experience: profileRow.experience,
-            bio: profileRow.bio,
-            coverPhoto: profileRow.cover_photo,
-            aboutPhoto: profileRow.about_photo || profileRow.cover_photo,
-          }
-        : null,
-      services: (servicesRows || []).map((s) => ({
-        id: s.id,
-        title: s.title,
-        description: s.description,
-        imageUrl: s.image_url,
-        startingPrice: s.starting_price,
-      })),
-      gallery: (galleryRows || []).map((g) => ({
-        id: g.id,
-        title: g.title,
-        category: g.category,
-        description: g.description,
-        price: g.price,
-        imageUrl: g.image_url,
-      })),
-    };
+    if (profileRow || (servicesRows && servicesRows.length > 0) || (galleryRows && galleryRows.length > 0)) {
+      return {
+        profile: profileRow
+          ? {
+              businessName: profileRow.business_name,
+              artistName: profileRow.artist_name,
+              phone: profileRow.phone,
+              whatsapp: profileRow.whatsapp,
+              instagram: profileRow.instagram,
+              instagramUrl: profileRow.instagram_url,
+              location: profileRow.location,
+              experience: profileRow.experience,
+              bio: profileRow.bio,
+              coverPhoto: profileRow.cover_photo,
+              aboutPhoto: profileRow.about_photo || profileRow.cover_photo,
+            }
+          : null,
+        services: (servicesRows || []).map((s) => ({
+          id: s.id,
+          title: s.title,
+          description: s.description,
+          imageUrl: s.image_url,
+          startingPrice: s.starting_price,
+        })),
+        gallery: (galleryRows || []).map((g) => ({
+          id: g.id,
+          title: g.title,
+          category: g.category,
+          description: g.description,
+          price: g.price,
+          imageUrl: g.image_url,
+        })),
+      };
+    }
+  } catch (supabaseErr) {
+    console.warn('Direct Supabase fetch failed, trying API endpoint:', supabaseErr);
+  }
+
+  try {
+    return await requestJson<ApiContent>('/content');
+  } catch (err) {
+    console.warn('API request failed:', err);
+    return { profile: null, services: [], gallery: [] };
   }
 }
 

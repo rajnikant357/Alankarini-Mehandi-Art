@@ -69,9 +69,9 @@ function normalizeGalleryItem(data: unknown): GalleryItem {
 
 export function useMehndiData() {
   const [profile, setProfile] = useState<ProfileInfo>(DEFAULT_PROFILE);
-  const [services, setServices] = useState<MehndiService[]>([]);
-  const [gallery, setGallery] = useState<GalleryItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [services, setServices] = useState<MehndiService[]>(DEFAULT_SERVICES);
+  const [gallery, setGallery] = useState<GalleryItem[]>(DEFAULT_GALLERY);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
