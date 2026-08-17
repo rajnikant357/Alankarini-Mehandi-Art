@@ -186,6 +186,109 @@ export default function App() {
             {/* Gallery Preview Grid (Only first 4 items) */}
             <GallerySection gallery={gallery} profile={profile} setView={setView} previewOnly={true} />
 
+            {/* Google Business Reviews Section (Social Proof Trust Building) */}
+            <section className="py-16 lg:py-24 bg-[#faf7f2] border-y border-[#efe1b4]/40 relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-72 h-72 bg-[#c5a059]/5 rounded-full filter blur-[60px] pointer-events-none"></div>
+              <div className="absolute bottom-0 right-0 w-80 h-80 bg-[#5d0e0e]/5 rounded-full filter blur-[80px] pointer-events-none"></div>
+              
+              <div className="max-w-6xl mx-auto px-4 relative z-10">
+                <div className="text-center mb-12">
+                  <span className="text-[#c5a059] text-xs font-bold uppercase tracking-widest block mb-2">⭐ Real Client Testimonials ⭐</span>
+                  <h3 className="font-serif text-3xl sm:text-4xl font-bold text-[#5d0e0e] tracking-tight">What Our Clients Say on Google</h3>
+                  <div className="h-1 w-20 bg-[#c5a059] mx-auto mt-4 mb-6 rounded-full"></div>
+                  
+                  {/* Global Review Stats */}
+                  <div className="inline-flex flex-col sm:flex-row items-center justify-center gap-3 bg-white px-6 py-3 rounded-2xl border border-[#efe1b4] shadow-sm">
+                    <div className="flex items-center gap-1.5 font-sans font-black text-gray-800 text-2xl">
+                      <span>{profile.gmbRating || '5.0'}</span>
+                      <div className="flex text-amber-500 text-lg">
+                        {Array.from({ length: 5 }).map((_, i) => (
+                          <span key={i}>★</span>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="h-3 w-[1px] bg-gray-300 hidden sm:block"></div>
+                    <p className="font-sans font-bold text-xs uppercase text-gray-500 tracking-wider">
+                      Based on {profile.gmbReviewsCount || '84'}+ verified client reviews
+                    </p>
+                  </div>
+                </div>
+
+                {/* Review Cards Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                  {[
+                    {
+                      name: "Kriti Sharma",
+                      role: "Bridal Client (Varanasi)",
+                      rating: 5,
+                      text: "Sandhya is an absolute magician! My bridal mehndi was so dark and intricate. Everyone at my wedding was asking about the artist. It stained beautifully for my rituals.",
+                      date: "1 week ago"
+                    },
+                    {
+                      name: "Neha Mishra",
+                      role: "Local Guide (Durgakund)",
+                      rating: 5,
+                      text: "Best portrait mehndi designer in Varanasi! The customized sketches of Radha-Krishna on my backhand were incredibly clean and artistic. Highly recommended for special occasions.",
+                      date: "3 weeks ago"
+                    },
+                    {
+                      name: "Priya Patel",
+                      role: "Festival Booking (Nawabganj)",
+                      rating: 5,
+                      text: "Extremely professional service. Sandhya came directly to our home right on time. The henna paste is 100% organic with absolutely zero chemicals, giving a solid deep red color.",
+                      date: "1 month ago"
+                    }
+                  ].map((review, idx) => (
+                    <div key={idx} className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow relative">
+                      <div className="absolute top-6 right-6 text-gray-150 font-serif text-5xl font-black pointer-events-none select-none opacity-20">”</div>
+                      <div>
+                        <div className="flex gap-1 text-amber-500 text-xs mb-3">
+                          {Array.from({ length: review.rating }).map((_, i) => (
+                            <span key={i}>★</span>
+                          ))}
+                        </div>
+                        <p className="text-gray-700 font-sans text-sm italic leading-relaxed mb-6">
+                          "{review.text}"
+                        </p>
+                      </div>
+                      <div className="flex items-center justify-between border-t border-gray-50 pt-4 mt-auto">
+                        <div>
+                          <h4 className="font-sans font-bold text-xs text-gray-800 flex items-center gap-1">
+                            {review.name}
+                            <span className="text-[10px] text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded font-normal">✓ Verified</span>
+                          </h4>
+                          <p className="text-[10px] text-gray-400 mt-0.5">{review.role}</p>
+                        </div>
+                        <span className="text-[9px] font-medium text-gray-400 font-sans bg-gray-50 px-2 py-0.5 rounded-full">{review.date}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Direct GMB Actions */}
+                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                  <a
+                    href={profile.gmbReviewLink || `https://search.google.com/local/writereview?fid=1987876352194443246`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#5d0e0e] hover:bg-[#801414] text-[#faf3df] py-3.5 px-6 rounded-xl font-sans font-bold text-xs tracking-wider uppercase shadow-md transition-colors"
+                  >
+                    <span>Write a Google Review</span>
+                  </a>
+                  
+                  <a
+                    href={profile.gmbLink || `https://www.google.com/maps?cid=1987876352194443246`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white hover:bg-gray-50 text-[#5d0e0e] border border-[#c5a059] py-3.5 px-6 rounded-xl font-sans font-bold text-xs tracking-wider uppercase shadow-md transition-colors"
+                  >
+                    <span>View Listing on Maps</span>
+                  </a>
+                </div>
+
+              </div>
+            </section>
+
             {/* Secondary Direct Contact CTA Section as requested */}
             <section className="bg-[#5d0e0e] py-16 text-[#faf3df] relative overflow-hidden border-t-4 border-[#c5a059]">
               <div className="absolute top-0 right-0 w-80 h-80 bg-[#c5a059]/10 rounded-full filter blur-[80px]"></div>

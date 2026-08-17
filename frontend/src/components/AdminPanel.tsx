@@ -115,6 +115,11 @@ export function AdminPanel({
   const [profAboutPhoto, setProfAboutPhoto] = useState(profile.aboutPhoto || profile.coverPhoto);
   const aboutFileRef = useRef<HTMLInputElement>(null);
 
+  const [profGmbLink, setProfGmbLink] = useState(profile.gmbLink || '');
+  const [profGmbReviewLink, setProfGmbReviewLink] = useState(profile.gmbReviewLink || '');
+  const [profGmbReviewsCount, setProfGmbReviewsCount] = useState(profile.gmbReviewsCount || '');
+  const [profGmbRating, setProfGmbRating] = useState(profile.gmbRating || '');
+
   useEffect(() => {
     setProfBusinessName(profile.businessName);
     setProfArtistName(profile.artistName);
@@ -127,6 +132,10 @@ export function AdminPanel({
     setProfBio(profile.bio);
     setProfCoverPhoto(profile.coverPhoto);
     setProfAboutPhoto(profile.aboutPhoto || profile.coverPhoto);
+    setProfGmbLink(profile.gmbLink || '');
+    setProfGmbReviewLink(profile.gmbReviewLink || '');
+    setProfGmbReviewsCount(profile.gmbReviewsCount || '');
+    setProfGmbRating(profile.gmbRating || '');
   }, [profile]);
 
   const [succMessage, setSuccMessage] = useState('');
@@ -230,6 +239,10 @@ export function AdminPanel({
         bio: profBio,
         coverPhoto: profCoverPhoto,
         aboutPhoto: profAboutPhoto,
+        gmbLink: profGmbLink,
+        gmbReviewLink: profGmbReviewLink,
+        gmbReviewsCount: profGmbReviewsCount,
+        gmbRating: profGmbRating,
       });
       setSuccMessage('Profile Information Saved successfully!');
       setTimeout(() => setSuccMessage(''), 3000);
@@ -744,6 +757,62 @@ export function AdminPanel({
                   onChange={(e) => setProfLocation(e.target.value)}
                   className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#5d0e0e] focus:border-[#5d0e0e] text-sm bg-white font-sans text-gray-800"
                 />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-[#c5a059]/20">
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Google Maps Profile URL (CID/Public Link)</label>
+                  <input
+                    type="url"
+                    required
+                    value={profGmbLink}
+                    onChange={(e) => setProfGmbLink(e.target.value)}
+                    placeholder="https://www.google.com/maps?cid=..."
+                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#5d0e0e] focus:border-[#5d0e0e] text-sm bg-white font-sans text-gray-800"
+                  />
+                  <p className="text-[10px] text-gray-500 mt-1 font-sans">Used to redirect clients to view your overall maps business listing.</p>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Google Write-Review URL (FID/Direct Prompt)</label>
+                  <input
+                    type="url"
+                    required
+                    value={profGmbReviewLink}
+                    onChange={(e) => setProfGmbReviewLink(e.target.value)}
+                    placeholder="https://search.google.com/local/writereview?fid=..."
+                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#5d0e0e] focus:border-[#5d0e0e] text-sm bg-white font-sans text-gray-800"
+                  />
+                  <p className="text-[10px] text-gray-500 mt-1 font-sans">Used when clients click "Write a Review" to launch the direct rating pop-up.</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Live Google Reviews Count</label>
+                  <input
+                    type="text"
+                    required
+                    value={profGmbReviewsCount}
+                    onChange={(e) => setProfGmbReviewsCount(e.target.value)}
+                    placeholder="e.g. 84"
+                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#5d0e0e] focus:border-[#5d0e0e] text-sm bg-white font-sans text-gray-800"
+                  />
+                  <p className="text-[10px] text-gray-500 mt-1 font-sans">Displays on the website as the total count (e.g. 84+ reviews).</p>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Live Google Rating Score</label>
+                  <input
+                    type="text"
+                    required
+                    value={profGmbRating}
+                    onChange={(e) => setProfGmbRating(e.target.value)}
+                    placeholder="e.g. 5.0"
+                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#5d0e0e] focus:border-[#5d0e0e] text-sm bg-white font-sans text-gray-800"
+                  />
+                  <p className="text-[10px] text-gray-500 mt-1 font-sans">Displays the overall stars score (e.g. 4.9 or 5.0).</p>
+                </div>
               </div>
 
               <div>

@@ -5,11 +5,15 @@ export const DEFAULT_PROFILE = {
   whatsapp: '+919336814631',
   instagram: '@alankarini_mehandi_art',
   instagramUrl: 'https://instagram.com/alankarini_mehandi_art',
-  location: 'Varanasi, Uttar Pradesh, India',
+  location: 'Nawabganj, Jawahar Nagar Colony, Durgakund, Varanasi, Uttar Pradesh 221005',
   experience: '3+ Years',
   bio: 'Certified Mehndi Artist with 3+ years of experience specializing in exquisite bridal, portrait, and ritual henna ornaments. Based in the pious city of Varanasi, we turn your celebratory moments into exquisite, timeless, and deep-staining masterpieces, honoring ancient traditional values with premium modern artistry.',
   coverPhoto: '/Alankarini logo.png',
   aboutPhoto: '/Alankarini logo.png',
+  gmbLink: 'https://www.google.com/maps?cid=1987876352194443246',
+  gmbReviewLink: 'https://search.google.com/local/writereview?fid=1987876352194443246',
+  gmbReviewsCount: '84',
+  gmbRating: '5.0',
 } as const;
 
 export const DEFAULT_SERVICES = [

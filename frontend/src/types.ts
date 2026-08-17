@@ -10,6 +10,10 @@ export interface ProfileInfo {
   bio: string;
   coverPhoto: string;
   aboutPhoto: string;
+  gmbLink: string;
+  gmbReviewLink: string;
+  gmbReviewsCount: string;
+  gmbRating: string;
 }
 
 export type GalleryCategory = 'bridal' | 'portrait' | 'arabic' | 'indo-arabic' | 'festival' | 'customized';

@@ -33,6 +33,10 @@ function normalizeProfile(data: Partial<ProfileInfo> & Record<string, unknown>):
     bio: String(data.bio ?? DEFAULT_PROFILE.bio),
     coverPhoto,
     aboutPhoto,
+    gmbLink: String(data.gmbLink ?? data.gmb_link ?? DEFAULT_PROFILE.gmbLink),
+    gmbReviewLink: String(data.gmbReviewLink ?? data.gmb_review_link ?? DEFAULT_PROFILE.gmbReviewLink),
+    gmbReviewsCount: String(data.gmbReviewsCount ?? data.gmb_reviews_count ?? DEFAULT_PROFILE.gmbReviewsCount),
+    gmbRating: String(data.gmbRating ?? data.gmb_rating ?? DEFAULT_PROFILE.gmbRating),
   };
 }
 

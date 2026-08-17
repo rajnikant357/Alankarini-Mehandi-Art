@@ -64,6 +64,10 @@ export async function fetchContent(): Promise<ApiContent> {
               bio: profileRow.bio,
               coverPhoto: profileRow.cover_photo,
               aboutPhoto: profileRow.about_photo || profileRow.cover_photo,
+              gmbLink: profileRow.gmb_link || DEFAULT_PROFILE.gmbLink,
+              gmbReviewLink: profileRow.gmb_review_link || DEFAULT_PROFILE.gmbReviewLink,
+              gmbReviewsCount: profileRow.gmb_reviews_count || DEFAULT_PROFILE.gmbReviewsCount,
+              gmbRating: profileRow.gmb_rating || DEFAULT_PROFILE.gmbRating,
             }
           : null,
         services: (servicesRows || []).map((s) => ({
@@ -111,13 +115,31 @@ export async function saveProfile(payload: any) {
       bio: payload.bio,
       cover_photo: payload.coverPhoto,
       about_photo: payload.aboutPhoto || payload.coverPhoto,
+      gmb_link: payload.gmbLink,
+      gmb_review_link: payload.gmbReviewLink,
+      gmb_reviews_count: payload.gmbReviewsCount,
+      gmb_rating: payload.gmbRating,
       updated_at: new Date().toISOString(),
     };
 
     const { error } = await supabase.from('profile').upsert(profileObj);
-    if (error && error.code === 'PGRST204') {
-      delete profileObj.about_photo;
-      await supabase.from('profile').upsert(profileObj);
+    if (error) {
+      console.warn('Initial profile upsert failed, attempting fallback...', error.message);
+      // Fallback 1: Try without GMB columns
+      const cleanGmb = { ...profileObj };
+      delete cleanGmb.gmb_link;
+      delete cleanGmb.gmb_review_link;
+      delete cleanGmb.gmb_reviews_count;
+      delete cleanGmb.gmb_rating;
+      
+      const { error: errorGmb } = await supabase.from('profile').upsert(cleanGmb);
+      if (errorGmb) {
+        console.warn('Second profile upsert failed, attempting legacy fallback...', errorGmb.message);
+        // Fallback 2: Try without about_photo too
+        const cleanAll = { ...cleanGmb };
+        delete cleanAll.about_photo;
+        await supabase.from('profile').upsert(cleanAll);
+      }
     }
   } catch (e) {
     console.warn('Supabase direct profile update error:', e);

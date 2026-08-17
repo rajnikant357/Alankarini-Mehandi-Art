@@ -23,6 +23,10 @@ CREATE TABLE IF NOT EXISTS public.profile (
   bio TEXT NOT NULL,
   cover_photo TEXT NOT NULL,
   about_photo TEXT NOT NULL DEFAULT '',
+  gmb_link TEXT NOT NULL DEFAULT 'https://www.google.com/maps?cid=1987876352194443246',
+  gmb_review_link TEXT NOT NULL DEFAULT 'https://search.google.com/local/writereview?fid=1987876352194443246',
+  gmb_reviews_count TEXT NOT NULL DEFAULT '84',
+  gmb_rating TEXT NOT NULL DEFAULT '5.0',
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
@@ -164,7 +168,11 @@ INSERT INTO public.profile (
   location,
   experience,
   bio,
-  cover_photo
+  cover_photo,
+  gmb_link,
+  gmb_review_link,
+  gmb_reviews_count,
+  gmb_rating
 ) VALUES (
   'default',
   'Alankarini Mehndi Art',
@@ -173,10 +181,14 @@ INSERT INTO public.profile (
   '+919336814631',
   '@alankarini_mehandi_art',
   'https://instagram.com/alankarini_mehandi_art',
-  'Varanasi, Uttar Pradesh, India',
+  'Nawabganj, Jawahar Nagar Colony, Durgakund, Varanasi, Uttar Pradesh 221005',
   '3+ Years',
   'Certified Mehndi Artist with 3+ years of experience specializing in exquisite bridal, portrait, and ritual henna ornaments. Based in the pious city of Varanasi, we turn your celebratory moments into exquisite, timeless, and deep-staining masterpieces, honoring ancient traditional values with premium modern artistry.',
-  '/Alankarini logo.png'
+  '/Alankarini logo.png',
+  'https://www.google.com/maps?cid=1987876352194443246',
+  'https://search.google.com/local/writereview?fid=1987876352194443246',
+  '84',
+  '5.0'
 )
 ON CONFLICT (id) DO UPDATE SET
   business_name = EXCLUDED.business_name,
@@ -189,6 +201,10 @@ ON CONFLICT (id) DO UPDATE SET
   experience = EXCLUDED.experience,
   bio = EXCLUDED.bio,
   cover_photo = EXCLUDED.cover_photo,
+  gmb_link = EXCLUDED.gmb_link,
+  gmb_review_link = EXCLUDED.gmb_review_link,
+  gmb_reviews_count = EXCLUDED.gmb_reviews_count,
+  gmb_rating = EXCLUDED.gmb_rating,
   updated_at = NOW();
 
 -- Insert Services Seed Data
@@ -225,3 +241,10 @@ ON CONFLICT (id) DO UPDATE SET
   image_url = EXCLUDED.image_url,
   sort_order = EXCLUDED.sort_order,
   updated_at = NOW();
+
+-- Migration ALTER statements for existing databases (adds new columns safely)
+ALTER TABLE public.profile ADD COLUMN IF NOT EXISTS about_photo TEXT NOT NULL DEFAULT '';
+ALTER TABLE public.profile ADD COLUMN IF NOT EXISTS gmb_link TEXT NOT NULL DEFAULT 'https://www.google.com/maps?cid=1987876352194443246';
+ALTER TABLE public.profile ADD COLUMN IF NOT EXISTS gmb_review_link TEXT NOT NULL DEFAULT 'https://search.google.com/local/writereview?fid=1987876352194443246';
+ALTER TABLE public.profile ADD COLUMN IF NOT EXISTS gmb_reviews_count TEXT NOT NULL DEFAULT '84';
+ALTER TABLE public.profile ADD COLUMN IF NOT EXISTS gmb_rating TEXT NOT NULL DEFAULT '5.0';

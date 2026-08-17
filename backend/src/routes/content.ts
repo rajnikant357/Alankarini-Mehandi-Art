@@ -14,6 +14,10 @@ type ProfilePayload = {
   bio: string;
   coverPhoto: string;
   aboutPhoto?: string;
+  gmbLink?: string;
+  gmbReviewLink?: string;
+  gmbReviewsCount?: string;
+  gmbRating?: string;
 };
 
 type ServicePayload = {
@@ -69,6 +73,10 @@ contentRouter.get('/content', async (_req, res, next) => {
           bio: profileRow.bio,
           coverPhoto: profileRow.cover_photo,
           aboutPhoto: profileRow.about_photo || profileRow.cover_photo,
+          gmbLink: profileRow.gmb_link || DEFAULT_PROFILE.gmbLink,
+          gmbReviewLink: profileRow.gmb_review_link || DEFAULT_PROFILE.gmbReviewLink,
+          gmbReviewsCount: profileRow.gmb_reviews_count || DEFAULT_PROFILE.gmbReviewsCount,
+          gmbRating: profileRow.gmb_rating || DEFAULT_PROFILE.gmbRating,
         }
       : null;
 
@@ -117,6 +125,10 @@ contentRouter.put('/profile', async (req, res, next) => {
       bio: body.bio,
       cover_photo: body.coverPhoto,
       about_photo: body.aboutPhoto || body.coverPhoto,
+      gmb_link: body.gmbLink,
+      gmb_review_link: body.gmbReviewLink,
+      gmb_reviews_count: body.gmbReviewsCount,
+      gmb_rating: body.gmbRating,
       updated_at: new Date().toISOString(),
     };
 
@@ -126,14 +138,33 @@ contentRouter.put('/profile', async (req, res, next) => {
       .select()
       .single();
 
-    if (error && error.code === 'PGRST204') {
-      console.warn('about_photo column missing in Supabase schema cache, retrying without about_photo...');
-      delete upsertObj.about_photo;
-      const retry = await supabaseAdmin
+    if (error) {
+      console.warn('Initial profile upsert failed, attempting schema fallback...', error.message);
+      // Fallback 1: Try without GMB columns (if only about_photo is in place)
+      const cleanGmb = { ...upsertObj };
+      delete cleanGmb.gmb_link;
+      delete cleanGmb.gmb_review_link;
+      delete cleanGmb.gmb_reviews_count;
+      delete cleanGmb.gmb_rating;
+
+      let retry = await supabaseAdmin
         .from('profile')
-        .upsert(upsertObj, { onConflict: 'id' })
+        .upsert(cleanGmb, { onConflict: 'id' })
         .select()
         .single();
+
+      if (retry.error) {
+        console.warn('Second profile upsert failed, attempting legacy fallback...', retry.error.message);
+        // Fallback 2: Try without about_photo too
+        const cleanAll = { ...cleanGmb };
+        delete cleanAll.about_photo;
+
+        retry = await supabaseAdmin
+          .from('profile')
+          .upsert(cleanAll, { onConflict: 'id' })
+          .select()
+          .single();
+      }
 
       data = retry.data;
       error = retry.error;
@@ -158,6 +189,10 @@ contentRouter.put('/profile', async (req, res, next) => {
             bio: data.bio,
             coverPhoto: data.cover_photo,
             aboutPhoto: data.about_photo || data.cover_photo,
+            gmbLink: data.gmb_link || DEFAULT_PROFILE.gmbLink,
+            gmbReviewLink: data.gmb_review_link || DEFAULT_PROFILE.gmbReviewLink,
+            gmbReviewsCount: data.gmb_reviews_count || DEFAULT_PROFILE.gmbReviewsCount,
+            gmbRating: data.gmb_rating || DEFAULT_PROFILE.gmbRating,
           }
         : null
     );
@@ -367,20 +402,59 @@ contentRouter.post('/content/reset', async (_req, res, next) => {
     await supabaseAdmin.from('services').delete().neq('id', '');
     await supabaseAdmin.from('profile').delete().neq('id', '');
 
-    await supabaseAdmin.from('profile').insert({
-      id: 'default',
-      business_name: DEFAULT_PROFILE.businessName,
-      artist_name: DEFAULT_PROFILE.artistName,
-      phone: DEFAULT_PROFILE.phone,
-      whatsapp: DEFAULT_PROFILE.whatsapp,
-      instagram: DEFAULT_PROFILE.instagram,
-      instagram_url: DEFAULT_PROFILE.instagramUrl,
-      location: DEFAULT_PROFILE.location,
-      experience: DEFAULT_PROFILE.experience,
-      bio: DEFAULT_PROFILE.bio,
-      cover_photo: DEFAULT_PROFILE.coverPhoto,
-      about_photo: DEFAULT_PROFILE.aboutPhoto,
-    });
+    try {
+      await supabaseAdmin.from('profile').insert({
+        id: 'default',
+        business_name: DEFAULT_PROFILE.businessName,
+        artist_name: DEFAULT_PROFILE.artistName,
+        phone: DEFAULT_PROFILE.phone,
+        whatsapp: DEFAULT_PROFILE.whatsapp,
+        instagram: DEFAULT_PROFILE.instagram,
+        instagram_url: DEFAULT_PROFILE.instagramUrl,
+        location: DEFAULT_PROFILE.location,
+        experience: DEFAULT_PROFILE.experience,
+        bio: DEFAULT_PROFILE.bio,
+        cover_photo: DEFAULT_PROFILE.coverPhoto,
+        about_photo: DEFAULT_PROFILE.aboutPhoto,
+        gmb_link: DEFAULT_PROFILE.gmbLink,
+        gmb_review_link: DEFAULT_PROFILE.gmbReviewLink,
+        gmb_reviews_count: DEFAULT_PROFILE.gmbReviewsCount,
+        gmb_rating: DEFAULT_PROFILE.gmbRating,
+      });
+    } catch (e) {
+      console.warn('Profile reset failed with full GMB details, falling back to legacy profile columns...', e);
+      try {
+        await supabaseAdmin.from('profile').insert({
+          id: 'default',
+          business_name: DEFAULT_PROFILE.businessName,
+          artist_name: DEFAULT_PROFILE.artistName,
+          phone: DEFAULT_PROFILE.phone,
+          whatsapp: DEFAULT_PROFILE.whatsapp,
+          instagram: DEFAULT_PROFILE.instagram,
+          instagram_url: DEFAULT_PROFILE.instagramUrl,
+          location: DEFAULT_PROFILE.location,
+          experience: DEFAULT_PROFILE.experience,
+          bio: DEFAULT_PROFILE.bio,
+          cover_photo: DEFAULT_PROFILE.coverPhoto,
+          about_photo: DEFAULT_PROFILE.aboutPhoto,
+        });
+      } catch (e2) {
+        console.warn('Profile reset failed with about_photo, falling back to completely basic profile...', e2);
+        await supabaseAdmin.from('profile').insert({
+          id: 'default',
+          business_name: DEFAULT_PROFILE.businessName,
+          artist_name: DEFAULT_PROFILE.artistName,
+          phone: DEFAULT_PROFILE.phone,
+          whatsapp: DEFAULT_PROFILE.whatsapp,
+          instagram: DEFAULT_PROFILE.instagram,
+          instagram_url: DEFAULT_PROFILE.instagramUrl,
+          location: DEFAULT_PROFILE.location,
+          experience: DEFAULT_PROFILE.experience,
+          bio: DEFAULT_PROFILE.bio,
+          cover_photo: DEFAULT_PROFILE.coverPhoto,
+        });
+      }
+    }
 
     await supabaseAdmin.from('services').insert(
       DEFAULT_SERVICES.map((s, idx) => ({
