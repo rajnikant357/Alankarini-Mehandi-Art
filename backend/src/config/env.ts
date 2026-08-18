@@ -1,13 +1,5 @@
 import 'dotenv/config';
 
-function requiredEnv(name: string): string {
-  const value = process.env[name];
-  if (!value) {
-    throw new Error(`Missing required environment variable: ${name}`);
-  }
-  return value;
-}
-
 function parseOriginList(value: string | undefined): string[] {
   return (value ?? '')
     .split(',')
@@ -41,10 +33,6 @@ export const env = {
   supabaseJwksUrl: process.env.SUPABASE_JWKS_URL ?? '',
 };
 
-export function getDatabaseUrl(): string {
-  return requiredEnv('DATABASE_URL');
-}
-
 const DEFAULT_ALLOWED_ORIGINS = [
   'https://alankarini-mehandi-art.vercel.app',
   'https://*.vercel.app',
@@ -62,4 +50,3 @@ export function getAllowedCorsOrigin(requestOrigin: string | undefined): string 
   const allowedOrigins = [...env.corsOrigins, ...DEFAULT_ALLOWED_ORIGINS];
   return allowedOrigins.find((pattern) => matchesOrigin(pattern, requestOrigin));
 }
-

@@ -209,7 +209,7 @@ export default function App() {
                     </div>
                     <div className="h-3 w-[1px] bg-gray-300 hidden sm:block"></div>
                     <p className="font-sans font-bold text-xs uppercase text-gray-500 tracking-wider">
-                      Based on {profile.gmbReviewsCount || '84'}+ verified client reviews
+                      Google Verified Rating
                     </p>
                   </div>
                 </div>

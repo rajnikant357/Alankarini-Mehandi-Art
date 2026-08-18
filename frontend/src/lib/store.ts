@@ -86,8 +86,12 @@ export function useMehndiData() {
         if (cancelled) return;
 
         setProfile(content.profile ? normalizeProfile(content.profile) : DEFAULT_PROFILE);
-        setServices((content.services ?? []).map((item) => normalizeService(item)));
-        setGallery((content.gallery ?? []).map((item) => normalizeGalleryItem(item)));
+        setServices(content.services && content.services.length > 0
+          ? content.services.map((item) => normalizeService(item))
+          : DEFAULT_SERVICES);
+        setGallery(content.gallery && content.gallery.length > 0
+          ? content.gallery.map((item) => normalizeGalleryItem(item))
+          : DEFAULT_GALLERY);
       } catch (error) {
         console.warn('Backend unavailable, falling back to seeded defaults.', error);
         if (cancelled) return;

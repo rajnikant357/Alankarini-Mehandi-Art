@@ -195,9 +195,9 @@ I look forward to discussing your available packages! Sent from Alankarini websi
                     </div>
                   </div>
                   <h4 className="font-sans font-bold text-xs text-gray-500 uppercase tracking-wider">
-                    {profile.gmbReviewsCount || '84'}+ Google Reviews
+                    Google Verified Rating
                   </h4>
-                  <p className="text-[10px] text-emerald-600 font-semibold font-sans mt-0.5">✓ 100% verified customer ratings</p>
+                  <p className="text-[10px] text-emerald-600 font-semibold font-sans mt-0.5">✓ 100% verified customer reviews</p>
                 </div>
               </div>
               
