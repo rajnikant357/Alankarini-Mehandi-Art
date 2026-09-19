@@ -14,8 +14,10 @@ export function Navbar({ profile, currentView, setView }: NavbarProps) {
 
   const navItems = [
     { label: 'Home', view: 'home' },
-    { label: 'Portfolio Gallery', view: 'gallery' },
+    { label: 'Class', view: 'classes' },
     { label: 'Services', view: 'services' },
+    { label: 'Work', view: 'gallery' },
+    { label: 'Mehndi Guide', view: 'guide' },
     { label: 'About Us', view: 'about' },
     { label: 'Contact', view: 'contact' },
   ];
@@ -34,12 +36,13 @@ export function Navbar({ profile, currentView, setView }: NavbarProps) {
       {/* Golden top mini-banner */}
       <div className="bg-[#5d0e0e] text-[#faf3df] text-xs font-sans py-1.5 px-4 flex justify-between items-center tracking-wider font-light">
         <div className="flex items-center gap-3">
-          <span className="hidden sm:inline">✨ Premium Mehndi Artist in Varanasi</span>
-          <span className="sm:hidden">✨ Sandhya Mehndi Art</span>
+          <span className="hidden sm:inline">✨ Top Mehandi Artist &amp; Classes in Varanasi (Banaras)</span>
+          <span className="sm:hidden">✨ Sandhya Mehandi Artist</span>
         </div>
         <div className="flex items-center gap-4">
-          <a href={`tel:${cleanPhone}`} className="flex items-center gap-1 hover:text-[#d3b575] transition-colors">
-            <Phone size={12} className="inline" /> {profile.phone}
+          <a href={`tel:${cleanPhone}`} className="flex items-center gap-1.5 font-bold hover:text-[#d3b575] transition-colors">
+            <Phone size={12} className="inline animate-pulse text-[#c5a059]" /> 
+            <span>Call/WhatsApp: {profile.phone}</span>
           </a>
         </div>
       </div>
@@ -150,7 +153,7 @@ export function Navbar({ profile, currentView, setView }: NavbarProps) {
               className="flex justify-center items-center gap-2 bg-[#5d0e0e] hover:bg-[#7c1818] text-[#faf3df] py-3 rounded-lg text-sm font-semibold tracking-wide uppercase shadow-sm"
             >
               <Phone size={16} />
-              Call Sandhya Now
+              Call +919336814631
             </a>
           </div>
         </div>

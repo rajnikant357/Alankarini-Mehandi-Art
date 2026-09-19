@@ -19,6 +19,11 @@ const FeaturedServices = lazy(() => import('./components/FeaturedServices').then
 const GallerySection = lazy(() => import('./components/GallerySection').then(m => ({ default: m.GallerySection })));
 const ContactForm = lazy(() => import('./components/ContactForm').then(m => ({ default: m.ContactForm })));
 const AdminPanel = lazy(() => import('./components/AdminPanel').then(m => ({ default: m.AdminPanel })));
+const MehandiClassesSection = lazy(() => import('./components/MehandiClassesSection').then(m => ({ default: m.MehandiClassesSection })));
+const HomeServiceSection = lazy(() => import('./components/HomeServiceSection').then(m => ({ default: m.HomeServiceSection })));
+const FaqSection = lazy(() => import('./components/FaqSection').then(m => ({ default: m.FaqSection })));
+const ArticlePage = lazy(() => import('./components/ArticlePage').then(m => ({ default: m.ArticlePage })));
+const BlogPage = lazy(() => import('./components/BlogPage').then(m => ({ default: m.BlogPage })));
 
 function SectionSkeleton() {
   return (
@@ -30,7 +35,7 @@ function SectionSkeleton() {
 }
 
 export default function App() {
-  // URL-based & Hash-based routing: match pathnames (/about, /services, etc.) and hash (#/admin)
+  // URL-based & Hash-based routing: match pathnames (/about, /services, /classes, etc.) and hash (#/admin)
   const getViewFromLocation = (): string => {
     if (typeof window === 'undefined') return 'home';
 
@@ -40,6 +45,8 @@ export default function App() {
     if (hash === 'services') return 'services';
     if (hash === 'gallery') return 'gallery';
     if (hash === 'contact') return 'contact';
+    if (hash === 'classes') return 'classes';
+    if (hash === 'blog') return 'blog';
 
     const path = window.location.pathname.replace(/^\/|\/$/g, '').toLowerCase();
     if (path === 'admin') return 'admin';
@@ -47,6 +54,9 @@ export default function App() {
     if (path === 'services') return 'services';
     if (path === 'gallery') return 'gallery';
     if (path === 'contact') return 'contact';
+    if (path === 'classes') return 'classes';
+    if (path === 'guide' || path === 'article' || path === 'articles') return 'guide';
+    if (path === 'blog') return 'blog';
 
     return 'home';
   };
@@ -70,6 +80,12 @@ export default function App() {
       targetPath = '/gallery';
     } else if (view === 'contact') {
       targetPath = '/contact';
+    } else if (view === 'classes') {
+      targetPath = '/classes';
+    } else if (view === 'guide') {
+      targetPath = '/guide';
+    } else if (view === 'blog') {
+      targetPath = '/blog';
     }
 
     if (window.location.hash && view !== 'admin') {
@@ -96,11 +112,14 @@ export default function App() {
   // Update dynamic page title for SEO on route change
   useEffect(() => {
     const titles: Record<string, string> = {
-      home: 'Alankarini Mehndi Art - Sandhya | Varanasi',
-      about: 'About Us | Alankarini Mehndi Art - Varanasi',
-      services: 'Packages & Services | Alankarini Mehndi Art - Varanasi',
-      gallery: 'Portfolio Gallery | Alankarini Mehndi Art - Varanasi',
-      contact: 'Contact & Booking | Alankarini Mehndi Art - Varanasi',
+      home: 'Mehandi Artist in Varanasi | Online Mehandi Classes & Home Service | +91 9336814631',
+      classes: 'Online Mehandi Classes & Fees | Offline Class in Banaras | Call +91 9336814631',
+      services: 'Packages & Mehndi Home Service | Alankarini Mehndi Art Varanasi | +91 9336814631',
+      gallery: 'Portfolio Gallery | Mehandi Designs in Varanasi | +91 9336814631',
+      about: 'About Sandhya | Certified Mehandi Artist in Varanasi | +91 9336814631',
+      contact: 'Book Sandhya Mehandi Artist Varanasi | Home Service & Classes | +91 9336814631',
+      guide: 'Complete Mehndi Guide & Directory Varanasi | Artists, Home Service & Classes | +91 9336814631',
+      blog: 'Rajnikant Gaurav: The Journey of an Independent Developer, AI Enthusiast & Founder | Tech Insights',
       admin: 'Admin Panel | Alankarini Mehndi Art',
     };
     if (titles[currentView]) {
@@ -153,7 +172,7 @@ export default function App() {
             {/* Hero Section */}
             <Hero profile={profile} setView={setView} />
 
-            {/* Elegant About Section brief */}
+            {/* Elegant About Section brief (Auspicious Art Traditions) */}
             <section className="py-12 bg-white border-y border-[#c5a059]/10 relative">
               <div className="max-w-5xl mx-auto px-4 text-center">
                 <span className="text-[#c5a059] italic text-sm font-serif">Auspicious Art Traditions</span>
@@ -180,11 +199,17 @@ export default function App() {
               </div>
             </section>
 
-            {/* Featured Services Preview Section (Only 3 popular items) */}
+            {/* Featured Services Preview Section (Popular Mehndi Services) */}
             <FeaturedServices services={services} profile={profile} setView={setView} previewOnly={true} />
 
-            {/* Gallery Preview Grid (Only first 4 items) */}
+            {/* Gallery Preview Grid (Gallery Masterpieces) */}
             <GallerySection gallery={gallery} profile={profile} setView={setView} previewOnly={true} />
+
+            {/* Doorstep Mehndi Home Service in Varanasi / Banaras (Best Mehandi Artist Home Service in Varanasi) */}
+            <HomeServiceSection profile={profile} setView={setView} />
+
+            {/* Online & Offline Mehandi Classes Preview Section (Class Info) */}
+            <MehandiClassesSection profile={profile} setView={setView} previewOnly={true} />
 
             {/* Google Business Reviews Section (Social Proof Trust Building) */}
             <section className="py-16 lg:py-24 bg-[#faf7f2] border-y border-[#efe1b4]/40 relative overflow-hidden">
@@ -289,6 +314,9 @@ export default function App() {
               </div>
             </section>
 
+            {/* SEO FAQ Section */}
+            <FaqSection profile={profile} />
+
             {/* Secondary Direct Contact CTA Section as requested */}
             <section className="bg-[#5d0e0e] py-16 text-[#faf3df] relative overflow-hidden border-t-4 border-[#c5a059]">
               <div className="absolute top-0 right-0 w-80 h-80 bg-[#c5a059]/10 rounded-full filter blur-[80px]"></div>
@@ -315,20 +343,32 @@ export default function App() {
                     className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#c5a059] hover:bg-[#d3b575] text-[#5d0e0e] py-4 px-8 rounded-xl font-sans font-bold text-xs tracking-wider uppercase shadow-md transition-transform active:scale-95"
                   >
                     <Phone size={16} />
-                    Book on Call 
+                    Book on Call (+91 9336814631)
                   </a>
                 </div>
               </div>
             </section>
           </div>
         )}
+
+        {/* VIEW: CLASSES & FEES ACADEMY */}
+        {currentView === 'classes' && (
+          <div className="animate-fade-in">
+            <MehandiClassesSection profile={profile} setView={setView} previewOnly={false} />
+            <HomeServiceSection profile={profile} setView={setView} />
+            <FaqSection profile={profile} />
+          </div>
+        )}
+
+        {/* VIEW: ULTIMATE MEHNDI GUIDE & DIRECTORY */}
+        {currentView === 'guide' && (
+          <div className="animate-fade-in">
+            <ArticlePage profile={profile} setView={setView} />
+          </div>
+        )}
                 {/* VIEW 2: PORTFOLIO GALLERY */}
         {currentView === 'gallery' && (
           <div className="animate-fade-in">
-            <div className="bg-[#f5efe4] py-8 text-center border-b border-gray-200">
-              <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#5d0e0e]">Mehndi Portfolios</h2>
-              <p className="text-xs text-gray-600 font-sans mt-1">Explore our intricate patterns, bridal symmetry, and custom portrait details.</p>
-            </div>
             <GallerySection gallery={gallery} profile={profile} setView={setView} previewOnly={false} />
           </div>
         )}
@@ -336,10 +376,6 @@ export default function App() {
         {/* VIEW 3: DETAILED SERVICES LIST */}
         {currentView === 'services' && (
           <div className="animate-fade-in">
-            <div className="bg-[#f5efe4] py-8 text-center border-b border-gray-200">
-              <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#5d0e0e]">Available Services & Packages</h2>
-              <p className="text-xs text-gray-650 font-sans mt-1">Check out our specialized packages optimized for Varanasi celebrations.</p>
-            </div>
             <FeaturedServices services={services} profile={profile} setView={setView} previewOnly={false} />
           </div>
         )}
@@ -392,12 +428,12 @@ export default function App() {
                       <h3 className="font-serif font-semibold text-lg text-[#5d0e0e] mb-4">Why Select Alankarini Henna Art?</h3>
                       <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         {[
-                          'Over 3+ Years of Wedding Art Excellence',
+                          'Over 3+ Years of Wedding Art Excellence in Banaras',
                           'Expert custom bridal figures & portrait sketch drawings',
                           '100% natural, certified skin-friendly organic henna',
-                          'Neat, precise geometric symmetry grids',
-                          'Highly responsive Varanasi home travel service',
-                          'Budget-friendly packages for every family event'
+                          'Online Mehandi Classes & Offline Studio Batches in Banaras',
+                          'Doorstep Mehndi Home Service across all Varanasi areas',
+                          'Affordable Mehandi Class Fees with Official Certificate'
                         ].map((item, index) => (
                           <li key={index} className="flex gap-2 items-start text-xs text-[#2d2d2d] font-sans">
                             <CheckCircle2 size={14} className="text-[#c5a059] shrink-0 mt-0.5" />
@@ -412,13 +448,19 @@ export default function App() {
                         onClick={() => setView('contact')}
                         className="bg-[#5d0e0e] hover:bg-[#7c1818] text-[#faf3df] hover:text-white px-6 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors shadow-md cursor-pointer"
                       >
-                        Book Free consultation
+                        Book Free Consultation
+                      </button>
+                      <button
+                        onClick={() => setView('classes')}
+                        className="bg-[#c5a059] hover:bg-[#d3b575] text-[#5d0e0e] px-6 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors shadow-md cursor-pointer"
+                      >
+                        🎓 Classes &amp; Fees
                       </button>
                       <button
                         onClick={() => setView('gallery')}
                         className="bg-transparent hover:bg-gray-100 text-[#5d0e0e] border border-gray-300 px-6 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors shadow-md cursor-pointer"
                       >
-                        View Real Masterpieces
+                        View Masterpieces
                       </button>
                     </div>
 
@@ -463,6 +505,13 @@ export default function App() {
         {currentView === 'contact' && (
           <div className="animate-fade-in">
             <ContactForm profile={profile} />
+          </div>
+        )}
+
+        {/* VIEW: RAJNIKANT GAURAV BLOG PAGE */}
+        {currentView === 'blog' && (
+          <div className="animate-fade-in">
+            <BlogPage setView={setView} />
           </div>
         )}
 
@@ -517,11 +566,14 @@ export default function App() {
           <div className="md:col-span-3 space-y-4">
             <h4 className="text-xs uppercase font-bold tracking-widest text-[#c5a059]">Explore Website</h4>
             <div className="flex flex-col gap-2.5 text-xs font-semibold text-gray-400 tracking-wide">
-              <button onClick={() => { setView('home'); window.scrollTo(0,0); }} className="hover:text-[#faf3df] transition-colors text-left self-center md:self-start">🌿 Home Dashboard</button>
-              <button onClick={() => { setView('gallery'); window.scrollTo(0,0); }} className="hover:text-[#faf3df] transition-colors text-left self-center md:self-start">🌸 Portfolio Gallery</button>
-              <button onClick={() => { setView('services'); window.scrollTo(0,0); }} className="hover:text-[#faf3df] transition-colors text-left self-center md:self-start">🌿 Services & Prices</button>
-              <button onClick={() => { setView('about'); window.scrollTo(0,0); }} className="hover:text-[#faf3df] transition-colors text-left self-center md:self-start">🌸 About Us</button>
-              <button onClick={() => { setView('contact'); window.scrollTo(0,0); }} className="hover:text-[#faf3df] transition-colors text-left self-center md:self-start">📞 Coordinate Bookings</button>
+              <button onClick={() => { setView('home'); window.scrollTo(0,0); }} className="hover:text-[#faf3df] transition-colors text-left self-center md:self-start cursor-pointer">🌿 Home Dashboard</button>
+              <button onClick={() => { setView('classes'); window.scrollTo(0,0); }} className="hover:text-[#faf3df] transition-colors text-left self-center md:self-start cursor-pointer">🎓 Classes &amp; Fees (35 Days)</button>
+              <button onClick={() => { setView('guide'); window.scrollTo(0,0); }} className="hover:text-[#faf3df] transition-colors text-left self-center md:self-start cursor-pointer">📖 Complete Mehndi Guide &amp; Rates</button>
+              <button onClick={() => { setView('services'); window.scrollTo(0,0); }} className="hover:text-[#faf3df] transition-colors text-left self-center md:self-start cursor-pointer">🌿 Services &amp; Home Visits</button>
+              <button onClick={() => { setView('gallery'); window.scrollTo(0,0); }} className="hover:text-[#faf3df] transition-colors text-left self-center md:self-start cursor-pointer">🌸 Work</button>
+              <button onClick={() => { setView('about'); window.scrollTo(0,0); }} className="hover:text-[#faf3df] transition-colors text-left self-center md:self-start cursor-pointer">🌸 About Sandhya</button>
+              <button onClick={() => { setView('contact'); window.scrollTo(0,0); }} className="hover:text-[#faf3df] transition-colors text-left self-center md:self-start cursor-pointer">📞 Contact &amp; Bookings</button>
+              <button onClick={() => { setView('blog'); window.scrollTo(0,0); }} className="hover:text-[#faf3df] transition-colors text-left self-center md:self-start cursor-pointer">📝 Blog</button>
             </div>
           </div>
 
@@ -535,12 +587,16 @@ export default function App() {
                 <span>{profile.location}</span>
               </div>
               <div className="flex items-center gap-2 justify-center md:justify-start">
-                <Phone size={14} className="text-[#c5a059]" />
-                <a href={`tel:${cleanPhone}`} className="hover:text-white hover:underline">{profile.phone}</a>
+                <Phone size={14} className="text-[#c5a059] animate-pulse" />
+                <a href={`tel:${cleanPhone}`} className="hover:text-white hover:underline text-sm font-bold text-[#faf3df]">
+                  {profile.phone}
+                </a>
               </div>
               <div className="flex items-center gap-2 justify-center md:justify-start">
                 <WhatsAppIcon size={14} className="text-emerald-500 inline shrink-0" />
-                <a href={`https://wa.me/${cleanWhatsapp}`} target="_blank" rel="noreferrer" className="hover:text-white hover:underline">Instant WhatsApp</a>
+                <a href={`https://wa.me/${cleanWhatsapp}`} target="_blank" rel="noreferrer" className="hover:text-white hover:underline">
+                  Instant WhatsApp Booking
+                </a>
               </div>
               <div className="flex items-center gap-2 justify-center md:justify-start">
                 <Instagram size={14} className="text-purple-400" />
@@ -551,11 +607,33 @@ export default function App() {
 
         </div>
 
+        {/* Local SEO Keywords Directory for Varanasi & Banaras */}
+        <div className="max-w-7xl mx-auto pt-6 pb-4 border-t border-[#faf3df]/10 text-center md:text-left text-[11px] text-gray-400 font-sans space-y-3">
+          <p className="font-semibold text-gray-300">
+            <span className="text-[#c5a059]">Popular Searches &amp; Directory: </span>
+            <span>Mehndi Artist Near Me | Mehndi Class Near Me | Mehendi Home Service Near Me | Mehandi Artist in Varanasi | Mehndi Training Classes Near Me | Mehndi Classes Near Me With Fees | Mehndi Artist Near Me With Price | Alankarini Mehndi Art Varanasi | Professional Mehandi Classes Near Me | Aerobic Mehndi Design | Arabic Floral Mehndi Design | Mehndi Stencil Near Me | Mehndi Book Practice | Acrylic Hand for Mehndi Practice | Mehndi Booking | Female Mehndi Artist Near Me | Varanasi Mehndi Artist | Mehendi Maker Near Me | Classical Mehndi | Katseye Mehndi Design | Mahendi Tattoo | Phone: +91 9336814631</span>
+          </p>
+          <p className="text-[10px] text-gray-450">
+            <span className="text-[#c5a059]">Serving All Areas in Varanasi / Banaras: </span>
+            Durgakund, Lanka, Assi Ghat, Sigra, Bhelupur, Godowlia, Mahmoorganj, Cantt, Shivpur, Sarnath, Pandeypur, Lahurabir, Kashi Vishwanath Area, Ramnagar, Chitaipur.
+          </p>
+        </div>
+
         {/* copyright */}
         <div className="max-w-7xl mx-auto pt-8 border-t border-[#faf3df]/10 text-center text-[10px] text-gray-550 font-sans tracking-wide flex flex-col sm:flex-row justify-between gap-4">
           <p>© {new Date().getFullYear()} Alankarini Mehndi Art • All Rights Reserved.</p>
-          <div className="flex justify-center items-center gap-4 text-gray-550">
-            <span>By Sandhya Mehndi artist Varanasi</span>
+          <div className="flex justify-center items-center gap-4 text-gray-400">
+            <span>
+              Built with 💻 &amp; ☕. By{' '}
+              <a
+                href="https://www.rajnikantg.in"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#c5a059] hover:text-white hover:underline transition-colors font-medium"
+              >
+                Rajnikant Gaurav
+              </a>
+            </span>
             {/* <span>•</span>
             <button onClick={() => { setView('admin'); window.scrollTo(0,0); }} className="text-[#c5a059] font-bold uppercase tracking-wider flex items-center gap-1 hover:underline cursor-pointer">
               <Bookmark size={10} />

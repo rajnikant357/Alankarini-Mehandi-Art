@@ -53,26 +53,13 @@ I look forward to discussing your available packages! Sent from Alankarini websi
     <section className="py-12 lg:py-20 bg-[#faf7f2]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12">
-          <span className="text-xs font-bold tracking-widest uppercase text-[#c5a059] font-sans">
-            ✨ Get In Touch
-          </span>
-          <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#5d0e0e] mt-2">
-            Book Sandhya For Your Special Day
-          </h2>
-          <p className="mt-4 text-gray-650 text-sm sm:text-base font-sans">
-            Ready to book? Fill out our quick appointment planner to instantly draft a fully formatted booking proposal directly to Sandhya on WhatsApp! Or click below to call immediately.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <div className="flex flex-col lg:grid lg:grid-cols-12 gap-8 lg:gap-12">
           
-          {/* Contact Details & Map (Left Column) */}
-          <div className="lg:col-span-5 flex flex-col gap-8">
+          {/* Contact Details & Map (Left Column on Desktop, Contents on Mobile) */}
+          <div className="contents lg:flex lg:flex-col lg:gap-8 lg:col-span-5">
             
-            {/* Quick Contact Info Card */}
-            <div className="bg-[#f5efe4] rounded-2xl p-6 md:p-8 border border-[#c5a059]/15 shadow-sm">
+            {/* Quick Contact Info Card (1st on Mobile, 1st on Desktop) */}
+            <div className="order-1 lg:order-1 bg-[#f5efe4] rounded-2xl p-6 md:p-8 border border-[#c5a059]/15 shadow-sm">
               <h3 className="font-serif text-lg font-bold text-[#5d0e0e] mb-6 flex items-center gap-2">
                 <span>Alankarini Mehndi Art</span>
               </h3>
@@ -92,36 +79,56 @@ I look forward to discussing your available packages! Sent from Alankarini websi
                 </div>
 
                 {/* Mobile/Call Row */}
-                <div className="flex gap-4 items-start">
-                  <div className="p-3 bg-[#5d0e0e] text-[#faf3df] rounded-xl shadow-inner shrink-0 animate-pulse">
-                    <Phone size={18} />
+                <div className="flex items-center justify-between gap-2 sm:gap-3">
+                  <div className="flex gap-3 sm:gap-4 items-start min-w-0">
+                    <div className="p-2.5 sm:p-3 bg-[#5d0e0e] text-[#faf3df] rounded-xl shadow-inner shrink-0 animate-pulse">
+                      <Phone size={18} />
+                    </div>
+                    <div className="min-w-0">
+                      <h4 className="font-sans font-bold text-xs uppercase text-gray-500 tracking-wider">Direct Hotline</h4>
+                      <a href={`tel:${cleanPhone}`} className="text-[#5d0e0e] font-sans font-semibold text-base sm:text-lg hover:underline block truncate">
+                        {profile.phone}
+                      </a>
+                      <p className="text-xs text-gray-600 mt-0.5">Available for calls (08:00 AM - 09:00 PM)</p>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="font-sans font-bold text-xs uppercase text-gray-500 tracking-wider">Direct Hotline</h4>
-                    <a href={`tel:${cleanPhone}`} className="text-[#5d0e0e] font-sans font-semibold text-base sm:text-lg hover:underline block">
-                      {profile.phone}
-                    </a>
-                    <p className="text-xs text-gray-600 mt-0.5">Available for calls (08:00 AM - 09:00 PM)</p>
-                  </div>
+                  <a
+                    href={`tel:${cleanPhone}`}
+                    className="inline-flex items-center justify-center gap-1.5 bg-[#5d0e0e] hover:bg-[#7c1818] text-[#faf3df] px-3.5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider shadow-sm transition-colors shrink-0"
+                  >
+                    <Phone size={13} />
+                    <span>Call</span>
+                  </a>
                 </div>
 
                 {/* WhatsApp Chat Row */}
-                <div className="flex gap-4 items-start">
-                  <div className="p-3 bg-[#128C7E] text-white rounded-xl shadow-inner shrink-0 text-white flex items-center justify-center">
-                    <WhatsAppIcon size={18} />
+                <div className="flex items-center justify-between gap-2 sm:gap-3">
+                  <div className="flex gap-3 sm:gap-4 items-start min-w-0">
+                    <div className="p-2.5 sm:p-3 bg-[#128C7E] text-white rounded-xl shadow-inner shrink-0 flex items-center justify-center">
+                      <WhatsAppIcon size={18} />
+                    </div>
+                    <div className="min-w-0">
+                      <h4 className="font-sans font-bold text-xs uppercase text-gray-500 tracking-wider">WhatsApp Status</h4>
+                      <a 
+                        href={`https://wa.me/${cleanWhatsapp}?text=Hi%20Sandhya,%20I%20am%20calling%20from%20your%20website.`} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="text-[#128C7E] font-sans font-semibold text-base sm:text-lg hover:underline block truncate"
+                      >
+                        {profile.phone}
+                      </a>
+                      <p className="text-xs text-gray-600 mt-0.5">Instant chats, quote details &amp; design sharing</p>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="font-sans font-bold text-xs uppercase text-gray-500 tracking-wider">WhatsApp Status</h4>
-                    <a 
-                      href={`https://wa.me/${cleanWhatsapp}?text=Hi%20Sandhya,%20I%20am%20calling%20from%20your%20website.`} 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className="text-[#128C7E] font-sans font-semibold text-base sm:text-lg hover:underline block"
-                    >
-                      {profile.phone}
-                    </a>
-                    <p className="text-xs text-gray-600 mt-0.5">Instant chats, quote details & design sharing</p>
-                  </div>
+                  <a
+                    href={`https://wa.me/${cleanWhatsapp}?text=Hi%20Sandhya,%20I%20am%20calling%20from%20your%20website.`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-1.5 bg-[#128C7E] hover:bg-[#075E54] text-white px-3.5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider shadow-sm transition-colors shrink-0"
+                  >
+                    <WhatsAppIcon size={14} />
+                    <span>Chat Now</span>
+                  </a>
                 </div>
 
                 {/* Instagram Username Row */}
@@ -158,8 +165,8 @@ I look forward to discussing your available packages! Sent from Alankarini websi
               </div>
             </div>
 
-            {/* Google Maps Card */}
-            <div className="rounded-2xl overflow-hidden border-2 border-[#c5a059]/15 shadow-sm h-64 relative bg-gray-100">
+            {/* Google Maps Card (4th on Mobile, 2nd in Left Column on Desktop) */}
+            <div className="order-4 lg:order-2 rounded-2xl overflow-hidden border-2 border-[#c5a059]/15 shadow-sm h-64 relative bg-gray-100">
               <iframe
                 title="Google Maps Location Alankarini Mehndi Art"
                 src={`https://maps.google.com/maps?q=${encodeURIComponent(profile.location)}&t=&z=16&ie=UTF8&iwloc=&output=embed`}
@@ -172,8 +179,8 @@ I look forward to discussing your available packages! Sent from Alankarini websi
               ></iframe>
             </div>
 
-            {/* Google Business Reviews Card */}
-            <div className="bg-white rounded-2xl p-5 border border-[#c5a059]/15 shadow-md flex flex-col sm:flex-row gap-4 items-center justify-between relative overflow-hidden">
+            {/* Google Business Reviews Card (3rd on Mobile, 3rd in Left Column on Desktop) */}
+            <div className="order-3 lg:order-3 bg-white rounded-2xl p-5 border border-[#c5a059]/15 shadow-md flex flex-col sm:flex-row gap-4 items-center justify-between relative overflow-hidden">
               <div className="absolute top-0 right-0 w-24 h-24 bg-[#c5a059]/5 rounded-full filter blur-xl"></div>
               <div className="flex gap-4 items-center relative z-10">
                 {/* Google Classic G Icon */}
@@ -223,8 +230,8 @@ I look forward to discussing your available packages! Sent from Alankarini websi
 
           </div>
 
-          {/* WhatsApp Direct Proposal Planner Form (Right Column) */}
-          <div className="lg:col-span-7 bg-[#f5efe4]/50 rounded-3xl p-6 md:p-8 border border-[#c5a059]/15 shadow-md">
+          {/* WhatsApp Direct Proposal Planner Form (2nd on Mobile, Right Column on Desktop) */}
+          <div className="order-2 lg:order-none lg:col-span-7 bg-[#f5efe4]/50 rounded-3xl p-6 md:p-8 border border-[#c5a059]/15 shadow-md">
             <h3 className="font-serif text-2xl font-bold text-[#5d0e0e] mb-2 flex items-center gap-2">
               <Calendar className="text-[#c5a059]" size={22} />
               Appointment Proposal Maker
@@ -294,6 +301,11 @@ I look forward to discussing your available packages! Sent from Alankarini websi
                     className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#5d0e0e] focus:border-[#5d0e0e] text-sm bg-white font-sans text-gray-800 font-medium"
                   >
                     <option value="Bridal Specialist Mehndi">Bridal Specialist Mehndi</option>
+                    <option value="Mehndi Home Service (Varanasi / Banaras)">Mehndi Home Service (Varanasi / Banaras)</option>
+                    <option value="Online Go Batch (₹1,500 - 35 Days)">Online Go Batch (₹1,500 - 35 Days)</option>
+                    <option value="Online Plus Batch (₹2,000 - With Kit & Certificate)">Online Plus Batch (₹2,000 - With Kit & Certificate)</option>
+                    <option value="Offline Go Batch (₹3,500 - Studio Banaras)">Offline Go Batch (₹3,500 - Studio Banaras)</option>
+                    <option value="Offline Plus Batch (₹4,000 - Studio with Kit & Certificate)">Offline Plus Batch (₹4,000 - Studio with Kit & Certificate)</option>
                     <option value="Bride & Groom Portrait Designs">Bride & Groom Portrait Designs</option>
                     <option value="Arabic Elegant Trails">Arabic Elegant Trails</option>
                     <option value="Indo-Arabic Fusion">Indo-Arabic Fusion</option>

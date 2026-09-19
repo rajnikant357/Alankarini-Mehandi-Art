@@ -15,7 +15,7 @@ export default defineConfig(() => ({
   },
   build: {
     target: 'esnext',
-    minify: 'esbuild',
+    minify: 'esbuild' as const,
     cssCodeSplit: true,
     chunkSizeWarningLimit: 600,
     rollupOptions: {

@@ -23,64 +23,80 @@ export function Hero({ profile, setView }: HeroProps) {
           {/* Text Content Area */}
           <div className="lg:col-span-7 flex flex-col justify-center text-center lg:text-left">
             {/* Elegant upper subheader */}
-            <div className="inline-flex items-center gap-2 self-center lg:self-start px-3.5 py-1.5 rounded-full bg-[#efe1b4]/40 text-[#5d0e0e] text-xs font-semibold tracking-wider uppercase mb-6 border border-[#c5a059]/30">
+            <div className="inline-flex items-center gap-2 self-center lg:self-start px-3.5 py-1.5 rounded-full bg-[#efe1b4]/50 text-[#5d0e0e] text-xs font-bold tracking-wider uppercase mb-5 border border-[#c5a059]/30">
               <Award size={14} className="text-[#c5a059]" />
-              <span>Certified Professional Mehndi Expert • {profile.experience} Experience</span>
+              <span>Certified Mehandi Artist in Varanasi &amp; Banaras • {profile.experience} Excellence</span>
             </div>
 
-            {/* Main Tagline Heading */}
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-black text-[#5d0e0e] leading-tight tracking-tight">
-              Turning Your Special <br />
-              <span className="text-[#c5a059] italic font-normal">Moments</span> Into <br />
-              Timeless <span className="underline decoration-[#c5a059] decoration-[3px] underline-offset-[6px]">Mehndi Art</span>
+            {/* Main Tagline Heading optimized for Google Rank */}
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-serif font-black text-[#5d0e0e] leading-tight tracking-tight">
+              Top <span className="text-[#c5a059] italic font-normal">Mehandi Artist</span> in Varanasi &amp; <br />
+              Online <span className="underline decoration-[#c5a059] decoration-[3px] underline-offset-[6px]">Mehandi Classes</span>
             </h1>
 
+            {/* Core Keyword Intro Subtitle */}
+            <p className="mt-4 text-gray-700 text-sm sm:text-base font-sans leading-relaxed">
+              Welcome to <strong>Alankarini Mehndi Art</strong> by artist Sandhya. Specializing in bespoke royal bridal mehndi, 
+              doorstep <strong>mehndi home service</strong> across Varanasi and Banaras, and certified 
+              <strong> online &amp; offline mehandi classes</strong> with affordable fees.
+            </p>
+
             {/* Quick Location & Trust Details */}
-            <div className="mt-6 flex flex-wrap gap-4 items-center justify-center lg:justify-start text-xs sm:text-sm text-gray-650 font-medium">
-              <div className="flex items-center gap-1.5 bg-[#f5efe4] border border-gray-200/50 py-1.5 px-3 rounded-md">
-                <MapPin size={16} className="text-[#5d0e0e]" />
-                <span>Serving Varanasi & Surrounding Regions</span>
+            <div className="mt-5 flex flex-wrap gap-2.5 items-center justify-center lg:justify-start text-xs text-gray-700 font-medium">
+              <div className="flex items-center gap-1.5 bg-[#f5efe4] border border-[#c5a059]/30 py-1.5 px-3 rounded-lg">
+                <MapPin size={15} className="text-[#5d0e0e]" />
+                <span>Studio: Durgakund, Varanasi</span>
               </div>
-              <div className="flex items-center gap-1.5 bg-[#f5efe4] border border-gray-200/50 py-1.5 px-3 rounded-md">
-                <Calendar size={16} className="text-[#c5a059]" />
-                <span>Avails Custom Home & Venue Visits</span>
+              <div className="flex items-center gap-1.5 bg-[#f5efe4] border border-[#c5a059]/30 py-1.5 px-3 rounded-lg">
+                <Calendar size={15} className="text-[#c5a059]" />
+                <span>Mehndi Home Service in Banaras</span>
+              </div>
+              <div className="flex items-center gap-1.5 bg-emerald-50 border border-emerald-200 text-emerald-800 py-1.5 px-3 rounded-lg font-semibold">
+                <Phone size={14} className="text-emerald-700" />
+                <a href={`tel:${cleanPhone}`} className="hover:underline">Hotline: +91 9336814631</a>
               </div>
             </div>
 
             {/* CTAs */}
-            <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+            <div className="mt-8 flex flex-col sm:flex-row gap-3.5 justify-center lg:justify-start">
               <a
-                href={`https://wa.me/${cleanWhatsapp}?text=Hello%20Sandhya,%20I%20want%20to%20discuss%20Mehndi%20designs%20for%20my%20upcoming%20event.`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 bg-[#128C7E] hover:bg-[#075E54] text-white px-8 py-4 rounded-xl text-sm font-bold tracking-wider uppercase shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0"
+                href={`tel:${cleanPhone}`}
+                className="flex items-center justify-center gap-2 bg-[#5d0e0e] hover:bg-[#7c1818] text-[#faf3df] hover:text-white px-7 py-3.5 rounded-xl text-xs sm:text-sm font-bold tracking-wider uppercase shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 border border-[#c5a059]/40"
               >
-                <WhatsAppIcon size={18} />
-                WhatsApp
+                <Phone size={16} />
+                Call +91 9336814631
               </a>
 
               <a
-                href={`tel:${cleanPhone}`}
-                className="flex items-center justify-center gap-2 bg-[#5d0e0e] hover:bg-[#7c1818] text-[#faf3df] hover:text-[#faf7f2] px-8 py-4 rounded-xl text-sm font-bold tracking-wider uppercase shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 border border-[#c5a059]/40"
+                href={`https://wa.me/${cleanWhatsapp}?text=Hello%20Sandhya,%20I%20visited%20Alankarini%20website%20and%20want%20to%20inquire%20about%20Mehndi%20services/classes.`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 bg-[#128C7E] hover:bg-[#075E54] text-white px-7 py-3.5 rounded-xl text-xs sm:text-sm font-bold tracking-wider uppercase shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0"
               >
-                <Phone size={18} />
-                Call Us
+                <WhatsAppIcon size={16} />
+                WhatsApp Us
               </a>
             </div>
 
-            {/* Alternate quick buttons */}
-            <div className="mt-6 flex gap-6 justify-center lg:justify-start text-xs font-semibold uppercase tracking-wider text-[#5d0e0e] border-t border-gray-200/40 pt-6">
+            {/* Alternate quick navigation buttons */}
+            <div className="mt-6 flex flex-wrap gap-4 justify-center lg:justify-start text-xs font-semibold uppercase tracking-wider text-[#5d0e0e] border-t border-gray-200/40 pt-5">
+              <button 
+                onClick={() => setView('classes')}
+                className="hover:text-[#c5a059] transition-colors flex items-center gap-1.5 cursor-pointer bg-white px-3 py-1.5 rounded-md border border-gray-200 shadow-xs"
+              >
+                🎓 Mehandi Classes &amp; Fees
+              </button>
               <button 
                 onClick={() => setView('gallery')}
-                className="hover:text-[#c5a059] transition-colors flex items-center gap-1.5 cursor-pointer"
+                className="hover:text-[#c5a059] transition-colors flex items-center gap-1.5 cursor-pointer bg-white px-3 py-1.5 rounded-md border border-gray-200 shadow-xs"
               >
                 🌸 Browse Portfolio
               </button>
               <button 
                 onClick={() => setView('services')}
-                className="hover:text-[#c5a059] transition-colors flex items-center gap-1.5 cursor-pointer"
+                className="hover:text-[#c5a059] transition-colors flex items-center gap-1.5 cursor-pointer bg-white px-3 py-1.5 rounded-md border border-gray-200 shadow-xs"
               >
-                🌿 Browse Services Info
+                🌿 Mehndi Home Services
               </button>
             </div>
           </div>
