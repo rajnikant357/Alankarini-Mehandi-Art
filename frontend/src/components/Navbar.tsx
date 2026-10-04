@@ -54,10 +54,10 @@ export function Navbar({ profile, currentView, setView }: NavbarProps) {
             onClick={() => handleNavigate('home')} 
             className="flex flex-col cursor-pointer transition-transform duration-200 active:scale-95"
           >
-            <h1 className="text-2xl sm:text-2xl font-serif font-bold text-[#5d0e0e] tracking-normal">
+            <span className="text-2xl sm:text-2xl font-serif font-bold text-[#5d0e0e] tracking-normal block">
               {profile.businessName}
-            </h1>
-            <p className="text-[10px] sm:text-xs font-sans uppercase font-medium tracking-[0.25em] text-[#c5a059] -mt-1">
+            </span>
+            <p className="text-[10px] sm:text-xs font-sans uppercase font-medium tracking-[0.25em] text-[#875914] -mt-1">
               By {profile.artistName} • Varanasi
             </p>
           </div>

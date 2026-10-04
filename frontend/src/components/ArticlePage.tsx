@@ -118,10 +118,10 @@ export function ArticlePage({ profile, setView }: ArticlePageProps) {
 
         {/* Table of Contents Box */}
         <div className="bg-[#f5efe4] border border-[#c5a059]/40 rounded-3xl p-6 mb-12 shadow-sm">
-          <h3 className="font-serif font-bold text-lg text-[#5d0e0e] mb-3 flex items-center gap-2">
+          <h2 className="font-serif font-bold text-lg text-[#5d0e0e] mb-3 flex items-center gap-2">
             <Layers size={18} className="text-[#c5a059]" />
             <span>Table of Contents: In This Comprehensive Guide</span>
-          </h3>
+          </h2>
           <p className="text-xs text-gray-600 mb-4">
             Click any section below to jump directly to detailed answers, pricing tables, and syllabus breakdowns:
           </p>
@@ -141,7 +141,7 @@ export function ArticlePage({ profile, setView }: ArticlePageProps) {
 
         {/* SECTION 1: Finding a Mehndi Artist Near Me in Varanasi */}
         <section id="artist-near-me" className="bg-white rounded-3xl p-6 sm:p-10 border border-[#c5a059]/25 shadow-sm mb-10">
-          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#c5a059] mb-2">
+          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#875914] mb-2">
             <Sparkles size={14} />
             <span>Section 1 • Local Artist Selection</span>
           </div>
@@ -165,9 +165,9 @@ export function ArticlePage({ profile, setView }: ArticlePageProps) {
             </p>
 
             <div className="p-4 bg-[#faf7f2] rounded-2xl border border-[#c5a059]/30 my-4">
-              <h4 className="font-serif font-bold text-sm text-[#5d0e0e] mb-2">
+              <h3 className="font-serif font-bold text-sm text-[#5d0e0e] mb-2">
                 Key Checklist When Choosing a Mehndi Artist Near You:
-              </h4>
+              </h3>
               <ul className="space-y-1.5 text-xs text-gray-700">
                 <li className="flex items-start gap-2">
                   <CheckCircle2 size={14} className="text-emerald-600 shrink-0 mt-0.5" />

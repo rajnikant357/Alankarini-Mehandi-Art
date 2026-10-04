@@ -3,6 +3,7 @@ import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { useMehndiData } from './lib/store';
 import { WhatsAppIcon } from './components/WhatsAppIcon';
+import { MobileFloatingActions } from './components/MobileFloatingActions';
 import { 
   Phone, 
   MessageSquare, 
@@ -15,13 +16,14 @@ import {
   CheckCircle2
 } from 'lucide-react';
 
-const FeaturedServices = lazy(() => import('./components/FeaturedServices').then(m => ({ default: m.FeaturedServices })));
-const GallerySection = lazy(() => import('./components/GallerySection').then(m => ({ default: m.GallerySection })));
+import { FeaturedServices } from './components/FeaturedServices';
+import { GallerySection } from './components/GallerySection';
+import { MehandiClassesSection } from './components/MehandiClassesSection';
+import { HomeServiceSection } from './components/HomeServiceSection';
+import { FaqSection } from './components/FaqSection';
+
 const ContactForm = lazy(() => import('./components/ContactForm').then(m => ({ default: m.ContactForm })));
 const AdminPanel = lazy(() => import('./components/AdminPanel').then(m => ({ default: m.AdminPanel })));
-const MehandiClassesSection = lazy(() => import('./components/MehandiClassesSection').then(m => ({ default: m.MehandiClassesSection })));
-const HomeServiceSection = lazy(() => import('./components/HomeServiceSection').then(m => ({ default: m.HomeServiceSection })));
-const FaqSection = lazy(() => import('./components/FaqSection').then(m => ({ default: m.FaqSection })));
 const ArticlePage = lazy(() => import('./components/ArticlePage').then(m => ({ default: m.ArticlePage })));
 const BlogPage = lazy(() => import('./components/BlogPage').then(m => ({ default: m.BlogPage })));
 
@@ -175,8 +177,8 @@ export default function App() {
             {/* Elegant About Section brief (Auspicious Art Traditions) */}
             <section className="py-12 bg-white border-y border-[#c5a059]/10 relative">
               <div className="max-w-5xl mx-auto px-4 text-center">
-                <span className="text-[#c5a059] italic text-sm font-serif">Auspicious Art Traditions</span>
-                <h3 className="font-serif text-3xl font-bold text-[#5d0e0e] mt-1.5 mb-6">Varanasi's Trusted Mehndi Artist</h3>
+                <span className="text-[#875914] font-medium italic text-sm font-serif">Auspicious Art Traditions</span>
+                <h2 className="font-serif text-3xl font-bold text-[#5d0e0e] mt-1.5 mb-6">Varanasi's Trusted Mehndi Artist</h2>
                 <div className="max-w-3xl mx-auto text-gray-750 text-sm sm:text-base leading-relaxed font-sans mb-8">
                   {profile.bio}
                 </div>
@@ -218,8 +220,8 @@ export default function App() {
               
               <div className="max-w-6xl mx-auto px-4 relative z-10">
                 <div className="text-center mb-12">
-                  <span className="text-[#c5a059] text-xs font-bold uppercase tracking-widest block mb-2">⭐ Real Client Testimonials ⭐</span>
-                  <h3 className="font-serif text-3xl sm:text-4xl font-bold text-[#5d0e0e] tracking-tight">What Our Clients Say on Google</h3>
+                  <span className="text-[#875914] text-xs font-bold uppercase tracking-widest block mb-2">⭐ Real Client Testimonials ⭐</span>
+                  <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#5d0e0e] tracking-tight">What Our Clients Say on Google</h2>
                   <div className="h-1 w-20 bg-[#c5a059] mx-auto mt-4 mb-6 rounded-full"></div>
                   
                   {/* Global Review Stats */}
@@ -239,9 +241,44 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* Review Cards Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                {/* Review Cards Grid - 2 columns on mobile, 3 on md, 4 on lg */}
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 mb-12">
                   {[
+                    {
+                      name: "Prerna Vashisht",
+                      role: "Hotel Visit (Banaras)",
+                      rating: 5,
+                      text: "Excellent service by Alankaarini Mehndi Art! I contacted them at the last minute in Banaras, and they came to my hotel and did my mehndi beautifully. Really happy with the work and service. Highly recommended! 💗✨",
+                      date: "1 month ago"
+                    },
+                    {
+                      name: "Pranjali",
+                      role: "Academy Student",
+                      rating: 5,
+                      text: "I took a Mehndi course from Ma'am, and it was a great experience. Ma'am's Mehndi designing skills and teaching methods are both amazing. She explained every little technique with great patience. Her guidance has greatly improved both my confidence and finishing. Best Mehndi artist and teacher! 🫶😊 Strongly recommended!",
+                      date: "2 weeks ago"
+                    },
+                    {
+                      name: "Bansuri Tiwari",
+                      role: "Local Client (Varanasi)",
+                      rating: 5,
+                      text: "Best mehndi artist in Varanasi",
+                      date: "6 days ago"
+                    },
+                    {
+                      name: "Sanjana Kumari",
+                      role: "Student (Mehndi Class)",
+                      rating: 5,
+                      text: "Mam teaches mehndi very well.",
+                      date: "6 days ago"
+                    },
+                    {
+                      name: "Narendra Art",
+                      role: "Google Reviewer",
+                      rating: 5,
+                      text: "Your mehndi looks very beautiful and clean.",
+                      date: "1 month ago"
+                    },
                     {
                       name: "Kriti Sharma",
                       role: "Bridal Client (Varanasi)",
@@ -264,27 +301,27 @@ export default function App() {
                       date: "1 month ago"
                     }
                   ].map((review, idx) => (
-                    <div key={idx} className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow relative">
-                      <div className="absolute top-6 right-6 text-gray-150 font-serif text-5xl font-black pointer-events-none select-none opacity-20">”</div>
+                    <div key={idx} className="bg-white p-3.5 sm:p-6 rounded-2xl border border-gray-100 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow relative">
+                      <div className="absolute top-4 right-4 sm:top-6 sm:right-6 text-gray-150 font-serif text-3xl sm:text-5xl font-black pointer-events-none select-none opacity-20">”</div>
                       <div>
-                        <div className="flex gap-1 text-amber-500 text-xs mb-3">
+                        <div className="flex gap-0.5 sm:gap-1 text-amber-500 text-[11px] sm:text-xs mb-2 sm:mb-3">
                           {Array.from({ length: review.rating }).map((_, i) => (
                             <span key={i}>★</span>
                           ))}
                         </div>
-                        <p className="text-gray-700 font-sans text-sm italic leading-relaxed mb-6">
+                        <p className="text-gray-700 font-sans text-xs sm:text-sm italic leading-relaxed mb-4 sm:mb-6">
                           "{review.text}"
                         </p>
                       </div>
-                      <div className="flex items-center justify-between border-t border-gray-50 pt-4 mt-auto">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between border-t border-gray-50 pt-3 sm:pt-4 mt-auto gap-2">
                         <div>
-                          <h4 className="font-sans font-bold text-xs text-gray-800 flex items-center gap-1">
-                            {review.name}
-                            <span className="text-[10px] text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded font-normal">✓ Verified</span>
-                          </h4>
-                          <p className="text-[10px] text-gray-400 mt-0.5">{review.role}</p>
+                          <h3 className="font-sans font-bold text-[11px] sm:text-xs text-gray-800 flex items-center gap-1">
+                            <span>{review.name}</span>
+                            <span className="text-[9px] sm:text-[10px] text-emerald-800 bg-emerald-50 px-1 sm:px-1.5 py-0.5 rounded font-normal shrink-0">✓</span>
+                          </h3>
+                          <p className="text-[9px] sm:text-[10px] text-gray-600 mt-0.5">{review.role}</p>
                         </div>
-                        <span className="text-[9px] font-medium text-gray-400 font-sans bg-gray-50 px-2 py-0.5 rounded-full">{review.date}</span>
+                        <span className="text-[8px] sm:text-[9px] font-medium text-gray-600 font-sans bg-gray-50 px-1.5 sm:px-2 py-0.5 rounded-full self-start sm:self-auto shrink-0">{review.date}</span>
                       </div>
                     </div>
                   ))}
@@ -321,8 +358,8 @@ export default function App() {
             <section className="bg-[#5d0e0e] py-16 text-[#faf3df] relative overflow-hidden border-t-4 border-[#c5a059]">
               <div className="absolute top-0 right-0 w-80 h-80 bg-[#c5a059]/10 rounded-full filter blur-[80px]"></div>
               <div className="max-w-4xl mx-auto px-4 text-center relative">
-                <span className="text-[#c5a059] text-xs font-bold uppercase tracking-widest">✨ Plan Your Styling Today ✨</span>
-                <h3 className="font-serif text-3xl sm:text-4xl font-black mt-2 leading-tight">Ready To Lock Your Big Day Appointment?</h3>
+                <span className="text-[#d3b575] text-xs font-bold uppercase tracking-widest">✨ Plan Your Styling Today ✨</span>
+                <h2 className="font-serif text-3xl sm:text-4xl font-black mt-2 leading-tight">Ready To Lock Your Big Day Appointment?</h2>
                 <p className="mt-4 text-gray-300 font-sans text-sm sm:text-base">
                   Discuss your design suggestions, find pricing details, and block Sandhya's calendar! We offer flexible travel plans for brides, families, and weddings within Varanasi or nearby districts.
                 </p>
@@ -332,7 +369,7 @@ export default function App() {
                     href={`https://wa.me/${cleanWhatsapp}?text=Hi%20Sandhya,%20I%20want%20to%20reserve%20a%20bridal/festival%20mehndi%20session.`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#128C7E] hover:bg-[#0d695e] text-white py-4 px-8 rounded-xl font-sans font-bold text-xs tracking-wider uppercase shadow-md transition-transform active:scale-95"
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#0d695e] hover:bg-[#075e54] text-white py-4 px-8 rounded-xl font-sans font-bold text-xs tracking-wider uppercase shadow-md transition-transform active:scale-95"
                   >
                     <MessageSquare size={16} />
                     Book on WhatsApp
@@ -395,6 +432,10 @@ export default function App() {
                       <img
                         src={profile.aboutPhoto}
                         alt="Sandhya - Alankarini Artist Head"
+                        width={400}
+                        height={500}
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-cover object-center"
                         referrerPolicy="no-referrer"
                       />
@@ -408,7 +449,7 @@ export default function App() {
                   {/* Text Content right */}
                   <div className="md:col-span-7 space-y-6">
                     <div className="inline-flex items-center gap-1 bg-[#efe1b4]/40 text-[#5d0e0e] text-xs font-bold px-3 py-1 rounded-full border border-[#c5a059]/20 font-sans">
-                      <Award size={14} className="text-[#c5a059]" />
+                      <Award size={14} className="text-[#875914]" />
                       <span>Certified Mehndi Artist in Varanasi</span>
                     </div>
 
@@ -537,7 +578,7 @@ export default function App() {
       </main>
 
       {/* MAJESTIC GOLD & MAROON FOOTER */}
-      <footer className="bg-[#3a050a] text-[#faf3df]/90 py-12 px-4 relative overflow-hidden border-t-8 border-[#c5a059] z-20">
+      <footer className="bg-[#3a050a] text-[#faf3df]/90 py-12 pb-24 md:pb-12 px-4 relative overflow-hidden border-t-8 border-[#c5a059] z-20">
         
         {/* Decorative separator line */}
         <div className="max-w-7xl mx-auto flex items-center justify-center gap-4 mb-8">
@@ -550,9 +591,9 @@ export default function App() {
           
           {/* Brand Col */}
           <div className="md:col-span-5 space-y-4">
-            <h3 className="text-2xl font-serif font-black text-[#faf3df] tracking-wide">
+            <h2 className="text-2xl font-serif font-black text-[#faf3df] tracking-wide">
               {profile.businessName}
-            </h3>
+            </h2>
             <p className="text-gray-400 text-xs sm:text-sm leading-relaxed max-w-sm mx-auto md:mx-0">
               Transforming holy rituals and weddings values across Varanasi into breathtaking, deep-staining, organic henna canvas masterpieces. Developed with love by artist Sandhya.
             </p>
@@ -564,7 +605,7 @@ export default function App() {
 
           {/* Quick Tabs Col */}
           <div className="md:col-span-3 space-y-4">
-            <h4 className="text-xs uppercase font-bold tracking-widest text-[#c5a059]">Explore Website</h4>
+            <h3 className="text-xs uppercase font-bold tracking-widest text-[#c5a059]">Explore Website</h3>
             <div className="flex flex-col gap-2.5 text-xs font-semibold text-gray-400 tracking-wide">
               <button onClick={() => { setView('home'); window.scrollTo(0,0); }} className="hover:text-[#faf3df] transition-colors text-left self-center md:self-start cursor-pointer">🌿 Home Dashboard</button>
               <button onClick={() => { setView('classes'); window.scrollTo(0,0); }} className="hover:text-[#faf3df] transition-colors text-left self-center md:self-start cursor-pointer">🎓 Classes &amp; Fees (35 Days)</button>
@@ -579,7 +620,7 @@ export default function App() {
 
           {/* Contacts Details Col */}
           <div className="md:col-span-4 space-y-4 text-xs font-sans">
-            <h4 className="text-xs uppercase font-bold tracking-widest text-[#c5a059]">Contact Sandhya</h4>
+            <h3 className="text-xs uppercase font-bold tracking-widest text-[#c5a059]">Contact Sandhya</h3>
             
             <div className="space-y-3 font-medium text-gray-400">
               <div className="flex items-center gap-2 justify-center md:justify-start">
@@ -643,6 +684,9 @@ export default function App() {
         </div>
 
       </footer>
+ 
+      {/* Floating Call & WhatsApp Action Buttons for Mobile */}
+      <MobileFloatingActions profile={profile} currentView={currentView} />
 
     </div>
   );

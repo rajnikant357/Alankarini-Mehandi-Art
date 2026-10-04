@@ -42,7 +42,7 @@ export function GallerySection({ gallery, profile, setView, previewOnly = false 
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:justify-between md:items-end mb-10 gap-4">
           <div className="text-left max-w-xl">
-            <span className="text-xs font-bold tracking-widest uppercase text-[#c5a059] font-sans">
+            <span className="text-xs font-bold tracking-widest uppercase text-[#875914] font-sans">
               ✨ Henna Portfolios
             </span>
             <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#5d0e0e] mt-2">
@@ -105,8 +105,10 @@ export function GallerySection({ gallery, profile, setView, previewOnly = false 
                 {/* Image */}
                 <div className="aspect-square relative overflow-hidden bg-gray-50">
                   <img
-                    src={item.imageUrl}
+                    src={item.thumbnailUrl || item.imageUrl}
                     alt={item.title}
+                    width={300}
+                    height={300}
                     loading="lazy"
                     decoding="async"
                     className="w-full h-full object-cover object-center transition-transform duration-750 group-hover:scale-105"
@@ -123,19 +125,19 @@ export function GallerySection({ gallery, profile, setView, previewOnly = false 
                 {/* Info Bar */}
                 <div className="p-4 flex flex-col justify-between">
                   <div>
-                    <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-1">
+                    <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-widest text-[#875914] font-bold mb-1">
                       <Tag size={10} />
                       {item.category}
                     </span>
                     <h3 className="text-sm font-serif font-bold text-[#5d0e0e] flex items-center justify-between gap-1">
                       <span className="line-clamp-1">{item.title}</span>
                       {item.price && (
-                        <span className="text-xs font-semibold text-[#c5a059] shrink-0 font-sans">{formatRupeeAmount(item.price) ?? item.price}</span>
+                        <span className="text-xs font-semibold text-[#875914] shrink-0 font-sans">{formatRupeeAmount(item.price) ?? item.price}</span>
                       )}
                     </h3>
                   </div>
                   {item.description && (
-                    <p className="text-[11px] text-gray-500 font-sans line-clamp-1 mt-1 font-light">
+                    <p className="text-[11px] text-gray-700 font-sans line-clamp-1 mt-1 font-normal">
                       {item.description}
                     </p>
                   )}

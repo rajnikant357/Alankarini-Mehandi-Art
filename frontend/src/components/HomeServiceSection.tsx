@@ -68,7 +68,7 @@ export function HomeServiceSection({ profile, setView }: HomeServiceSectionProps
                 <div key={idx} className="bg-white p-3.5 rounded-xl border border-[#c5a059]/20 shadow-xs flex items-start gap-2.5">
                   <CheckCircle2 size={16} className="text-[#5d0e0e] shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="font-sans font-bold text-xs text-gray-800">{feature.title}</h4>
+                    <h3 className="font-sans font-bold text-xs text-gray-800">{feature.title}</h3>
                     <p className="text-[11px] text-gray-500 font-sans mt-0.5">{feature.desc}</p>
                   </div>
                 </div>
@@ -77,10 +77,10 @@ export function HomeServiceSection({ profile, setView }: HomeServiceSectionProps
 
             {/* Localities Covered in Banaras */}
             <div className="pt-2">
-              <h4 className="font-serif font-bold text-sm text-[#5d0e0e] flex items-center gap-1.5 mb-2">
+              <h3 className="font-serif font-bold text-sm text-[#5d0e0e] flex items-center gap-1.5 mb-2">
                 <MapPin size={16} className="text-[#c5a059]" />
                 <span>Areas Served Near You in Varanasi / Banaras:</span>
-              </h4>
+              </h3>
               <div className="flex flex-wrap gap-1.5">
                 {localitiesInVaranasi.map((area, i) => (
                   <span key={i} className="text-[11px] font-sans font-medium bg-[#f5efe4] text-[#5d0e0e] px-2.5 py-1 rounded-md border border-[#c5a059]/20">
@@ -117,7 +117,7 @@ export function HomeServiceSection({ profile, setView }: HomeServiceSectionProps
           <div className="lg:col-span-5">
             <div className="bg-white p-6 sm:p-8 rounded-3xl border-2 border-[#c5a059]/30 shadow-xl relative">
               <div className="text-center pb-6 border-b border-gray-100">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-[#c5a059] block mb-1">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-[#875914] block mb-1">
                   ⭐ Varanasi Local SEO Verified ⭐
                 </span>
                 <h3 className="font-serif text-2xl font-bold text-[#5d0e0e]">

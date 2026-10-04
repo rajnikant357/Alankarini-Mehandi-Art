@@ -16,8 +16,15 @@ import {
 
 
 function normalizeProfile(data: Partial<ProfileInfo> & Record<string, unknown>): ProfileInfo {
-  const coverPhoto = String(data.coverPhoto ?? data.cover_photo ?? DEFAULT_PROFILE.coverPhoto);
-  const aboutPhoto = String(data.aboutPhoto ?? data.about_photo ?? coverPhoto);
+  let coverPhoto = String(data.coverPhoto ?? data.cover_photo ?? DEFAULT_PROFILE.coverPhoto);
+  let aboutPhoto = String(data.aboutPhoto ?? data.about_photo ?? coverPhoto);
+
+  if (coverPhoto.startsWith('data:image/')) {
+    coverPhoto = DEFAULT_PROFILE.coverPhoto;
+  }
+  if (aboutPhoto.startsWith('data:image/')) {
+    aboutPhoto = DEFAULT_PROFILE.aboutPhoto;
+  }
 
   return {
     ...DEFAULT_PROFILE,
@@ -46,11 +53,21 @@ function asRecord(value: unknown): Record<string, unknown> {
 
 function normalizeService(data: unknown): MehndiService {
   const record = asRecord(data);
+  const id = String(record.id ?? `service-${Date.now()}`);
+  let imageUrl = String(record.imageUrl ?? record.image_url ?? '');
+  
+  if (imageUrl.startsWith('data:image/')) {
+    const defaultMatch = DEFAULT_SERVICES.find(s => s.id === id);
+    if (defaultMatch) {
+      imageUrl = defaultMatch.imageUrl;
+    }
+  }
+
   return {
-    id: String(record.id ?? `service-${Date.now()}`),
+    id,
     title: String(record.title ?? ''),
     description: String(record.description ?? ''),
-    imageUrl: String(record.imageUrl ?? record.image_url ?? ''),
+    imageUrl,
     startingPrice: record.startingPrice
       ? String(record.startingPrice)
       : record.starting_price
@@ -61,13 +78,26 @@ function normalizeService(data: unknown): MehndiService {
 
 function normalizeGalleryItem(data: unknown): GalleryItem {
   const record = asRecord(data);
+  const id = String(record.id ?? `gallery-${Date.now()}`);
+  let imageUrl = String(record.imageUrl ?? record.image_url ?? '');
+  const defaultMatch = DEFAULT_GALLERY.find(g => g.id === id);
+
+  if (imageUrl.startsWith('data:image/') && defaultMatch) {
+    imageUrl = defaultMatch.imageUrl;
+  }
+
+  const thumbnailUrl = record.thumbnailUrl
+    ? String(record.thumbnailUrl)
+    : defaultMatch?.thumbnailUrl;
+
   return {
-    id: String(record.id ?? `gallery-${Date.now()}`),
+    id,
     title: String(record.title ?? ''),
     category: String(record.category ?? 'bridal') as GalleryItem['category'],
     description: record.description ? String(record.description) : undefined,
     price: record.price ? String(record.price) : undefined,
-    imageUrl: String(record.imageUrl ?? record.image_url ?? ''),
+    imageUrl,
+    thumbnailUrl,
   };
 }
 

@@ -22,11 +22,11 @@ export function FeaturedServices({ services, profile, setView, previewOnly = fal
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-12">
           {previewOnly ? (
-            <span className="text-xs font-bold tracking-widest uppercase text-[#c5a059] font-sans">
+            <span className="text-xs font-bold tracking-widest uppercase text-[#875914] font-sans">
               ✨ Traditional Specialties
             </span>
           ) : (
-            <span className="text-xs font-bold tracking-widest uppercase text-[#c5a059] font-sans">
+            <span className="text-xs font-bold tracking-widest uppercase text-[#875914] font-sans">
               🌸 Bridal & Festival Packages
             </span>
           )}
@@ -50,6 +50,8 @@ export function FeaturedServices({ services, profile, setView, previewOnly = fal
                 <img
                   src={service.imageUrl}
                   alt={service.title}
+                  width={400}
+                  height={300}
                   loading="lazy"
                   decoding="async"
                   className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-750"
@@ -89,7 +91,7 @@ export function FeaturedServices({ services, profile, setView, previewOnly = fal
                       <span>Inquire On WhatsApp</span>
                     </a>
                   ) : (
-                    <div className="flex items-center gap-1.5 text-[#c5a059] text-xs font-semibold tracking-wider uppercase">
+                    <div className="flex items-center gap-1.5 text-[#875914] text-xs font-semibold tracking-wider uppercase">
                       <CheckCircle2 size={12} />
                       <span>Perfect organic stain</span>
                     </div>

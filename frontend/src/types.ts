@@ -21,6 +21,7 @@ export type GalleryCategory = 'bridal' | 'portrait' | 'arabic' | 'indo-arabic' |
 export interface GalleryItem {
   id: string;
   imageUrl: string;
+  thumbnailUrl?: string;
   category: GalleryCategory;
   title: string;
   description?: string;

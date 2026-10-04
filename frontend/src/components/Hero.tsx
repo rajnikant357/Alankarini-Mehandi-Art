@@ -12,7 +12,7 @@ export function Hero({ profile, setView }: HeroProps) {
   const cleanWhatsapp = profile.whatsapp.replace(/[^0-9+]/g, '');
 
   return (
-    <section className="relative bg-[#faf7f2] py-12 lg:py-20 overflow-hidden">
+    <section id="hero-section" className="relative bg-[#faf7f2] py-12 lg:py-20 overflow-hidden">
       {/* Decorative background vectors */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-[#c5a059] rounded-full filter blur-[120px] opacity-10 -mr-20 -mt-20"></div>
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#5d0e0e] rounded-full filter blur-[120px] opacity-[0.06] -ml-20 -mb-20"></div>
@@ -30,7 +30,7 @@ export function Hero({ profile, setView }: HeroProps) {
 
             {/* Main Tagline Heading optimized for Google Rank */}
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-serif font-black text-[#5d0e0e] leading-tight tracking-tight">
-              Top <span className="text-[#c5a059] italic font-normal">Mehandi Artist</span> in Varanasi &amp; <br />
+              Top <span className="text-[#875914] italic font-normal">Mehandi Artist</span> in Varanasi &amp; <br />
               Online <span className="underline decoration-[#c5a059] decoration-[3px] underline-offset-[6px]">Mehandi Classes</span>
             </h1>
 
@@ -71,7 +71,7 @@ export function Hero({ profile, setView }: HeroProps) {
                 href={`https://wa.me/${cleanWhatsapp}?text=Hello%20Sandhya,%20I%20visited%20Alankarini%20website%20and%20want%20to%20inquire%20about%20Mehndi%20services/classes.`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 bg-[#128C7E] hover:bg-[#075E54] text-white px-7 py-3.5 rounded-xl text-xs sm:text-sm font-bold tracking-wider uppercase shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0"
+                className="flex items-center justify-center gap-2 bg-[#0d695e] hover:bg-[#075E54] text-white px-7 py-3.5 rounded-xl text-xs sm:text-sm font-bold tracking-wider uppercase shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0"
               >
                 <WhatsAppIcon size={16} />
                 WhatsApp Us
@@ -107,18 +107,25 @@ export function Hero({ profile, setView }: HeroProps) {
             <div className="absolute top-4 left-4 right-4 bottom-4 border border-[#c5a059]/30 rounded-2xl transform translate-x-2 translate-y-2 pointer-events-none"></div>
             
             <div className="relative w-full aspect-[4/5] sm:aspect-square lg:aspect-[4/5] max-w-md rounded-2xl overflow-hidden border-[6px] border-[#f5efe4] shadow-2xl">
-              {/* Actual photo */}
-              <img
-                src={profile.coverPhoto}
-                alt="Alankarini Mehndi Art - Sandhya Bridal Mehndi Specialist in Varanasi"
-                fetchPriority="high"
-                decoding="async"
-                className="w-full h-full object-cover select-none object-center hover:scale-105 transition-transform duration-700"
-                referrerPolicy="no-referrer"
-              />
+              {/* Actual photo with responsive modern WebP sources and explicit dimensions */}
+              <picture className="w-full h-full block">
+                <source media="(max-width: 640px)" srcSet="/images/cover-mobile.webp" type="image/webp" />
+                <source media="(min-width: 641px)" srcSet="/images/cover.webp" type="image/webp" />
+                <img
+                  src={profile.coverPhoto}
+                  alt="Alankarini Mehndi Art - Sandhya Bridal Mehndi Specialist in Varanasi"
+                  width={448}
+                  height={560}
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
+                  className="w-full h-full object-cover select-none object-center hover:scale-105 transition-transform duration-750"
+                  referrerPolicy="no-referrer"
+                />
+              </picture>
               
               {/* Hover watermark / accent overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#5d0e0e]/80 via-transparent to-transparent flex flex-col justify-end p-6">
+              <div className="absolute inset-0 bg-gradient-to-t from-[#5d0e0e]/80 via-transparent to-transparent flex flex-col justify-end p-6 pointer-events-none">
                 <span className="text-[10px] uppercase tracking-widest text-[#faf3df]/80 font-medium font-sans">Varanasi's Authentic</span>
                 <span className="text-[#faf3df] font-serif text-lg font-bold sm:text-xl">Alankarini Traditional Henna</span>
               </div>

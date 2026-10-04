@@ -231,10 +231,10 @@ export function MehandiClassesSection({ profile, setView, previewOnly = false }:
           <span className="text-2xl sm:text-3xl font-serif font-black text-[#5d0e0e]">
             {pkg.fee}
           </span>
-          <span className="text-xs text-gray-400 line-through">
+          <span className="text-xs text-gray-500 line-through">
             {pkg.originalFee}
           </span>
-          <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">
+          <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded">
             Special Offer
           </span>
         </div>
@@ -242,55 +242,55 @@ export function MehandiClassesSection({ profile, setView, previewOnly = false }:
         {/* Kit & Certificate Inclusion Status Badges */}
         <div className="mb-4 p-2.5 rounded-xl bg-[#faf7f2] border border-[#c5a059]/20 space-y-1.5 text-xs font-medium">
           <div className="flex items-center justify-between">
-            <span className="text-gray-600 flex items-center gap-1.5">
-              <Package size={13} className="text-[#c5a059]" />
+            <span className="text-gray-700 flex items-center gap-1.5">
+              <Package size={13} className="text-[#875914]" />
               <span>Mehndi Starter Kit:</span>
             </span>
             {pkg.kitIncluded ? (
-              <span className="text-emerald-700 font-bold flex items-center gap-1">
-                <Check size={13} className="text-emerald-600" />
+              <span className="text-emerald-800 font-bold flex items-center gap-1">
+                <Check size={13} className="text-emerald-700" />
                 <span>Included</span>
               </span>
             ) : (
-              <span className="text-gray-400 font-medium flex items-center gap-1">
-                <XCircle size={13} className="text-gray-400" />
+              <span className="text-gray-600 font-medium flex items-center gap-1">
+                <XCircle size={13} className="text-gray-500" />
                 <span>Not Included</span>
               </span>
             )}
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-gray-600 flex items-center gap-1.5">
-              <Award size={13} className="text-[#c5a059]" />
+            <span className="text-gray-700 flex items-center gap-1.5">
+              <Award size={13} className="text-[#875914]" />
               <span>Completion Certificate:</span>
             </span>
             {pkg.certificateIncluded ? (
-              <span className="text-emerald-700 font-bold flex items-center gap-1">
-                <Check size={13} className="text-emerald-600" />
+              <span className="text-emerald-800 font-bold flex items-center gap-1">
+                <Check size={13} className="text-emerald-700" />
                 <span>Included</span>
               </span>
             ) : (
-              <span className="text-gray-400 font-medium flex items-center gap-1">
-                <XCircle size={13} className="text-gray-400" />
+              <span className="text-gray-600 font-medium flex items-center gap-1">
+                <XCircle size={13} className="text-gray-500" />
                 <span>Not Included</span>
               </span>
             )}
           </div>
         </div>
 
-        <p className="text-[11px] font-bold text-gray-700 uppercase tracking-wider mb-2">
+        <p className="text-[11px] font-bold text-gray-800 uppercase tracking-wider mb-2">
           What You Get:
         </p>
-        <ul className="space-y-1.5 mb-5 text-xs text-gray-650 font-sans">
+        <ul className="space-y-1.5 mb-5 text-xs text-gray-700 font-sans">
           {pkg.highlights.map((item, idx) => (
             <li key={idx} className="flex items-start gap-1.5">
               {item.startsWith('❌') ? (
-                <XCircle size={13} className="text-rose-400 shrink-0 mt-0.5" />
+                <XCircle size={13} className="text-rose-500 shrink-0 mt-0.5" />
               ) : item.startsWith('🎁') || item.startsWith('🏆') ? (
-                <CheckCircle2 size={13} className="text-emerald-600 shrink-0 mt-0.5" />
+                <CheckCircle2 size={13} className="text-emerald-700 shrink-0 mt-0.5" />
               ) : (
-                <CheckCircle2 size={13} className="text-[#c5a059] shrink-0 mt-0.5" />
+                <CheckCircle2 size={13} className="text-[#875914] shrink-0 mt-0.5" />
               )}
-              <span className={item.startsWith('❌') ? 'text-gray-400' : ''}>{item.replace(/^[❌🎁🏆]\s*/, '')}</span>
+              <span className={item.startsWith('❌') ? 'text-gray-600' : ''}>{item.replace(/^[❌🎁🏆]\s*/, '')}</span>
             </li>
           ))}
         </ul>
@@ -411,7 +411,7 @@ export function MehandiClassesSection({ profile, setView, previewOnly = false }:
                 href={`https://wa.me/${cleanWhatsapp}?text=Hello%20Sandhya,%20I%20am%20interested%20in%20the%2035-Day%20Online%20Mehandi%20Classes.%20Please%20share%20upcoming%20batch%20timings%20and%20enrollment%20details.`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 inline-flex items-center justify-center gap-2 bg-[#128C7E] hover:bg-[#075E54] text-white py-3 px-4 rounded-xl text-xs font-bold uppercase tracking-wider shadow-sm transition-colors"
+                className="flex-1 inline-flex items-center justify-center gap-2 bg-[#0d695e] hover:bg-[#075E54] text-white py-3 px-4 rounded-xl text-xs font-bold uppercase tracking-wider shadow-sm transition-colors"
               >
                 <WhatsAppIcon size={15} />
                 <span>Join Online Class</span>
@@ -499,7 +499,7 @@ export function MehandiClassesSection({ profile, setView, previewOnly = false }:
         {/* Transparent Pricing Packages Section */}
         <div className="mb-16">
           <div className="text-center max-w-2xl mx-auto mb-8">
-            <span className="text-xs font-bold tracking-widest uppercase text-[#c5a059] font-sans">
+            <span className="text-xs font-bold tracking-widest uppercase text-[#875914] font-sans">
               💎 Transparent &amp; Affordable Pricing • 35 Days
             </span>
             <h3 className="text-2xl sm:text-3xl font-serif font-bold text-[#5d0e0e] mt-1">

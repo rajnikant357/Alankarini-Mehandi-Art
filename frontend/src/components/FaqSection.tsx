@@ -59,7 +59,7 @@ export function FaqSection({ profile }: FaqSectionProps) {
         {/* Header */}
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#efe1b4]/50 text-[#5d0e0e] text-xs font-bold tracking-widest uppercase mb-3 border border-[#c5a059]/30 font-sans">
-            <HelpCircle size={15} className="text-[#c5a059]" />
+            <HelpCircle size={15} className="text-[#875914]" />
             <span>Frequently Asked Questions &amp; Search Queries</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#5d0e0e]">
@@ -90,7 +90,7 @@ export function FaqSection({ profile }: FaqSectionProps) {
                   </span>
                   <ChevronDown
                     size={18}
-                    className={`text-[#c5a059] shrink-0 transition-transform duration-300 ${
+                    className={`text-[#875914] shrink-0 transition-transform duration-300 ${
                       isOpen ? 'transform rotate-180' : ''
                     }`}
                   />
@@ -109,7 +109,7 @@ export function FaqSection({ profile }: FaqSectionProps) {
         {/* Footer Contact Callout */}
         <div className="mt-10 p-5 bg-[#f5efe4] rounded-2xl border border-[#c5a059]/30 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
           <div>
-            <h4 className="font-serif font-bold text-sm text-[#5d0e0e]">Have more questions?</h4>
+            <h3 className="font-serif font-bold text-sm text-[#5d0e0e]">Have more questions?</h3>
             <p className="text-xs text-gray-600 font-sans mt-0.5">Call or WhatsApp Sandhya directly for instant guidance and batch dates.</p>
           </div>
           <div className="flex gap-2.5">
@@ -124,7 +124,7 @@ export function FaqSection({ profile }: FaqSectionProps) {
               href={`https://wa.me/${cleanWhatsapp}?text=Hello%20Sandhya,%20I%20have%20a%20question%20regarding%20Mehndi%20services/classes.`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 bg-[#128C7E] hover:bg-[#075E54] text-white py-2.5 px-4 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors shadow-sm"
+              className="inline-flex items-center gap-1.5 bg-[#0d695e] hover:bg-[#075E54] text-white py-2.5 px-4 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors shadow-sm"
             >
               <WhatsAppIcon size={14} />
               <span>WhatsApp</span>

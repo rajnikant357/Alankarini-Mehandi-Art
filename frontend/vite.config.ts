@@ -6,7 +6,7 @@ import { defineConfig } from 'vite';
 
 const frontendRoot = fileURLToPath(new URL('.', import.meta.url));
 
-export default defineConfig(() => ({
+export default defineConfig(({ isSsrBuild }) => ({
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
@@ -19,7 +19,7 @@ export default defineConfig(() => ({
     cssCodeSplit: true,
     chunkSizeWarningLimit: 600,
     rollupOptions: {
-      output: {
+      output: isSsrBuild ? {} : {
         manualChunks: {
           'vendor-react': ['react', 'react-dom'],
           'vendor-icons': ['lucide-react'],
