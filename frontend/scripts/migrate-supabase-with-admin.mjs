@@ -3,11 +3,30 @@ import sharp from 'sharp';
 import fs from 'node:fs';
 import path from 'node:path';
 
-const supabaseUrl = process.env.VITE_SUPABASE_URL || 'https://jtqwtkhywqvtbcikqwbs.supabase.co';
-const supabaseSecretKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+function loadEnv() {
+  for (const envFile of ['frontend/.env', 'backend/.env']) {
+    const envPath = path.resolve(envFile);
+    if (fs.existsSync(envPath)) {
+      const lines = fs.readFileSync(envPath, 'utf-8').split('\n');
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed || trimmed.startsWith('#')) continue;
+        const [key, ...rest] = trimmed.split('=');
+        const val = rest.join('=').trim().replace(/^["']|["']$/g, '');
+        if (key && !process.env[key.trim()]) {
+          process.env[key.trim()] = val;
+        }
+      }
+    }
+  }
+}
+loadEnv();
 
-if (!supabaseSecretKey) {
-  console.error('Error: SUPABASE_SERVICE_ROLE_KEY environment variable is required to run this script.');
+const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL || '';
+const supabaseSecretKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY || '';
+
+if (!supabaseSecretKey || !supabaseUrl) {
+  console.error('Error: SUPABASE_SERVICE_ROLE_KEY (or SUPABASE_SECRET_KEY) and SUPABASE_URL must be set in environment.');
   process.exit(1);
 }
 

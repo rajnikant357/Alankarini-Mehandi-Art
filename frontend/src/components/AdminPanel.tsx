@@ -63,6 +63,11 @@ export function AdminPanel({
 
   // Listen for Supabase auth state changes (session persistence)
   useEffect(() => {
+    if (!supabase) {
+      setAuthLoading(false);
+      return;
+    }
+
     // Get initial session
     supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
       setSession(currentSession);
@@ -184,6 +189,11 @@ export function AdminPanel({
     e.preventDefault();
     if (lockoutUntil && Date.now() < lockoutUntil) return;
 
+    if (!supabase) {
+      setAuthError('Supabase authentication is not configured.');
+      return;
+    }
+
     setLoginLoading(true);
     setAuthError('');
 
@@ -218,7 +228,10 @@ export function AdminPanel({
   };
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
+    if (supabase) {
+      await supabase.auth.signOut();
+    }
+    setSession(null);
     setLoginEmail('');
     setLoginPassword('');
   };
@@ -419,6 +432,11 @@ export function AdminPanel({
     const targetEmail = targetEmailInput || resetEmail || loginEmail || session?.user?.email;
     if (!targetEmail) {
       setResetStatus({ type: 'error', message: 'Please enter your admin email address.' });
+      return;
+    }
+
+    if (!supabase) {
+      setResetStatus({ type: 'error', message: 'Supabase authentication is not configured.' });
       return;
     }
 

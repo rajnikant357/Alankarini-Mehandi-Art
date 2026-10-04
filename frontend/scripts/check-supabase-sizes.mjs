@@ -1,7 +1,32 @@
 import { createClient } from '@supabase/supabase-js';
+import fs from 'node:fs';
+import path from 'node:path';
 
-const supabaseUrl = 'https://jtqwtkhywqvtbcikqwbs.supabase.co';
-const supabaseAnonKey = 'sb_publishable_qrTMkEA57JlKIr_SqXsYfg_KC3f3uf0';
+function loadEnv() {
+  const envPath = path.resolve('frontend/.env');
+  if (fs.existsSync(envPath)) {
+    const lines = fs.readFileSync(envPath, 'utf-8').split('\n');
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith('#')) continue;
+      const [key, ...rest] = trimmed.split('=');
+      const val = rest.join('=').trim().replace(/^["']|["']$/g, '');
+      if (key && !process.env[key.trim()]) {
+        process.env[key.trim()] = val;
+      }
+    }
+  }
+}
+loadEnv();
+
+const supabaseUrl = process.env.VITE_SUPABASE_URL || '';
+const supabaseAnonKey = process.env.VITE_SUPABASE_PUBLISHABLE_KEY || '';
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  console.error('Error: VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY must be set in frontend/.env or environment.');
+  process.exit(1);
+}
+
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 async function inspect() {
