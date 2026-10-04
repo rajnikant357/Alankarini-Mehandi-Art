@@ -30,7 +30,10 @@ function normalizeProfile(data: Partial<ProfileInfo> & Record<string, unknown>):
     ...DEFAULT_PROFILE,
     ...data,
     businessName: String(data.businessName ?? data.business_name ?? DEFAULT_PROFILE.businessName),
-    artistName: String(data.artistName ?? data.artist_name ?? DEFAULT_PROFILE.artistName),
+    artistName: (() => {
+      const name = String(data.artistName ?? data.artist_name ?? DEFAULT_PROFILE.artistName);
+      return name === 'Sandhya' ? DEFAULT_PROFILE.artistName : name;
+    })(),
     phone: String(data.phone ?? DEFAULT_PROFILE.phone),
     whatsapp: String(data.whatsapp ?? DEFAULT_PROFILE.whatsapp),
     instagram: String(data.instagram ?? DEFAULT_PROFILE.instagram),

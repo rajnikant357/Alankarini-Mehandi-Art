@@ -174,27 +174,62 @@ export default function App() {
 
             {/* Elegant About Section brief (Auspicious Art Traditions) */}
             <section className="py-12 bg-white border-y border-[#c5a059]/10 relative">
-              <div className="max-w-5xl mx-auto px-4 text-center">
-                <span className="text-[#875914] font-medium italic text-sm font-serif">Auspicious Art Traditions</span>
-                <h2 className="font-serif text-3xl font-bold text-[#5d0e0e] mt-1.5 mb-6">Varanasi's Trusted Mehndi Artist</h2>
-                <div className="max-w-3xl mx-auto text-gray-750 text-sm sm:text-base leading-relaxed font-sans mb-8">
-                  {profile.bio}
-                </div>
+              <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12 items-center">
+                  
+                  {/* Left Side: Compact Sandhya Portrait */}
+                  <div className="md:col-span-4 lg:col-span-4 flex justify-center">
+                    <div className="relative aspect-[4/5] w-52 sm:w-60 md:w-full max-w-[270px] rounded-2xl overflow-hidden border-[5px] border-[#f5efe4] shadow-lg group">
+                      {/* Decorative internal golden border */}
+                      <div className="absolute top-2 left-2 right-2 bottom-2 border border-[#c5a059]/30 rounded-xl pointer-events-none z-10"></div>
+                      
+                      <picture className="w-full h-full block">
+                        <source media="(max-width: 640px)" srcSet="/images/about-mobile.webp" type="image/webp" />
+                        <source media="(min-width: 641px)" srcSet="/images/about.webp" type="image/webp" />
+                        <img
+                          src={profile.aboutPhoto || '/images/about.webp'}
+                          alt={`Sandhya Chauhan - Varanasi's Trusted Mehndi Artist`}
+                          width={270}
+                          height={338}
+                          loading="lazy"
+                          decoding="async"
+                          className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                        />
+                      </picture>
 
-                {/* Grid items for specializations */}
-                <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                  {[
-                    'Bridal Specialist',
-                    'Portrait Sketched',
-                    'Indo-Arabic Fusion',
-                    'Festival Layouts',
-                    'Custom Name Accents'
-                  ].map((specialty, i) => (
-                    <div key={i} className="bg-[#f5efe4] p-3 rounded-xl border border-[#c5a059]/20 flex flex-col items-center justify-center text-center">
-                      <Heart size={14} className="text-[#5d0e0e] mb-1.5" />
-                      <span className="text-[#5d0e0e] font-sans font-bold text-xs uppercase tracking-wide">{specialty}</span>
+                      {/* Subtle floating badge */}
+                      <div className="absolute bottom-2.5 left-2.5 right-2.5 bg-[#5d0e0e]/90 text-[#faf3df] py-1.5 px-3 rounded-lg backdrop-blur-sm border border-[#c5a059]/20 text-center z-10">
+                        <p className="font-serif text-xs font-bold leading-none">{profile.artistName}</p>
+                        <p className="text-[9px] uppercase tracking-wider text-[#c5a059] mt-0.5 font-medium">Lead Mehndi Artist</p>
+                      </div>
                     </div>
-                  ))}
+                  </div>
+
+                  {/* Right Side: Content & Specializations */}
+                  <div className="md:col-span-8 lg:col-span-8 text-center md:text-left">
+                    <span className="text-[#875914] font-medium italic text-sm font-serif">Auspicious Art Traditions</span>
+                    <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#5d0e0e] mt-1.5 mb-4">Varanasi's Trusted Mehndi Artist</h2>
+                    <div className="text-gray-750 text-sm sm:text-base leading-relaxed font-sans mb-6">
+                      {profile.bio}
+                    </div>
+
+                    {/* Grid items for specializations */}
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5">
+                      {[
+                        'Bridal Specialist',
+                        'Portrait Sketched',
+                        'Indo-Arabic Fusion',
+                        'Festival Layouts',
+                        'Custom Name Accents'
+                      ].map((specialty, i) => (
+                        <div key={i} className="bg-[#f5efe4] p-2.5 rounded-xl border border-[#c5a059]/20 flex flex-col items-center justify-center text-center">
+                          <Heart size={13} className="text-[#5d0e0e] mb-1" />
+                          <span className="text-[#5d0e0e] font-sans font-bold text-[11px] uppercase tracking-wide">{specialty}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
                 </div>
               </div>
             </section>
@@ -427,16 +462,20 @@ export default function App() {
                   <div className="md:col-span-5 relative flex justify-center">
                     <div className="absolute top-4 left-4 right-4 bottom-4 border-2 border-[#c5a059]/30 rounded-2xl transform translate-x-2.5 translate-y-2.5"></div>
                     <div className="relative aspect-[4/5] w-full max-w-md rounded-2xl overflow-hidden border-[6px] border-[#f5efe4] shadow-xl">
-                      <img
-                        src={profile.aboutPhoto}
-                        alt="Sandhya - Alankarini Artist Head"
-                        width={400}
-                        height={500}
-                        loading="lazy"
-                        decoding="async"
-                        className="w-full h-full object-cover object-center"
-                        referrerPolicy="no-referrer"
-                      />
+                      <picture className="w-full h-full block">
+                        <source media="(max-width: 640px)" srcSet="/images/about-mobile.webp" type="image/webp" />
+                        <source media="(min-width: 641px)" srcSet="/images/about.webp" type="image/webp" />
+                        <img
+                          src={profile.aboutPhoto || '/images/about.webp'}
+                          alt={`Sandhya Chauhan - Lead Mehndi Artist at ${profile.businessName}`}
+                          width={400}
+                          height={500}
+                          loading="lazy"
+                          decoding="async"
+                          className="w-full h-full object-cover object-center"
+                          referrerPolicy="no-referrer"
+                        />
+                      </picture>
                       <div className="absolute bottom-4 left-4 right-4 bg-[#5d0e0e]/90 text-[#faf3df] p-4 rounded-xl backdrop-blur-sm border border-[#c5a059]/20">
                         <p className="font-serif text-base font-bold leading-none">{profile.artistName}</p>
                         <p className="text-[10px] uppercase font-bold tracking-widest text-[#c5a059] mt-1">Lead Henna Craftsman</p>
