@@ -1,9 +1,9 @@
-import { supabase } from './supabase';
+import { getSupabase } from './supabase';
 import { DEFAULT_PROFILE } from '../data/defaultData';
 
 const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? 'https://alankarini-mehandi-art.onrender.com').replace(/\/$/, '');
 
-type ApiContent = {
+export type ApiContent = {
   profile: Record<string, unknown> | null;
   services: Array<Record<string, unknown>>;
   gallery: Array<Record<string, unknown>>;
@@ -43,67 +43,97 @@ export function getApiBaseUrl() {
   return API_BASE_URL;
 }
 
-export async function fetchContent(): Promise<ApiContent> {
-  if (supabase) {
-    try {
-      const { data: profileRow } = await supabase.from('profile').select('*').eq('id', 'default').maybeSingle();
-      const { data: servicesRows } = await supabase.from('services').select('*').order('sort_order', { ascending: true });
-      const { data: galleryRows } = await supabase.from('gallery').select('*').order('sort_order', { ascending: true });
+// Single-flight deduplication and cache layer to eliminate duplicate network requests
+let inFlightContentPromise: Promise<ApiContent> | null = null;
+let cachedContent: ApiContent | null = null;
 
-      if (profileRow || (servicesRows && servicesRows.length > 0) || (galleryRows && galleryRows.length > 0)) {
-        return {
-          profile: profileRow
-            ? {
-                businessName: profileRow.business_name,
-                artistName: profileRow.artist_name,
-                phone: profileRow.phone,
-                whatsapp: profileRow.whatsapp,
-                instagram: profileRow.instagram,
-                instagramUrl: profileRow.instagram_url,
-                location: profileRow.location,
-                experience: profileRow.experience,
-                bio: profileRow.bio,
-                coverPhoto: profileRow.cover_photo,
-                aboutPhoto: profileRow.about_photo || profileRow.cover_photo,
-                gmbLink: profileRow.gmb_link || DEFAULT_PROFILE.gmbLink,
-                gmbReviewLink: profileRow.gmb_review_link || DEFAULT_PROFILE.gmbReviewLink,
-                gmbReviewsCount: profileRow.gmb_reviews_count || DEFAULT_PROFILE.gmbReviewsCount,
-                gmbRating: profileRow.gmb_rating || DEFAULT_PROFILE.gmbRating,
-              }
-            : null,
-          services: (servicesRows || []).map((s) => ({
-            id: s.id,
-            title: s.title,
-            description: s.description,
-            imageUrl: s.image_url,
-            startingPrice: s.starting_price,
-          })),
-          gallery: (galleryRows || []).map((g) => ({
-            id: g.id,
-            title: g.title,
-            category: g.category,
-            description: g.description,
-            price: g.price,
-            imageUrl: g.image_url,
-          })),
-        };
+export async function fetchContent(forceRefresh = false): Promise<ApiContent> {
+  if (cachedContent && !forceRefresh) {
+    return cachedContent;
+  }
+  if (inFlightContentPromise && !forceRefresh) {
+    return inFlightContentPromise;
+  }
+
+  inFlightContentPromise = (async () => {
+    try {
+      const client = await getSupabase();
+      if (client) {
+        // Parallel fetch using Promise.all to prevent sequential waterfalls
+        const [profileRes, servicesRes, galleryRes] = await Promise.all([
+          client.from('profile').select('*').eq('id', 'default').maybeSingle(),
+          client.from('services').select('*').order('sort_order', { ascending: true }),
+          client.from('gallery').select('*').order('sort_order', { ascending: true }),
+        ]);
+
+        const profileRow = profileRes.data;
+        const servicesRows = servicesRes.data;
+        const galleryRows = galleryRes.data;
+
+        if (profileRow || (servicesRows && servicesRows.length > 0) || (galleryRows && galleryRows.length > 0)) {
+          const result: ApiContent = {
+            profile: profileRow
+              ? {
+                  businessName: profileRow.business_name,
+                  artistName: profileRow.artist_name,
+                  phone: profileRow.phone,
+                  whatsapp: profileRow.whatsapp,
+                  instagram: profileRow.instagram,
+                  instagramUrl: profileRow.instagram_url,
+                  location: profileRow.location,
+                  experience: profileRow.experience,
+                  bio: profileRow.bio,
+                  coverPhoto: profileRow.cover_photo,
+                  aboutPhoto: profileRow.about_photo || profileRow.cover_photo,
+                  gmbLink: profileRow.gmb_link || DEFAULT_PROFILE.gmbLink,
+                  gmbReviewLink: profileRow.gmb_review_link || DEFAULT_PROFILE.gmbReviewLink,
+                  gmbReviewsCount: profileRow.gmb_reviews_count || DEFAULT_PROFILE.gmbReviewsCount,
+                  gmbRating: profileRow.gmb_rating || DEFAULT_PROFILE.gmbRating,
+                }
+              : null,
+            services: (servicesRows || []).map((s) => ({
+              id: s.id,
+              title: s.title,
+              description: s.description,
+              imageUrl: s.image_url,
+              startingPrice: s.starting_price,
+            })),
+            gallery: (galleryRows || []).map((g) => ({
+              id: g.id,
+              title: g.title,
+              category: g.category,
+              description: g.description,
+              price: g.price,
+              imageUrl: g.image_url,
+            })),
+          };
+          cachedContent = result;
+          return result;
+        }
       }
     } catch (supabaseErr) {
       console.warn('Direct Supabase fetch failed, trying API endpoint:', supabaseErr);
     }
-  }
 
-  try {
-    return await requestJson<ApiContent>('/content');
-  } catch (err) {
-    console.warn('API request failed:', err);
-    return { profile: null, services: [], gallery: [] };
-  }
+    try {
+      const result = await requestJson<ApiContent>('/content');
+      cachedContent = result;
+      return result;
+    } catch (err) {
+      console.warn('API request failed:', err);
+      return { profile: null, services: [], gallery: [] };
+    } finally {
+      inFlightContentPromise = null;
+    }
+  })();
+
+  return inFlightContentPromise;
 }
 
 export async function saveProfile(payload: any) {
-  // Write to Supabase database directly
-  if (supabase) {
+  cachedContent = null;
+  const client = await getSupabase();
+  if (client) {
     try {
       const profileObj: Record<string, any> = {
         id: 'default',
@@ -125,23 +155,21 @@ export async function saveProfile(payload: any) {
         updated_at: new Date().toISOString(),
       };
 
-      const { error } = await supabase.from('profile').upsert(profileObj);
+      const { error } = await client.from('profile').upsert(profileObj);
       if (error) {
         console.warn('Initial profile upsert failed, attempting fallback...', error.message);
-        // Fallback 1: Try without GMB columns
         const cleanGmb = { ...profileObj };
         delete cleanGmb.gmb_link;
         delete cleanGmb.gmb_review_link;
         delete cleanGmb.gmb_reviews_count;
         delete cleanGmb.gmb_rating;
-        
-        const { error: errorGmb } = await supabase.from('profile').upsert(cleanGmb);
+
+        const { error: errorGmb } = await client.from('profile').upsert(cleanGmb);
         if (errorGmb) {
           console.warn('Second profile upsert failed, attempting legacy fallback...', errorGmb.message);
-          // Fallback 2: Try without about_photo too
           const cleanAll = { ...cleanGmb };
           delete cleanAll.about_photo;
-          await supabase.from('profile').upsert(cleanAll);
+          await client.from('profile').upsert(cleanAll);
         }
       }
     } catch (e) {
@@ -160,10 +188,11 @@ export async function saveProfile(payload: any) {
 }
 
 export async function createService(payload: any) {
-  // Write to Supabase database directly
-  if (supabase) {
+  cachedContent = null;
+  const client = await getSupabase();
+  if (client) {
     try {
-      await supabase.from('services').insert({
+      await client.from('services').insert({
         id: payload.id ?? `service-custom-${Date.now()}`,
         title: payload.title,
         description: payload.description,
@@ -186,9 +215,11 @@ export async function createService(payload: any) {
 }
 
 export async function updateServiceOnServer(id: string, payload: any) {
-  if (supabase) {
+  cachedContent = null;
+  const client = await getSupabase();
+  if (client) {
     try {
-      await supabase.from('services').update({
+      await client.from('services').update({
         title: payload.title,
         description: payload.description,
         image_url: payload.imageUrl,
@@ -211,9 +242,11 @@ export async function updateServiceOnServer(id: string, payload: any) {
 }
 
 export async function deleteServiceOnServer(id: string) {
-  if (supabase) {
+  cachedContent = null;
+  const client = await getSupabase();
+  if (client) {
     try {
-      await supabase.from('services').delete().eq('id', id);
+      await client.from('services').delete().eq('id', id);
     } catch (e) {
       console.warn('Supabase direct service delete error:', e);
     }
@@ -229,10 +262,11 @@ export async function deleteServiceOnServer(id: string) {
 }
 
 export async function createGalleryItem(payload: any) {
-  // Write to Supabase database directly
-  if (supabase) {
+  cachedContent = null;
+  const client = await getSupabase();
+  if (client) {
     try {
-      await supabase.from('gallery').insert({
+      await client.from('gallery').insert({
         id: payload.id ?? `gallery-custom-${Date.now()}`,
         title: payload.title,
         category: payload.category,
@@ -256,9 +290,11 @@ export async function createGalleryItem(payload: any) {
 }
 
 export async function updateGalleryItemOnServer(id: string, payload: any) {
-  if (supabase) {
+  cachedContent = null;
+  const client = await getSupabase();
+  if (client) {
     try {
-      await supabase.from('gallery').update({
+      await client.from('gallery').update({
         title: payload.title,
         category: payload.category,
         description: payload.description ?? null,
@@ -282,9 +318,11 @@ export async function updateGalleryItemOnServer(id: string, payload: any) {
 }
 
 export async function deleteGalleryItemOnServer(id: string) {
-  if (supabase) {
+  cachedContent = null;
+  const client = await getSupabase();
+  if (client) {
     try {
-      await supabase.from('gallery').delete().eq('id', id);
+      await client.from('gallery').delete().eq('id', id);
     } catch (e) {
       console.warn('Supabase direct gallery delete error:', e);
     }
@@ -300,6 +338,7 @@ export async function deleteGalleryItemOnServer(id: string) {
 }
 
 export async function resetContentOnServer() {
+  cachedContent = null;
   return requestJson('/content/reset', {
     method: 'POST',
   });

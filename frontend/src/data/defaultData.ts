@@ -2,7 +2,7 @@ import { GalleryItem, MehndiService, ProfileInfo } from '../types';
 
 export const DEFAULT_PROFILE: ProfileInfo = {
   businessName: 'Alankarini Mehndi Art',
-  artistName: 'Sandhya',
+  artistName: 'Sandhya Chauhan',
   phone: '+919336814631',
   whatsapp: '+919336814631',
   instagram: '@alankarini_mehandi_art',

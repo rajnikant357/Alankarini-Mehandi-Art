@@ -115,20 +115,17 @@ export function useMehndiData() {
         const content = await fetchContent();
         if (cancelled) return;
 
-        setProfile(content.profile ? normalizeProfile(content.profile) : DEFAULT_PROFILE);
-        setServices(content.services && content.services.length > 0
-          ? content.services.map((item) => normalizeService(item))
-          : DEFAULT_SERVICES);
-        setGallery(content.gallery && content.gallery.length > 0
-          ? content.gallery.map((item) => normalizeGalleryItem(item))
-          : DEFAULT_GALLERY);
+        if (content.profile) {
+          setProfile(normalizeProfile(content.profile));
+        }
+        if (content.services && content.services.length > 0) {
+          setServices(content.services.map((item) => normalizeService(item)));
+        }
+        if (content.gallery && content.gallery.length > 0) {
+          setGallery(content.gallery.map((item) => normalizeGalleryItem(item)));
+        }
       } catch (error) {
-        console.warn('Backend unavailable, falling back to seeded defaults.', error);
-        if (cancelled) return;
-
-        setProfile(DEFAULT_PROFILE);
-        setServices(DEFAULT_SERVICES);
-        setGallery(DEFAULT_GALLERY);
+        console.warn('Backend unavailable, using seeded defaults.', error);
       } finally {
         if (!cancelled) {
           setLoading(false);
@@ -136,11 +133,49 @@ export function useMehndiData() {
       }
     }
 
-    void loadContent();
+    if (typeof window !== 'undefined') {
+      const isAdmin = window.location.hash.includes('admin') || window.location.pathname.includes('admin');
+      if (isAdmin) {
+        void loadContent();
+        return () => {
+          cancelled = true;
+        };
+      }
 
-    return () => {
-      cancelled = true;
-    };
+      let triggered = false;
+      const triggerLoad = () => {
+        if (triggered || cancelled) return;
+        triggered = true;
+        cleanListeners();
+        void loadContent();
+      };
+
+      const events = ['scroll', 'touchstart', 'pointerdown', 'mousemove', 'keydown'];
+      const cleanListeners = () => {
+        events.forEach((evt) => window.removeEventListener(evt, triggerLoad));
+      };
+
+      events.forEach((evt) => window.addEventListener(evt, triggerLoad, { passive: true, once: true }));
+
+      let idleTimer: any = null;
+      if ('requestIdleCallback' in window) {
+        idleTimer = (window as any).requestIdleCallback(triggerLoad, { timeout: 8000 });
+      } else {
+        idleTimer = setTimeout(triggerLoad, 8000);
+      }
+
+      return () => {
+        cancelled = true;
+        cleanListeners();
+        if (idleTimer) {
+          if ('cancelIdleCallback' in window) {
+            (window as any).cancelIdleCallback(idleTimer);
+          } else {
+            clearTimeout(idleTimer);
+          }
+        }
+      };
+    }
   }, []);
 
   const updateProfile = async (fields: Partial<ProfileInfo>) => {

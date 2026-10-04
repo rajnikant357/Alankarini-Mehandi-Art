@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Shield, Mail, Lock, Check, Plus, Trash2, Edit2, RotateCcw, Save, Smartphone, MapPin, Instagram, Trash, Image, AlertCircle, FileText, LogOut, KeyRound, Send, CheckCircle2, Crop } from 'lucide-react';
 import { ProfileInfo, GalleryItem, MehndiService, GalleryCategory } from '../types';
-import { supabase } from '../lib/supabase';
+import { getSupabase } from '../lib/supabase';
 import { extractRupeeAmount } from '../lib/format';
 import type { Session } from '@supabase/supabase-js';
 import { ImageCropperModal, AspectRatioType } from './ImageCropperModal';
@@ -63,23 +63,28 @@ export function AdminPanel({
 
   // Listen for Supabase auth state changes (session persistence)
   useEffect(() => {
-    if (!supabase) {
-      setAuthLoading(false);
-      return;
-    }
+    let subscription: { unsubscribe: () => void } | null = null;
 
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
-      setSession(currentSession);
-      setAuthLoading(false);
+    getSupabase().then((client) => {
+      if (!client) {
+        setAuthLoading(false);
+        return;
+      }
+
+      client.auth.getSession().then(({ data: { session: currentSession } }) => {
+        setSession(currentSession);
+        setAuthLoading(false);
+      });
+
+      const { data } = client.auth.onAuthStateChange((_event, newSession) => {
+        setSession(newSession);
+      });
+      subscription = data.subscription;
     });
 
-    // Subscribe to auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, newSession) => {
-      setSession(newSession);
-    });
-
-    return () => subscription.unsubscribe();
+    return () => {
+      if (subscription) subscription.unsubscribe();
+    };
   }, []);
 
   const isAuthenticated = !!session;
@@ -189,15 +194,17 @@ export function AdminPanel({
     e.preventDefault();
     if (lockoutUntil && Date.now() < lockoutUntil) return;
 
-    if (!supabase) {
+    setLoginLoading(true);
+    setAuthError('');
+
+    const client = await getSupabase();
+    if (!client) {
+      setLoginLoading(false);
       setAuthError('Supabase authentication is not configured.');
       return;
     }
 
-    setLoginLoading(true);
-    setAuthError('');
-
-    const { error } = await supabase.auth.signInWithPassword({
+    const { error } = await client.auth.signInWithPassword({
       email: loginEmail,
       password: loginPassword,
     });
@@ -228,8 +235,9 @@ export function AdminPanel({
   };
 
   const handleLogout = async () => {
-    if (supabase) {
-      await supabase.auth.signOut();
+    const client = await getSupabase();
+    if (client) {
+      await client.auth.signOut();
     }
     setSession(null);
     setLoginEmail('');
@@ -435,15 +443,17 @@ export function AdminPanel({
       return;
     }
 
-    if (!supabase) {
+    setResetLoading(true);
+    setResetStatus(null);
+
+    const client = await getSupabase();
+    if (!client) {
+      setResetLoading(false);
       setResetStatus({ type: 'error', message: 'Supabase authentication is not configured.' });
       return;
     }
 
-    setResetLoading(true);
-    setResetStatus(null);
-
-    const { error } = await supabase.auth.resetPasswordForEmail(targetEmail, {
+    const { error } = await client.auth.resetPasswordForEmail(targetEmail, {
       redirectTo: `${window.location.origin}/#/admin`,
     });
 

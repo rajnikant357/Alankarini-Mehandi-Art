@@ -162,9 +162,7 @@ export default function App() {
       <div className="fixed inset-0 mehndi-pattern-bg pointer-events-none z-0"></div>
 
       {/* Dynamic Header & Toolbar */}
-      <div className="relative z-20">
-        <Navbar profile={profile} currentView={currentView} setView={setView} />
-      </div>
+      <Navbar profile={profile} currentView={currentView} setView={setView} />
 
       <main className="flex-1 relative z-10">
         <Suspense fallback={<SectionSkeleton />}>

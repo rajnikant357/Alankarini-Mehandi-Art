@@ -32,35 +32,36 @@ export function Navbar({ profile, currentView, setView }: NavbarProps) {
   const cleanWhatsapp = profile.whatsapp.replace(/[^0-9+]/g, '');
 
   return (
-    <header className="sticky top-0 z-50 bg-[#faf7f2]/95 backdrop-blur-md border-b-[3px] border-[#c5a059]/20 shadow-md">
-      {/* Golden top mini-banner */}
-      <div className="bg-[#5d0e0e] text-[#faf3df] text-xs font-sans py-1.5 px-4 flex justify-between items-center tracking-wider font-light">
+    <>
+      {/* Golden top mini-banner - scrolls out of view naturally on scroll */}
+      <div className="bg-[#5d0e0e] text-[#faf3df] text-xs font-sans py-1.5 px-4 flex justify-between items-center tracking-wider font-light relative z-30">
         <div className="flex items-center gap-3">
-          <span className="hidden sm:inline">✨ Top Mehandi Artist &amp; Classes in Varanasi (Banaras)</span>
-          <span className="sm:hidden">✨ Sandhya Mehandi Artist</span>
+          <span className="font-medium">✨ Sandhya Chauhan</span>
         </div>
         <div className="flex items-center gap-4">
           <a href={`tel:${cleanPhone}`} className="flex items-center gap-1.5 font-bold hover:text-[#d3b575] transition-colors">
             <Phone size={12} className="inline animate-pulse text-[#c5a059]" /> 
-            <span>Call/WhatsApp: {profile.phone}</span>
+            <span>Contact: {profile.phone}</span>
           </a>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-20 items-center">
-          {/* Logo / Brand */}
-          <div 
-            onClick={() => handleNavigate('home')} 
-            className="flex flex-col cursor-pointer transition-transform duration-200 active:scale-95"
-          >
-            <span className="text-2xl sm:text-2xl font-serif font-bold text-[#5d0e0e] tracking-normal block">
-              {profile.businessName}
-            </span>
-            <p className="text-[10px] sm:text-xs font-sans uppercase font-medium tracking-[0.25em] text-[#875914] -mt-1">
-              By {profile.artistName} • Varanasi
-            </p>
-          </div>
+      {/* Main Navbar - sticky on top */}
+      <header className="sticky top-0 z-50 bg-[#faf7f2]/95 backdrop-blur-md border-b-[3px] border-[#c5a059]/20 shadow-md">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between h-16 sm:h-20 items-center">
+            {/* Logo / Brand */}
+            <div 
+              onClick={() => handleNavigate('home')} 
+              className="flex flex-col cursor-pointer transition-transform duration-200 active:scale-95"
+            >
+              <span className="text-lg sm:text-xl font-serif font-bold text-[#5d0e0e] tracking-tight block">
+                {profile.businessName}
+              </span>
+              <p className="text-[9px] sm:text-[10px] font-sans uppercase font-medium tracking-[0.22em] text-[#875914] -mt-0.5">
+                By {profile.artistName}
+              </p>
+            </div>
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex space-x-1 items-center">
@@ -159,5 +160,6 @@ export function Navbar({ profile, currentView, setView }: NavbarProps) {
         </div>
       )}
     </header>
+    </>
   );
 }

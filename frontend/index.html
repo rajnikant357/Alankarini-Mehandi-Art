@@ -7,8 +7,7 @@
     <title>Mehandi Artist in Varanasi | Online Mehandi Classes &amp; Home Service | +91 9336814631</title>
     <link rel="canonical" href="https://alankarini-mehandi-art.vercel.app/" />
 
-    <!-- LCP Image Preload for Mobile and Desktop -->
-    <link rel="preload" as="image" href="/images/cover-mobile.webp" media="(max-width: 640px)" type="image/webp" fetchpriority="high" />
+    <!-- LCP Image Preload for Desktop -->
     <link rel="preload" as="image" href="/images/cover.webp" media="(min-width: 641px)" type="image/webp" fetchpriority="high" />
 
     <!-- Favicons -->
@@ -23,7 +22,10 @@
       gtag('js', new Date());
       gtag('config', 'G-WT4NFQNVJ9');
 
-      window.addEventListener('load', function() {
+      function loadAnalytics() {
+        if (window.__analyticsLoaded) return;
+        window.__analyticsLoaded = true;
+
         // GTM
         (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
         new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -36,7 +38,14 @@
         gs.async = true;
         gs.src = 'https://www.googletagmanager.com/gtag/js?id=G-WT4NFQNVJ9';
         document.head.appendChild(gs);
+      }
+
+      ['pointerdown', 'touchstart', 'scroll', 'keydown', 'click'].forEach(function(e) {
+        window.addEventListener(e, loadAnalytics, { once: true, passive: true });
       });
+
+      // Background fallback after 10s if user has not interacted yet
+      setTimeout(loadAnalytics, 10000);
     </script>
     
     <!-- Core Technical SEO & Targeted Meta Tags -->
