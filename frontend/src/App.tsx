@@ -4,6 +4,7 @@ import { Hero } from './components/Hero';
 import { useMehndiData } from './lib/store';
 import { WhatsAppIcon } from './components/WhatsAppIcon';
 import { MobileFloatingActions } from './components/MobileFloatingActions';
+import { applyRouteMetadata } from './lib/seo';
 import { 
   Phone, 
   MessageSquare, 
@@ -22,10 +23,14 @@ import { MehandiClassesSection } from './components/MehandiClassesSection';
 import { HomeServiceSection } from './components/HomeServiceSection';
 import { FaqSection } from './components/FaqSection';
 
-const ContactForm = lazy(() => import('./components/ContactForm').then(m => ({ default: m.ContactForm })));
+import { ContactForm } from './components/ContactForm';
+import { ArticlePage } from './components/ArticlePage';
+import { BlogPage } from './components/BlogPage';
+import { HomeBlogSection } from './components/HomeBlogSection';
+import { BlogListingPage } from './components/BlogListingPage';
+import { BlogPostPage } from './components/BlogPostPage';
+import { getArticleBySlug } from './data/blogArticles';
 const AdminPanel = lazy(() => import('./components/AdminPanel').then(m => ({ default: m.AdminPanel })));
-const ArticlePage = lazy(() => import('./components/ArticlePage').then(m => ({ default: m.ArticlePage })));
-const BlogPage = lazy(() => import('./components/BlogPage').then(m => ({ default: m.BlogPage })));
 
 function SectionSkeleton() {
   return (
@@ -36,9 +41,12 @@ function SectionSkeleton() {
   );
 }
 
-export default function App() {
-  // URL-based & Hash-based routing: match pathnames (/about, /services, /classes, etc.) and hash (#/admin)
+export default function App({ initialView }: { initialView?: string } = {}) {
+  // URL-based & Hash-based routing: match pathnames (/about, /services, /classes, /blog, /blog/:slug, etc.) and hash (#/admin)
   const getViewFromLocation = (): string => {
+    if (initialView) {
+      return initialView.startsWith('blog/') ? `blog:${initialView.slice(5)}` : initialView;
+    }
     if (typeof window === 'undefined') return 'home';
 
     const hash = window.location.hash.replace(/^#\/?/, '').toLowerCase();
@@ -49,6 +57,7 @@ export default function App() {
     if (hash === 'contact') return 'contact';
     if (hash === 'classes') return 'classes';
     if (hash === 'blog') return 'blog';
+    if (hash.startsWith('blog/')) return `blog:${hash.slice(5)}`;
 
     const path = window.location.pathname.replace(/^\/|\/$/g, '').toLowerCase();
     if (path === 'admin') return 'admin';
@@ -59,11 +68,12 @@ export default function App() {
     if (path === 'classes') return 'classes';
     if (path === 'guide' || path === 'article' || path === 'articles') return 'guide';
     if (path === 'blog') return 'blog';
+    if (path.startsWith('blog/')) return `blog:${path.slice(5)}`;
 
     return 'home';
   };
 
-  const [currentView, setCurrentView] = useState<string>(getViewFromLocation);
+  const [currentView, setCurrentView] = useState<string>(() => initialView ? (initialView.startsWith('blog/') ? `blog:${initialView.slice(5)}` : initialView) : getViewFromLocation());
 
   // Sync view state with browser URL path and history
   const setView = (view: string) => {
@@ -88,6 +98,10 @@ export default function App() {
       targetPath = '/guide';
     } else if (view === 'blog') {
       targetPath = '/blog';
+    } else if (view.startsWith('blog:')) {
+      targetPath = `/blog/${view.slice(5)}`;
+    } else if (view.startsWith('blog/')) {
+      targetPath = `/${view}`;
     }
 
     if (window.location.hash && view !== 'admin') {
@@ -111,22 +125,9 @@ export default function App() {
     };
   }, []);
 
-  // Update dynamic page title for SEO on route change
+  // Update dynamic page title, meta description, canonical link, OG tags and JSON-LD on route change
   useEffect(() => {
-    const titles: Record<string, string> = {
-      home: 'Mehandi Artist in Varanasi | Online Mehandi Classes & Home Service | +91 9336814631',
-      classes: 'Online Mehandi Classes & Fees | Offline Class in Banaras | Call +91 9336814631',
-      services: 'Packages & Mehndi Home Service | Alankarini Mehndi Art Varanasi | +91 9336814631',
-      gallery: 'Portfolio Gallery | Mehandi Designs in Varanasi | +91 9336814631',
-      about: 'About Sandhya | Certified Mehandi Artist in Varanasi | +91 9336814631',
-      contact: 'Book Sandhya Mehandi Artist Varanasi | Home Service & Classes | +91 9336814631',
-      guide: 'Complete Mehndi Guide & Directory Varanasi | Artists, Home Service & Classes | +91 9336814631',
-      blog: 'Rajnikant Gaurav: The Journey of an Independent Developer, AI Enthusiast & Founder | Tech Insights',
-      admin: 'Admin Panel | Alankarini Mehndi Art',
-    };
-    if (titles[currentView]) {
-      document.title = titles[currentView];
-    }
+    applyRouteMetadata(currentView);
   }, [currentView]);
   const {
     profile,
@@ -245,6 +246,9 @@ export default function App() {
 
             {/* Online & Offline Mehandi Classes Preview Section (Class Info) */}
             <MehandiClassesSection profile={profile} setView={setView} previewOnly={true} />
+
+            {/* Homepage Blog Discovery Section */}
+            <HomeBlogSection setView={setView} />
 
             {/* Google Business Reviews Section (Social Proof Trust Building) */}
             <section className="py-16 lg:py-24 bg-[#faf7f2] border-y border-[#efe1b4]/40 relative overflow-hidden">
@@ -490,9 +494,9 @@ export default function App() {
                       <span>Certified Mehndi Artist in Varanasi</span>
                     </div>
 
-                    <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#5d0e0e]">
-                      Meet Artist {profile.artistName}
-                    </h2>
+                    <h1 className="text-3xl sm:text-4xl font-serif font-bold text-[#5d0e0e]">
+                      About Alankarini Mehandi Art - Sandhya
+                    </h1>
 
                     <p className="text-[#2d2d2d] font-sans text-sm sm:text-base leading-relaxed">
                       Alankarini Mehndi Art represents the highest quality of traditional hand-drawn ornamentation. Artist Sandhya is a seasoned professional with more than three years of dedicated specialization within bridal sketches, portraits, baby shower patterns, and complex Rajasthani-Indian lattices.
@@ -522,24 +526,39 @@ export default function App() {
                     </div>
 
                     <div className="pt-4 flex flex-col sm:flex-row gap-3">
-                      <button
-                        onClick={() => setView('contact')}
-                        className="bg-[#5d0e0e] hover:bg-[#7c1818] text-[#faf3df] hover:text-white px-6 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors shadow-md cursor-pointer"
+                      <a
+                        href="/contact"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setView('contact');
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }}
+                        className="bg-[#5d0e0e] hover:bg-[#7c1818] text-[#faf3df] hover:text-white px-6 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors shadow-md cursor-pointer inline-flex items-center justify-center"
                       >
                         Book Free Consultation
-                      </button>
-                      <button
-                        onClick={() => setView('classes')}
-                        className="bg-[#c5a059] hover:bg-[#d3b575] text-[#5d0e0e] px-6 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors shadow-md cursor-pointer"
+                      </a>
+                      <a
+                        href="/classes"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setView('classes');
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }}
+                        className="bg-[#c5a059] hover:bg-[#d3b575] text-[#5d0e0e] px-6 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors shadow-md cursor-pointer inline-flex items-center justify-center"
                       >
                         🎓 Classes &amp; Fees
-                      </button>
-                      <button
-                        onClick={() => setView('gallery')}
-                        className="bg-transparent hover:bg-gray-100 text-[#5d0e0e] border border-gray-300 px-6 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors shadow-md cursor-pointer"
+                      </a>
+                      <a
+                        href="/gallery"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setView('gallery');
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }}
+                        className="bg-transparent hover:bg-gray-100 text-[#5d0e0e] border border-gray-300 px-6 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors shadow-md cursor-pointer inline-flex items-center justify-center"
                       >
                         View Masterpieces
-                      </button>
+                      </a>
                     </div>
 
                   </div>
@@ -551,7 +570,7 @@ export default function App() {
             {/* About Us Business Section (BOTTOM) */}
             <section className="py-14 lg:py-20 bg-white">
               <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <span className="text-[#c5a059] italic text-sm font-serif">Our Story & Mission</span>
+                <span className="text-[#c5a059] italic text-sm font-serif">Our Story &amp; Mission</span>
                 <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#5d0e0e] mt-2 mb-6">About Alankarini Mehndi Art</h2>
                 <p className="text-[#2d2d2d] font-sans text-sm sm:text-base leading-relaxed max-w-3xl mx-auto mb-6">
                   Alankarini Mehndi Art was born from a deep-rooted love for the ancient art of henna — a tradition that has graced celebrations across generations. Founded in the heart of Varanasi, one of India's most sacred and culturally rich cities, Alankarini carries forward the timeless beauty of Mehndi with a commitment to precision, creativity, and authenticity.
@@ -582,14 +601,31 @@ export default function App() {
         {/* VIEW 5: CONTACT & BOOKING FORM */}
         {currentView === 'contact' && (
           <div className="animate-fade-in">
-            <ContactForm profile={profile} />
+            <ContactForm profile={profile} setView={setView} />
           </div>
         )}
 
-        {/* VIEW: RAJNIKANT GAURAV BLOG PAGE */}
+        {/* VIEW: BLOG LISTING */}
         {currentView === 'blog' && (
           <div className="animate-fade-in">
-            <BlogPage setView={setView} />
+            <BlogListingPage setView={setView} />
+          </div>
+        )}
+
+        {/* VIEW: INDIVIDUAL BLOG POST */}
+        {currentView.startsWith('blog:') && (
+          <div className="animate-fade-in">
+            {currentView === 'blog:rajnikant-gaurav' ? (
+              <BlogPage setView={setView} />
+            ) : (() => {
+              const slug = currentView.slice(5);
+              const article = getArticleBySlug(slug);
+              return article ? (
+                <BlogPostPage article={article} profile={profile} setView={setView} />
+              ) : (
+                <BlogListingPage setView={setView} />
+              );
+            })()}
           </div>
         )}
 
@@ -644,14 +680,14 @@ export default function App() {
           <div className="md:col-span-3 space-y-4">
             <h3 className="text-xs uppercase font-bold tracking-widest text-[#c5a059]">Explore Website</h3>
             <div className="flex flex-col gap-2.5 text-xs font-semibold text-gray-400 tracking-wide">
-              <button onClick={() => { setView('home'); window.scrollTo(0,0); }} className="hover:text-[#faf3df] transition-colors text-left self-center md:self-start cursor-pointer">🌿 Home Dashboard</button>
-              <button onClick={() => { setView('classes'); window.scrollTo(0,0); }} className="hover:text-[#faf3df] transition-colors text-left self-center md:self-start cursor-pointer">🎓 Classes &amp; Fees (35 Days)</button>
-              <button onClick={() => { setView('guide'); window.scrollTo(0,0); }} className="hover:text-[#faf3df] transition-colors text-left self-center md:self-start cursor-pointer">📖 Complete Mehndi Guide &amp; Rates</button>
-              <button onClick={() => { setView('services'); window.scrollTo(0,0); }} className="hover:text-[#faf3df] transition-colors text-left self-center md:self-start cursor-pointer">🌿 Services &amp; Home Visits</button>
-              <button onClick={() => { setView('gallery'); window.scrollTo(0,0); }} className="hover:text-[#faf3df] transition-colors text-left self-center md:self-start cursor-pointer">🌸 Work</button>
-              <button onClick={() => { setView('about'); window.scrollTo(0,0); }} className="hover:text-[#faf3df] transition-colors text-left self-center md:self-start cursor-pointer">🌸 About Sandhya</button>
-              <button onClick={() => { setView('contact'); window.scrollTo(0,0); }} className="hover:text-[#faf3df] transition-colors text-left self-center md:self-start cursor-pointer">📞 Contact &amp; Bookings</button>
-              <button onClick={() => { setView('blog'); window.scrollTo(0,0); }} className="hover:text-[#faf3df] transition-colors text-left self-center md:self-start cursor-pointer">📝 Blog</button>
+              <a href="/" onClick={(e) => { e.preventDefault(); setView('home'); window.scrollTo(0,0); }} className="hover:text-[#faf3df] transition-colors text-left self-center md:self-start cursor-pointer">🌿 Home Dashboard</a>
+              <a href="/classes" onClick={(e) => { e.preventDefault(); setView('classes'); window.scrollTo(0,0); }} className="hover:text-[#faf3df] transition-colors text-left self-center md:self-start cursor-pointer">🎓 Mehndi Classes &amp; Fees (35 Days)</a>
+              <a href="/guide" onClick={(e) => { e.preventDefault(); setView('guide'); window.scrollTo(0,0); }} className="hover:text-[#faf3df] transition-colors text-left self-center md:self-start cursor-pointer">📖 Complete Varanasi Mehndi Guide &amp; Rates</a>
+              <a href="/services" onClick={(e) => { e.preventDefault(); setView('services'); window.scrollTo(0,0); }} className="hover:text-[#faf3df] transition-colors text-left self-center md:self-start cursor-pointer">🌿 Services &amp; Home Visits</a>
+              <a href="/gallery" onClick={(e) => { e.preventDefault(); setView('gallery'); window.scrollTo(0,0); }} className="hover:text-[#faf3df] transition-colors text-left self-center md:self-start cursor-pointer">🌸 Work Portfolio Gallery</a>
+              <a href="/about" onClick={(e) => { e.preventDefault(); setView('about'); window.scrollTo(0,0); }} className="hover:text-[#faf3df] transition-colors text-left self-center md:self-start cursor-pointer">🌸 About Sandhya</a>
+              <a href="/contact" onClick={(e) => { e.preventDefault(); setView('contact'); window.scrollTo(0,0); }} className="hover:text-[#faf3df] transition-colors text-left self-center md:self-start cursor-pointer">📞 Contact &amp; Bookings</a>
+              <a href="/blog" onClick={(e) => { e.preventDefault(); setView('blog'); window.scrollTo(0,0); }} className="hover:text-[#faf3df] transition-colors text-left self-center md:self-start cursor-pointer">📝 Blog &amp; Insights</a>
             </div>
           </div>
 

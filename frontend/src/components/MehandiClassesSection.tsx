@@ -325,9 +325,15 @@ export function MehandiClassesSection({ profile, setView, previewOnly = false }:
             <span>Alankarini Mehandi Academy • 35-Day Certified Batches</span>
           </div>
           
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-black text-[#5d0e0e] leading-tight">
-            Online &amp; Offline Mehandi Classes in Varanasi
-          </h2>
+          {previewOnly ? (
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-black text-[#5d0e0e] leading-tight">
+              Online &amp; Offline Mehandi Classes in Varanasi
+            </h2>
+          ) : (
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-black text-[#5d0e0e] leading-tight">
+              Mehndi Classes in Varanasi
+            </h1>
+          )}
           
           <p className="mt-4 text-[#2d2d2d] text-sm sm:text-base font-sans leading-relaxed">
             Looking for <strong>online mehandi classes</strong> or an <strong>offline mehandi class near me in Banaras</strong>? 
@@ -723,11 +729,63 @@ export function MehandiClassesSection({ profile, setView, previewOnly = false }:
           </div>
         </div>
 
+        {/* Contextual Internal Links for Dedicated Classes Page */}
+        {!previewOnly && (
+          <div className="mt-12 pt-8 border-t border-[#c5a059]/20 flex flex-wrap gap-3.5 justify-center text-xs font-semibold uppercase tracking-wider text-[#5d0e0e]">
+            <a
+              href="/gallery"
+              onClick={(e) => {
+                e.preventDefault();
+                setView('gallery');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="hover:text-[#c5a059] transition-colors flex items-center gap-1.5 bg-white px-3.5 py-2 rounded-xl border border-gray-200 shadow-xs"
+            >
+              🌸 View Original Mehndi Designs in Gallery
+            </a>
+            <a
+              href="/services"
+              onClick={(e) => {
+                e.preventDefault();
+                setView('services');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="hover:text-[#c5a059] transition-colors flex items-center gap-1.5 bg-white px-3.5 py-2 rounded-xl border border-gray-200 shadow-xs"
+            >
+              🌿 Explore Mehndi Home Services in Varanasi
+            </a>
+            <a
+              href="/guide"
+              onClick={(e) => {
+                e.preventDefault();
+                setView('guide');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="hover:text-[#c5a059] transition-colors flex items-center gap-1.5 bg-white px-3.5 py-2 rounded-xl border border-gray-200 shadow-xs"
+            >
+              📖 Complete Varanasi Mehndi Guide &amp; Rates
+            </a>
+            <a
+              href="/contact"
+              onClick={(e) => {
+                e.preventDefault();
+                setView('contact');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="hover:text-[#c5a059] transition-colors flex items-center gap-1.5 bg-white px-3.5 py-2 rounded-xl border border-gray-200 shadow-xs"
+            >
+              📞 Inquire About Next Batch Admission
+            </a>
+          </div>
+        )}
+
         {/* View all classes button for home preview */}
         {previewOnly && (
           <div className="text-center">
-            <button
-              onClick={() => {
+            <a
+              href="/classes"
+              onClick={(e) => {
+                e.preventDefault();
                 setView('classes');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
@@ -735,7 +793,7 @@ export function MehandiClassesSection({ profile, setView, previewOnly = false }:
             >
               <span>Explore Complete 35-Day Classes &amp; Syllabus</span>
               <ArrowRight size={14} />
-            </button>
+            </a>
           </div>
         )}
 

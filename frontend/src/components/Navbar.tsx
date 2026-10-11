@@ -13,13 +13,14 @@ export function Navbar({ profile, currentView, setView }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
-    { label: 'Home', view: 'home' },
-    { label: 'Class', view: 'classes' },
-    { label: 'Services', view: 'services' },
-    { label: 'Work', view: 'gallery' },
-    { label: 'Mehndi Guide', view: 'guide' },
-    { label: 'About Us', view: 'about' },
-    { label: 'Contact', view: 'contact' },
+    { label: 'Home', view: 'home', path: '/' },
+    { label: 'Classes', view: 'classes', path: '/classes' },
+    { label: 'Services', view: 'services', path: '/services' },
+    { label: 'Gallery', view: 'gallery', path: '/gallery' },
+    { label: 'Blog', view: 'blog', path: '/blog' },
+    { label: 'Guide', view: 'guide', path: '/guide' },
+    { label: 'About Us', view: 'about', path: '/about' },
+    { label: 'Contact', view: 'contact', path: '/contact' },
   ];
 
   const handleNavigate = (view: string) => {
@@ -51,8 +52,12 @@ export function Navbar({ profile, currentView, setView }: NavbarProps) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16 sm:h-20 items-center">
             {/* Logo / Brand */}
-            <div 
-              onClick={() => handleNavigate('home')} 
+            <a 
+              href="/"
+              onClick={(e) => {
+                e.preventDefault();
+                handleNavigate('home');
+              }}
               className="flex flex-col cursor-pointer transition-transform duration-200 active:scale-95"
             >
               <span className="text-lg sm:text-xl font-serif font-bold text-[#5d0e0e] tracking-tight block">
@@ -61,16 +66,20 @@ export function Navbar({ profile, currentView, setView }: NavbarProps) {
               <p className="text-[9px] sm:text-[10px] font-sans uppercase font-medium tracking-[0.22em] text-[#875914] -mt-0.5">
                 By {profile.artistName}
               </p>
-            </div>
+            </a>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex space-x-1 items-center">
+          <nav className="hidden lg:flex space-x-1 items-center" aria-label="Main Navigation">
             {navItems.map((item) => {
-              const isActive = currentView === item.view;
+              const isActive = currentView === item.view || (item.view === 'blog' && currentView.startsWith('blog:'));
               return (
-                <button
+                <a
                   key={item.view}
-                  onClick={() => handleNavigate(item.view)}
+                  href={item.path}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleNavigate(item.view);
+                  }}
                   className={`px-4 py-2 rounded-md font-sans text-xs font-semibold tracking-wider uppercase transition-all duration-200 ${
                     isActive
                       ? 'text-[#5d0e0e] bg-[#efe1b4]/40 border-b-2 border-[#5d0e0e]'
@@ -78,7 +87,7 @@ export function Navbar({ profile, currentView, setView }: NavbarProps) {
                   }`}
                 >
                   {item.label}
-                </button>
+                </a>
               );
             })}
           </nav>
@@ -123,19 +132,23 @@ export function Navbar({ profile, currentView, setView }: NavbarProps) {
         <div className="lg:hidden bg-[#faf7f2] border-t border-[#c5a059]/10 px-4 pt-2 pb-6 space-y-2 shadow-inner">
           <div className="space-y-1">
             {navItems.map((item) => {
-              const isActive = currentView === item.view;
+              const isActive = currentView === item.view || (item.view === 'blog' && currentView.startsWith('blog:'));
               return (
-                <button
+                <a
                   key={item.view}
-                  onClick={() => handleNavigate(item.view)}
-                  className={`w-full text-left px-4 py-3 rounded-md font-sans text-sm font-semibold tracking-wide uppercase transition-all ${
+                  href={item.path}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleNavigate(item.view);
+                  }}
+                  className={`w-full block text-left px-4 py-3 rounded-md font-sans text-sm font-semibold tracking-wide uppercase transition-all ${
                     isActive
                       ? 'text-[#5d0e0e] bg-[#efe1b4]/60 border-l-4 border-[#5d0e0e]'
                       : 'text-[#2d2d2d] hover:text-[#5d0e0e] hover:bg-[#faf3df]/40'
                   }`}
                 >
                   {item.label}
-                </button>
+                </a>
               );
             })}
           </div>

@@ -30,15 +30,12 @@ export function Hero({ profile, setView }: HeroProps) {
 
             {/* Main Tagline Heading optimized for Google Rank */}
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-serif font-black text-[#5d0e0e] leading-tight tracking-tight">
-              Top <span className="text-[#875914] italic font-normal">Mehandi Artist</span> in Varanasi &amp; <br />
-              Online <span className="underline decoration-[#c5a059] decoration-[3px] underline-offset-[6px]">Mehandi Classes</span>
+              Professional <span className="text-[#875914] italic font-normal">Mehandi Artist</span> in Varanasi
             </h1>
 
             {/* Core Keyword Intro Subtitle */}
             <p className="mt-4 text-gray-700 text-sm sm:text-base font-sans leading-relaxed">
-              Welcome to <strong>Alankarini Mehndi Art</strong> by artist Sandhya. Specializing in bespoke royal bridal mehndi, 
-              doorstep <strong>mehndi home service</strong> across Varanasi and Banaras, and certified 
-              <strong> online &amp; offline mehandi classes</strong> with affordable fees.
+              Welcome to <strong>Alankarini Mehandi Art</strong> by certified artist Sandhya (3+ years experience). Specializing in royal bridal mehndi, Arabic &amp; Indo-Arabic designs, customized portraits, doorstep <strong>mehndi home service</strong> across Varanasi, and certified <strong>mehandi classes</strong>.
             </p>
 
             {/* Quick Location & Trust Details */}
@@ -61,6 +58,11 @@ export function Hero({ profile, setView }: HeroProps) {
             <div className="mt-8 flex flex-col sm:flex-row gap-3.5 justify-center lg:justify-start">
               <a
                 href={`tel:${cleanPhone}`}
+                onClick={() => {
+                  if (typeof window !== 'undefined' && (window as unknown as { dataLayer?: object[] }).dataLayer) {
+                    (window as unknown as { dataLayer: object[] }).dataLayer.push({ event: 'contact_call_click', location: 'hero' });
+                  }
+                }}
                 className="flex items-center justify-center gap-2 bg-[#5d0e0e] hover:bg-[#7c1818] text-[#faf3df] hover:text-white px-7 py-3.5 rounded-xl text-xs sm:text-sm font-bold tracking-wider uppercase shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 border border-[#c5a059]/40"
               >
                 <Phone size={16} />
@@ -71,6 +73,11 @@ export function Hero({ profile, setView }: HeroProps) {
                 href={`https://wa.me/${cleanWhatsapp}?text=Hello%20Sandhya,%20I%20visited%20Alankarini%20website%20and%20want%20to%20inquire%20about%20Mehndi%20services/classes.`}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => {
+                  if (typeof window !== 'undefined' && (window as unknown as { dataLayer?: object[] }).dataLayer) {
+                    (window as unknown as { dataLayer: object[] }).dataLayer.push({ event: 'contact_whatsapp_click', location: 'hero' });
+                  }
+                }}
                 className="flex items-center justify-center gap-2 bg-[#0d695e] hover:bg-[#075E54] text-white px-7 py-3.5 rounded-xl text-xs sm:text-sm font-bold tracking-wider uppercase shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0"
               >
                 <WhatsAppIcon size={16} />
@@ -78,26 +85,41 @@ export function Hero({ profile, setView }: HeroProps) {
               </a>
             </div>
 
-            {/* Alternate quick navigation buttons */}
+            {/* Alternate quick navigation links for crawlability */}
             <div className="mt-6 flex flex-wrap gap-4 justify-center lg:justify-start text-xs font-semibold uppercase tracking-wider text-[#5d0e0e] border-t border-gray-200/40 pt-5">
-              <button 
-                onClick={() => setView('classes')}
+              <a 
+                href="/classes"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setView('classes');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
                 className="hover:text-[#c5a059] transition-colors flex items-center gap-1.5 cursor-pointer bg-white px-3 py-1.5 rounded-md border border-gray-200 shadow-xs"
               >
                 🎓 Mehandi Classes &amp; Fees
-              </button>
-              <button 
-                onClick={() => setView('gallery')}
+              </a>
+              <a 
+                href="/gallery"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setView('gallery');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
                 className="hover:text-[#c5a059] transition-colors flex items-center gap-1.5 cursor-pointer bg-white px-3 py-1.5 rounded-md border border-gray-200 shadow-xs"
               >
                 🌸 Browse Portfolio
-              </button>
-              <button 
-                onClick={() => setView('services')}
+              </a>
+              <a 
+                href="/services"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setView('services');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
                 className="hover:text-[#c5a059] transition-colors flex items-center gap-1.5 cursor-pointer bg-white px-3 py-1.5 rounded-md border border-gray-200 shadow-xs"
               >
                 🌿 Mehndi Home Services
-              </button>
+              </a>
             </div>
           </div>
 

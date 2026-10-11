@@ -104,7 +104,6 @@ export function AdminPanel({
   const [galleryEditingId, setGalleryEditingId] = useState<string | null>(null);
   const [galleryTitle, setGalleryTitle] = useState('');
   const [galleryCategory, setGalleryCategory] = useState<GalleryCategory>('bridal');
-  const [galleryDesc, setGalleryDesc] = useState('');
   const [galleryPrice, setGalleryPrice] = useState('');
   const [galleryImage, setGalleryImage] = useState('');
   const galleryFileRef = useRef<HTMLInputElement>(null);
@@ -383,7 +382,6 @@ export function AdminPanel({
     const payload = {
       title: galleryTitle,
       category: galleryCategory,
-      description: galleryDesc,
       price: extractRupeeAmount(galleryPrice),
       imageUrl: galleryImage
     };
@@ -401,7 +399,6 @@ export function AdminPanel({
       setGalleryEditingId(null);
       setGalleryTitle('');
       setGalleryCategory('bridal');
-      setGalleryDesc('');
       setGalleryPrice('');
       setGalleryImage('');
       if (galleryFileRef.current) galleryFileRef.current.value = '';
@@ -417,7 +414,6 @@ export function AdminPanel({
     setGalleryEditingId(item.id);
     setGalleryTitle(item.title);
     setGalleryCategory(item.category);
-    setGalleryDesc(item.description || '');
     setGalleryPrice(extractRupeeAmount(item.price));
     setGalleryImage(item.imageUrl);
     window.scrollTo({ top: 300, behavior: 'smooth' });
@@ -427,7 +423,6 @@ export function AdminPanel({
     setGalleryEditingId(null);
     setGalleryTitle('');
     setGalleryCategory('bridal');
-    setGalleryDesc('');
     setGalleryPrice('');
     setGalleryImage('');
     if (galleryFileRef.current) galleryFileRef.current.value = '';
@@ -1021,17 +1016,6 @@ export function AdminPanel({
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Short Caption/Description</label>
-                  <textarea
-                    rows={2}
-                    placeholder="Brief description about flow, elements, staining hours..."
-                    value={galleryDesc}
-                    onChange={(e) => setGalleryDesc(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#5d0e0e] focus:border-[#5d0e0e] text-sm bg-white font-sans text-gray-800"
-                  ></textarea>
-                </div>
-
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-end">
                   <div className="md:col-span-8 space-y-3">
                     <div>
@@ -1142,7 +1126,6 @@ export function AdminPanel({
                             {item.category} {item.price && `• ${item.price}`}
                           </span>
                           <h4 className="font-serif font-bold text-[#5d0e0e] text-sm leading-tight">{item.title}</h4>
-                          <p className="text-xs text-gray-500 font-sans line-clamp-1">{item.description}</p>
                         </div>
                       </div>
 

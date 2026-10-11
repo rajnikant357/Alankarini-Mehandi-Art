@@ -4,9 +4,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port=3000 --host=0.0.0.0",
-    "build": "vite build",
+    "build": "vite build && node scripts/create-banner.mjs && node scripts/prerender.mjs && node scripts/validate-jsonld.mjs",
     "preview": "vite preview",
     "lint": "tsc --noEmit -p tsconfig.json",
+    "validate:jsonld": "node scripts/validate-jsonld.mjs",
     "clean": "node -e \"const fs=require('fs');fs.rmSync('dist',{recursive:true,force:true});\""
   },
   "dependencies": {

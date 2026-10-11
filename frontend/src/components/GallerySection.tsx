@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Sparkles, Eye, X, MessageSquare, Tag, ImageOff } from 'lucide-react';
 import { GalleryItem, GalleryCategory, ProfileInfo } from '../types';
 import { WhatsAppIcon } from './WhatsAppIcon';
@@ -14,6 +14,18 @@ interface GallerySectionProps {
 export function GallerySection({ gallery, profile, setView, previewOnly = false }: GallerySectionProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [activeLightbox, setActiveLightbox] = useState<GalleryItem | null>(null);
+
+  // Close lightbox on Escape key
+  useEffect(() => {
+    if (!activeLightbox) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setActiveLightbox(null);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activeLightbox]);
 
   const categories: { label: string; value: string }[] = [
     { label: 'All Designs', value: 'all' },
@@ -45,18 +57,26 @@ export function GallerySection({ gallery, profile, setView, previewOnly = false 
             <span className="text-xs font-bold tracking-widest uppercase text-[#875914] font-sans">
               ✨ Henna Portfolios
             </span>
-            <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#5d0e0e] mt-2">
-              {previewOnly ? 'Gallery Masterpieces' : 'Our Design Gallery'}
-            </h2>
+            {previewOnly ? (
+              <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#5d0e0e] mt-2">
+                Gallery Masterpieces
+              </h2>
+            ) : (
+              <h1 className="text-3xl sm:text-4xl font-serif font-bold text-[#5d0e0e] mt-2">
+                Mehndi Designs Gallery
+              </h1>
+            )}
             <p className="mt-2 text-gray-650 text-xs sm:text-sm font-sans">
-              Take a look through our real catalog of traditional art, created for real clients and brides.
+              Explore original bridal, Arabic, Indo-Arabic, and customized mehndi designs handcrafted by artist Sandhya in Varanasi. Every photo showcases real client artistry made with 100% natural organic henna.
             </p>
           </div>
 
-          {/* View more buttons on Home preview */}
+          {/* View more links on Home preview */}
           {previewOnly && (
-            <button
-              onClick={() => {
+            <a
+              href="/gallery"
+              onClick={(e) => {
+                e.preventDefault();
                 setView('gallery');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
@@ -64,7 +84,7 @@ export function GallerySection({ gallery, profile, setView, previewOnly = false 
             >
               <span>Explore All Masterpieces</span>
               <Sparkles size={14} />
-            </button>
+            </a>
           )}
         </div>
 
@@ -100,13 +120,22 @@ export function GallerySection({ gallery, profile, setView, previewOnly = false 
               <div
                 key={item.id || index}
                 onClick={() => setActiveLightbox(item)}
-                className="group relative cursor-pointer overflow-hidden rounded-2xl bg-[#f5efe4] border border-[#c5a059]/10 shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5"
+                tabIndex={0}
+                role="button"
+                aria-label={`View enlarged photo and details for ${item.title}`}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setActiveLightbox(item);
+                  }
+                }}
+                className="group relative cursor-pointer overflow-hidden rounded-2xl bg-[#f5efe4] border border-[#c5a059]/10 shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-[#c5a059]"
               >
                 {/* Image */}
                 <div className="aspect-square relative overflow-hidden bg-gray-50">
                   <img
                     src={item.thumbnailUrl || item.imageUrl}
-                    alt={item.title}
+                    alt={`${item.title} - ${item.category} mehndi design by Sandhya Varanasi`}
                     width={300}
                     height={300}
                     loading="lazy"
@@ -136,11 +165,6 @@ export function GallerySection({ gallery, profile, setView, previewOnly = false 
                       )}
                     </h3>
                   </div>
-                  {item.description && (
-                    <p className="text-[11px] text-gray-700 font-sans line-clamp-1 mt-1 font-normal">
-                      {item.description}
-                    </p>
-                  )}
                 </div>
               </div>
             ))}
@@ -150,8 +174,10 @@ export function GallerySection({ gallery, profile, setView, previewOnly = false 
         {/* Footer trigger on Home preview */}
         {previewOnly && gallery.length > 0 && (
           <div className="mt-12 text-center">
-            <button
-              onClick={() => {
+            <a
+              href="/gallery"
+              onClick={(e) => {
+                e.preventDefault();
                 setView('gallery');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
@@ -159,7 +185,57 @@ export function GallerySection({ gallery, profile, setView, previewOnly = false 
             >
               <span>Explore Entire Work Portfolio</span>
               <Sparkles size={14} />
-            </button>
+            </a>
+          </div>
+        )}
+
+        {/* Contextual internal links for the dedicated Gallery Page */}
+        {!previewOnly && (
+          <div className="mt-12 pt-8 border-t border-[#c5a059]/20 flex flex-wrap gap-3.5 justify-center text-xs font-semibold uppercase tracking-wider text-[#5d0e0e]">
+            <a
+              href="/services"
+              onClick={(e) => {
+                e.preventDefault();
+                setView('services');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="hover:text-[#c5a059] transition-colors flex items-center gap-1.5 bg-white px-3.5 py-2 rounded-xl border border-gray-200 shadow-xs"
+            >
+              🌿 View Mehndi Services &amp; Packages
+            </a>
+            <a
+              href="/classes"
+              onClick={(e) => {
+                e.preventDefault();
+                setView('classes');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="hover:text-[#c5a059] transition-colors flex items-center gap-1.5 bg-white px-3.5 py-2 rounded-xl border border-gray-200 shadow-xs"
+            >
+              🎓 Learn Mehndi in 35-Day Classes
+            </a>
+            <a
+              href="/contact"
+              onClick={(e) => {
+                e.preventDefault();
+                setView('contact');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="hover:text-[#c5a059] transition-colors flex items-center gap-1.5 bg-white px-3.5 py-2 rounded-xl border border-gray-200 shadow-xs"
+            >
+              📞 Book an Appointment in Varanasi
+            </a>
+            <a
+              href="/"
+              onClick={(e) => {
+                e.preventDefault();
+                setView('home');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="hover:text-[#c5a059] transition-colors flex items-center gap-1.5 bg-white px-3.5 py-2 rounded-xl border border-gray-200 shadow-xs"
+            >
+              🌿 Back to Homepage
+            </a>
           </div>
         )}
 
@@ -205,7 +281,7 @@ export function GallerySection({ gallery, profile, setView, previewOnly = false 
                 <div className="h-1 w-12 bg-[#c5a059] my-4 rounded-full"></div>
 
                 <p className="text-[#2d2d2d] font-sans text-xs sm:text-sm leading-relaxed mb-6 font-light">
-                  {activeLightbox.description || 'Stunning traditional design hand-crafted in Varanasi by master artisan Sandhya. Designed using pure natural organic henna for a deep red and healthy skin-friendly stain.'}
+                  Stunning traditional design hand-crafted in Varanasi by master artisan Sandhya. Designed using pure natural organic henna for a deep red and healthy skin-friendly stain.
                 </p>
               </div>
 

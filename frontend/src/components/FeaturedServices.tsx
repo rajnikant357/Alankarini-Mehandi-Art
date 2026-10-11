@@ -30,11 +30,17 @@ export function FeaturedServices({ services, profile, setView, previewOnly = fal
               🌸 Bridal & Festival Packages
             </span>
           )}
-          <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#5d0e0e] mt-2">
-            {previewOnly ? 'Popular Mehndi Services' : 'Our Professional Services'}
-          </h2>
+          {previewOnly ? (
+            <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#5d0e0e] mt-2">
+              Popular Mehndi Services
+            </h2>
+          ) : (
+            <h1 className="text-3xl sm:text-4xl font-serif font-bold text-[#5d0e0e] mt-2">
+              Mehndi Services &amp; Packages in Varanasi
+            </h1>
+          )}
           <p className="mt-4 text-[#2d2d2d] text-sm sm:text-base font-sans leading-relaxed opacity-90">
-            Every bridal sketch & festive motif is hand-drawn with expert perfection. We select and mix high-grade organic henna raw powder to guarantee healthy deep maroon stains for your special day.
+            Every bridal sketch &amp; festive motif is hand-drawn with expert perfection. We select and mix high-grade organic henna raw powder to guarantee healthy deep maroon stains for your special day.
           </p>
         </div>
 
@@ -49,7 +55,7 @@ export function FeaturedServices({ services, profile, setView, previewOnly = fal
               <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
                 <img
                   src={service.imageUrl}
-                  alt={service.title}
+                  alt={`${service.title} in Varanasi by Sandhya`}
                   width={400}
                   height={300}
                   loading="lazy"
@@ -67,24 +73,26 @@ export function FeaturedServices({ services, profile, setView, previewOnly = fal
               </div>
 
               {/* Text Body */}
-              <div className="p-6 flex-1 flex flex-col justify-between">
+              <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between">
                 <div>
-                  <h3 className="text-xl font-serif font-bold text-[#5d0e0e] mb-3 group-hover:text-[#c5a059] transition-colors flex items-center gap-2">
+                  <h3 className="text-lg sm:text-xl font-serif font-bold text-[#5d0e0e] group-hover:text-[#c5a059] transition-colors flex items-center gap-2">
                     <Sparkles size={16} className="text-[#c5a059] shrink-0" />
                     {service.title}
                   </h3>
-                  <p className="text-gray-650 text-xs sm:text-sm leading-relaxed font-sans mb-4">
-                    {service.description}
-                  </p>
                 </div>
 
                 {/* Card footer actions */}
-                <div className="pt-4 border-t border-[#efe1b4]/40 mt-auto">
+                <div className="pt-4 border-t border-[#efe1b4]/40 mt-4">
                   {!previewOnly ? (
                     <a
                       href={`https://wa.me/${cleanWhatsapp}?text=Hello%20Sandhya,%20I%20am%20interested%20in%20your%20"${encodeURIComponent(service.title)}"%20Mehndi%20service.%20Please%20share%20details.`}
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={() => {
+                        if (typeof window !== 'undefined' && (window as unknown as { dataLayer?: object[] }).dataLayer) {
+                          (window as unknown as { dataLayer: object[] }).dataLayer.push({ event: 'contact_whatsapp_click', service: service.title });
+                        }
+                      }}
                       className="w-full inline-flex items-center justify-center gap-2 bg-[#5d0e0e] hover:bg-[#7c1818] text-[#faf3df] hover:text-[#faf7f2] font-sans font-semibold text-xs py-2.5 px-4 rounded-lg tracking-wider uppercase transition-colors"
                     >
                       <WhatsAppIcon size={12} />
@@ -105,8 +113,10 @@ export function FeaturedServices({ services, profile, setView, previewOnly = fal
         {/* View more triggers for Preview blocks */}
         {previewOnly && (
           <div className="mt-12 text-center">
-            <button
-              onClick={() => {
+            <a
+              href="/services"
+              onClick={(e) => {
+                e.preventDefault();
                 setView('services');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
@@ -114,7 +124,57 @@ export function FeaturedServices({ services, profile, setView, previewOnly = fal
             >
               <span>View All Services</span>
               <ArrowRight size={14} />
-            </button>
+            </a>
+          </div>
+        )}
+
+        {/* Contextual internal links for the dedicated Services Page */}
+        {!previewOnly && (
+          <div className="mt-12 pt-8 border-t border-[#c5a059]/20 flex flex-wrap gap-3.5 justify-center text-xs font-semibold uppercase tracking-wider text-[#5d0e0e]">
+            <a
+              href="/gallery"
+              onClick={(e) => {
+                e.preventDefault();
+                setView('gallery');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="hover:text-[#c5a059] transition-colors flex items-center gap-1.5 bg-white px-3.5 py-2 rounded-xl border border-gray-200 shadow-xs"
+            >
+              🌸 Explore Real Portfolio in Gallery
+            </a>
+            <a
+              href="/classes"
+              onClick={(e) => {
+                e.preventDefault();
+                setView('classes');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="hover:text-[#c5a059] transition-colors flex items-center gap-1.5 bg-white px-3.5 py-2 rounded-xl border border-gray-200 shadow-xs"
+            >
+              🎓 Certified Mehndi Classes in Varanasi
+            </a>
+            <a
+              href="/contact"
+              onClick={(e) => {
+                e.preventDefault();
+                setView('contact');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="hover:text-[#c5a059] transition-colors flex items-center gap-1.5 bg-white px-3.5 py-2 rounded-xl border border-gray-200 shadow-xs"
+            >
+              📞 Book Doorstep Home Visit
+            </a>
+            <a
+              href="/"
+              onClick={(e) => {
+                e.preventDefault();
+                setView('home');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="hover:text-[#c5a059] transition-colors flex items-center gap-1.5 bg-white px-3.5 py-2 rounded-xl border border-gray-200 shadow-xs"
+            >
+              🌿 Back to Homepage
+            </a>
           </div>
         )}
 

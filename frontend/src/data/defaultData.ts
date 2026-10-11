@@ -70,7 +70,6 @@ export const DEFAULT_GALLERY: GalleryItem[] = [
     thumbnailUrl: '/images/gallery/gallery-1-thumb.webp',
     category: 'bridal',
     title: 'Royal Indian Bridal Mehndi',
-    description: 'Symmetrical front-back elbow layout with detailed elephant and peacock patterns.',
     price: '5100',
   },
   {
@@ -79,7 +78,6 @@ export const DEFAULT_GALLERY: GalleryItem[] = [
     thumbnailUrl: '/images/gallery/gallery-2-thumb.webp',
     category: 'bridal',
     title: 'Intricate Palm Finery',
-    description: 'Dense traditional grid layout showcasing incredible geometry and perfect lace accents.',
     price: '3500',
   },
   {
@@ -88,7 +86,6 @@ export const DEFAULT_GALLERY: GalleryItem[] = [
     thumbnailUrl: '/images/gallery/gallery-3-thumb.webp',
     category: 'portrait',
     title: 'Bride & Groom Portrait Hand',
-    description: 'Customized bride and groom sketch detailed with traditional floral vine motifs.',
     price: '11000',
   },
   {
@@ -97,7 +94,6 @@ export const DEFAULT_GALLERY: GalleryItem[] = [
     thumbnailUrl: '/images/gallery/gallery-4-thumb.webp',
     category: 'portrait',
     title: 'Radha Krishna Custom Portrait',
-    description: 'Exquisite backhand sketch mapping divine figures for a religious ceremony.',
     price: '12500',
   },
   {
@@ -106,7 +102,6 @@ export const DEFAULT_GALLERY: GalleryItem[] = [
     thumbnailUrl: '/images/gallery/gallery-5-thumb.webp',
     category: 'arabic',
     title: 'Elegant Bold Arabic vine',
-    description: 'Charming minimalist leafy trails on the fingers with neat negative space styling.',
     price: '1500',
   },
   {
@@ -115,7 +110,6 @@ export const DEFAULT_GALLERY: GalleryItem[] = [
     thumbnailUrl: '/images/gallery/gallery-6-thumb.webp',
     category: 'indo-arabic',
     title: 'Modern Indo-Arabic Fusion',
-    description: 'Combining broad shaded leaves with delicate Rajasthani lattice fillings.',
     price: '2500',
   },
   {
@@ -124,7 +118,6 @@ export const DEFAULT_GALLERY: GalleryItem[] = [
     thumbnailUrl: '/images/gallery/gallery-7-thumb.webp',
     category: 'festival',
     title: 'Karwa Chauth Diya Scene',
-    description: 'Traditional circular mandala pattern beautifully celebrating marital bliss.',
     price: '1500',
   },
   {
@@ -133,7 +126,6 @@ export const DEFAULT_GALLERY: GalleryItem[] = [
     thumbnailUrl: '/images/gallery/gallery-8-thumb.webp',
     category: 'customized',
     title: 'Bespoke Henna Artist Craft',
-    description: "Fully styled personalization displaying clients' requested hobbies and pets.",
     price: '3100',
   },
 ];

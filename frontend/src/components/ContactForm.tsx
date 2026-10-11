@@ -5,9 +5,10 @@ import { WhatsAppIcon } from './WhatsAppIcon';
 
 interface ContactFormProps {
   profile: ProfileInfo;
+  setView?: (view: string) => void;
 }
 
-export function ContactForm({ profile }: ContactFormProps) {
+export function ContactForm({ profile, setView }: ContactFormProps) {
   const [clientName, setClientName] = useState('');
   const [eventDate, setEventDate] = useState('');
   const [eventLocation, setEventLocation] = useState('');
@@ -25,6 +26,15 @@ export function ContactForm({ profile }: ContactFormProps) {
     if (!clientName) {
       alert("Please specify your name.");
       return;
+    }
+
+    if (typeof window !== 'undefined' && (window as unknown as { dataLayer?: object[] }).dataLayer) {
+      (window as unknown as { dataLayer: object[] }).dataLayer.push({
+        event: 'appointment_form_submit',
+        service: serviceType,
+        clientName,
+        guestCount,
+      });
     }
 
     // Build booking draft message
@@ -53,6 +63,20 @@ I look forward to discussing your available packages! Sent from Alankarini websi
     <section className="py-12 lg:py-20 bg-[#faf7f2]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
+        {/* Page Header with Primary H1 */}
+        <div className="text-center max-w-3xl mx-auto mb-10">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#efe1b4]/50 text-[#5d0e0e] text-xs font-bold tracking-widest uppercase mb-3 border border-[#c5a059]/30 font-sans">
+            <MapPin size={14} className="text-[#c5a059]" />
+            <span>Varanasi • Doorstep Home Service &amp; Studio</span>
+          </div>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-black text-[#5d0e0e] leading-tight">
+            Contact Alankarini Mehandi Art
+          </h1>
+          <p className="mt-3 text-gray-700 text-sm sm:text-base font-sans leading-relaxed">
+            Get in touch with artist Sandhya for bridal mehndi bookings, doorstep mehndi home visits across Varanasi &amp; Banaras, or enrollment in 35-day mehndi classes.
+          </p>
+        </div>
+
         <div className="flex flex-col lg:grid lg:grid-cols-12 gap-8 lg:gap-12">
           
           {/* Contact Details & Map (Left Column on Desktop, Contents on Mobile) */}
@@ -60,9 +84,9 @@ I look forward to discussing your available packages! Sent from Alankarini websi
             
             {/* Quick Contact Info Card (1st on Mobile, 1st on Desktop) */}
             <div className="order-1 lg:order-1 bg-[#f5efe4] rounded-2xl p-6 md:p-8 border border-[#c5a059]/15 shadow-sm">
-              <h3 className="font-serif text-lg font-bold text-[#5d0e0e] mb-6 flex items-center gap-2">
-                <span>Alankarini Mehndi Art</span>
-              </h3>
+              <h2 className="font-serif text-lg font-bold text-[#5d0e0e] mb-6 flex items-center gap-2">
+                <span>Alankarini Mehandi Art</span>
+              </h2>
 
               <div className="space-y-6">
                 
@@ -362,6 +386,63 @@ I look forward to discussing your available packages! Sent from Alankarini websi
           </div>
 
         </div>
+
+        {/* Contextual Internal Links on Contact Page */}
+        <div className="mt-12 pt-8 border-t border-[#c5a059]/20 flex flex-wrap gap-3.5 justify-center text-xs font-semibold uppercase tracking-wider text-[#5d0e0e]">
+          <a
+            href="/gallery"
+            onClick={(e) => {
+              if (setView) {
+                e.preventDefault();
+                setView('gallery');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }
+            }}
+            className="hover:text-[#c5a059] transition-colors flex items-center gap-1.5 bg-white px-3.5 py-2 rounded-xl border border-gray-200 shadow-xs"
+          >
+            🌸 View Mehndi Designs in Gallery
+          </a>
+          <a
+            href="/services"
+            onClick={(e) => {
+              if (setView) {
+                e.preventDefault();
+                setView('services');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }
+            }}
+            className="hover:text-[#c5a059] transition-colors flex items-center gap-1.5 bg-white px-3.5 py-2 rounded-xl border border-gray-200 shadow-xs"
+          >
+            🌿 Browse Mehndi Services &amp; Packages
+          </a>
+          <a
+            href="/classes"
+            onClick={(e) => {
+              if (setView) {
+                e.preventDefault();
+                setView('classes');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }
+            }}
+            className="hover:text-[#c5a059] transition-colors flex items-center gap-1.5 bg-white px-3.5 py-2 rounded-xl border border-gray-200 shadow-xs"
+          >
+            🎓 Online &amp; Offline Mehndi Classes
+          </a>
+          <a
+            href="/guide"
+            onClick={(e) => {
+              if (setView) {
+                e.preventDefault();
+                setView('guide');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }
+            }}
+            className="hover:text-[#c5a059] transition-colors flex items-center gap-1.5 bg-white px-3.5 py-2 rounded-xl border border-gray-200 shadow-xs"
+          >
+            📖 Complete Varanasi Mehndi Guide &amp; Rates
+          </a>
+        </div>
+
       </div>
     </section>
   );

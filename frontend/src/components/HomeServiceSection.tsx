@@ -94,6 +94,11 @@ export function HomeServiceSection({ profile, setView }: HomeServiceSectionProps
             <div className="pt-4 flex flex-col sm:flex-row gap-3">
               <a
                 href={`tel:${cleanPhone}`}
+                onClick={() => {
+                  if (typeof window !== 'undefined' && (window as unknown as { dataLayer?: object[] }).dataLayer) {
+                    (window as unknown as { dataLayer: object[] }).dataLayer.push({ event: 'contact_call_click', location: 'home_service' });
+                  }
+                }}
                 className="inline-flex items-center justify-center gap-2 bg-[#5d0e0e] hover:bg-[#7c1818] text-[#faf3df] py-3.5 px-6 rounded-xl font-sans font-bold text-xs tracking-wider uppercase shadow-md transition-all active:scale-95"
               >
                 <Phone size={16} />
@@ -104,6 +109,11 @@ export function HomeServiceSection({ profile, setView }: HomeServiceSectionProps
                 href={`https://wa.me/${cleanWhatsapp}?text=Hello%20Sandhya,%20I%20want%20to%20book%20a%20Mehndi%20Artist%20Home%20Service%20in%20Varanasi.%20Please%20share%20availability%20and%20rates.`}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => {
+                  if (typeof window !== 'undefined' && (window as unknown as { dataLayer?: object[] }).dataLayer) {
+                    (window as unknown as { dataLayer: object[] }).dataLayer.push({ event: 'contact_whatsapp_click', location: 'home_service' });
+                  }
+                }}
                 className="inline-flex items-center justify-center gap-2 bg-[#128C7E] hover:bg-[#075E54] text-white py-3.5 px-6 rounded-xl font-sans font-bold text-xs tracking-wider uppercase shadow-md transition-all active:scale-95"
               >
                 <WhatsAppIcon size={16} />
@@ -118,7 +128,7 @@ export function HomeServiceSection({ profile, setView }: HomeServiceSectionProps
             <div className="bg-white p-6 sm:p-8 rounded-3xl border-2 border-[#c5a059]/30 shadow-xl relative">
               <div className="text-center pb-6 border-b border-gray-100">
                 <span className="text-[10px] font-bold uppercase tracking-widest text-[#875914] block mb-1">
-                  ⭐ Varanasi Local SEO Verified ⭐
+                  ⭐ Locally Verified Service in Varanasi ⭐
                 </span>
                 <h3 className="font-serif text-2xl font-bold text-[#5d0e0e]">
                   Looking For a Mehandi Artist Near Me?

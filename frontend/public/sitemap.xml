@@ -2,50 +2,86 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://alankarini-mehandi-art.vercel.app/</loc>
-    <lastmod>2026-09-18</lastmod>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://alankarini-mehandi-art.vercel.app/classes</loc>
-    <lastmod>2026-09-19</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://alankarini-mehandi-art.vercel.app/guide</loc>
-    <lastmod>2026-09-19</lastmod>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://alankarini-mehandi-art.vercel.app/services</loc>
-    <lastmod>2026-09-18</lastmod>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://alankarini-mehandi-art.vercel.app/gallery</loc>
-    <lastmod>2026-09-18</lastmod>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://alankarini-mehandi-art.vercel.app/about</loc>
-    <lastmod>2026-09-18</lastmod>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://alankarini-mehandi-art.vercel.app/contact</loc>
-    <lastmod>2026-09-18</lastmod>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://alankarini-mehandi-art.vercel.app/blog</loc>
-    <lastmod>2026-09-19</lastmod>
+    <loc>https://alankarini-mehandi-art.vercel.app/guide</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://alankarini-mehandi-art.vercel.app/blog</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://alankarini-mehandi-art.vercel.app/blog/bridal-mehndi-artist-varanasi</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://alankarini-mehandi-art.vercel.app/blog/latest-bridal-mehndi-designs</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://alankarini-mehandi-art.vercel.app/blog/mehndi-classes-varanasi-guide</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://alankarini-mehandi-art.vercel.app/blog/arabic-mehndi-designs-guide</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://alankarini-mehandi-art.vercel.app/blog/bridal-mehndi-appointment-preparation</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://alankarini-mehandi-art.vercel.app/blog/rajnikant-gaurav</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
 </urlset>
