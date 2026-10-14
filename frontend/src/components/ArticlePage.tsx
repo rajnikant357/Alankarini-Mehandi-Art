@@ -32,13 +32,13 @@ export function ArticlePage({ profile, setView }: ArticlePageProps) {
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
 
   const tableOfContents = [
-    { id: 'artist-near-me', title: '1. Finding a Top Mehndi Artist Near You in Varanasi' },
-    { id: 'home-service', title: '2. Doorstep Mehndi Home Service & Online Booking' },
-    { id: 'price-charges', title: '3. Transparent Price Guide: Mehndi Charges & Rates' },
-    { id: 'classes-academy', title: '4. 35-Day Mehndi Classes, Academy & Course Fees' },
-    { id: 'tools-stencils', title: '5. Practice Essentials: Acrylic Hands & Stencils vs Freehand' },
-    { id: 'design-trends', title: '6. Trending Styles: Arabic (Aerobic), Katseye & Tattoos' },
-    { id: 'studio-location', title: '7. Varanasi Studio Location & Booking Helpline' },
+    { id: 'artist-near-me', title: '1. Best Mehendi & Mehandi Artist in Varanasi' },
+    { id: 'home-service', title: '2. Doorstep Service: Bridal & Wedding Mehendi Service' },
+    { id: 'price-charges', title: '3. Rates: Bridal Mehndi Design Services & Family Packages' },
+    { id: 'classes-academy', title: '4. Beginner to Advanced Mehendi Classes & Henna Course' },
+    { id: 'tools-stencils', title: '5. Practice Essentials: Acrylic Hands & Organic Mehendi Cones' },
+    { id: 'design-trends', title: '6. Trending Styles: Arabic Mehndi Design Services & Fusion' },
+    { id: 'studio-location', title: '7. Varanasi Studio Location, Makeup Artist Coordination & Booking' },
   ];
 
   const scrollToSection = (id: string) => {
@@ -50,20 +50,24 @@ export function ArticlePage({ profile, setView }: ArticlePageProps) {
 
   const articleFaqs = [
     {
-      q: 'How do I find a reliable female mehndi artist near me in Varanasi with reasonable prices?',
-      a: 'Look for certified artists with verified bridal client portfolios and 100% organic, chemical-free henna formulas. Alankarini Mehndi Art by artist Sandhya in Durgakund, Varanasi offers doorstep home visits starting at transparent rates, with bridal packages from ₹5,100 and guest hands from ₹250. Call/WhatsApp +91 9336814631 for free consultation.'
+      q: 'How do I find the best mehendi artist in varanasi with reasonable prices and doorstep service?',
+      a: 'Look for certified bridal mehndi artists with verified client portfolios and 100% organic mehendi cones. Alankarini Mehndi Art by artist Sandhya in Durgakund, Varanasi is recognized as the best mehandi artist in varanasi, offering premium doorstep service across the city with bridal mehndi design services from ₹5,100 and guest mehendi service from ₹250. Call/WhatsApp +91 9336814631 for free consultation.'
     },
     {
-      q: 'What are the charges for mehndi home service near me in Banaras?',
-      a: 'Doorstep mehndi home service across Varanasi (Durgakund, Lanka, Assi Ghat, Sigra, Bhelupur, Godowlia, Cantt, Sarnath) includes customized bridal, semi-bridal, and family packages with zero hidden traveling surcharges within city limits. You can reserve directly via online mehndi booking.'
+      q: 'What are the charges for wedding mehendi service and doorstep service in Banaras?',
+      a: 'Our doorstep service across Varanasi (Durgakund, Lanka, Assi Ghat, Sigra, Bhelupur, Godowlia, Cantt, Sarnath) includes customized wedding mehendi, bride mehendi, groom mehendi, family mehendi service, and sangeet mehendi with zero hidden traveling surcharges within city limits. You can reserve directly via online mehndi booking.'
     },
     {
-      q: 'What is the fee and duration for mehndi classes near me?',
-      a: 'Alankarini Mehandi Academy offers a 35-day comprehensive course with an identical 4-module syllabus. Online Batches: Online Go Batch at ₹1,500 (classes only) and Online Plus Batch at ₹2,000 (includes Henna Starter Kit delivered + Completion Certificate). Offline Studio Classes in Durgakund, Banaras: Offline Go Batch at ₹3,500 (classes only) and Offline Plus Batch at ₹4,000 (includes take-home kit + physical certificate).'
+      q: 'What is the fee and duration for beginner to advanced mehendi classes in Varanasi?',
+      a: 'Alankarini Mehandi Academy offers a 35-day comprehensive henna course and mehendi design training with an identical 4-module syllabus. Online Batches: Online Go Batch at ₹1,500 (classes only) and Online Plus Batch at ₹2,000 (includes Henna Starter Kit delivered + Completion Certificate). Offline Studio Classes in Durgakund, Banaras: Offline Go Batch at ₹3,500 (classes only) and Offline Plus Batch at ₹4,000 (includes take-home kit + physical certificate).'
     },
     {
-      q: 'What are aerobic mehndi designs and Katseye mehndi designs?',
-      a: '"Aerobic mehndi design" is a common search term used by people looking for bold, flowing Arabic mehndi designs featuring floral shaded petals, negative filling, and botanical vines. "Katseye mehndi design" is a trending contemporary fusion aesthetic featuring delicate palm accents and minimalist finger motifs inspired by modern global fashion.'
+      q: 'What styles are covered under Arabic mehndi design services and Indo-Arabic mehendi?',
+      a: 'Arabic mehndi design services feature bold contours, shaded floral petals, negative space fills, and flowing diagonal bel trails. Indo-Arabic mehendi blends these graceful Gulf vines with intricate Indian jaali lattices and traditional designs, ideal for engagement mehendi and festive celebrations.'
+    },
+    {
+      q: 'Do you offer festival henna and a teej mehndi artist in varanasi?',
+      a: 'Yes, Sandhya provides doorstep occasionally and festival mehendi across Varanasi for Hariyali Teej, Hartalika Teej, Karwa Chauth, Raksha Bandhan, and Diwali using freshly made organic mehendi cones that deliver rich maroon stains.'
     },
     {
       q: 'Should I buy mehndi stencils or learn on an acrylic hand for practice?',
@@ -83,13 +87,14 @@ export function ArticlePage({ profile, setView }: ArticlePageProps) {
           </div>
 
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-black text-[#5d0e0e] leading-tight mb-4">
-            The Complete Varanasi Mehndi Guide: Top Artists, Home Service, Course Fees &amp; Design Directory
+            The Complete Varanasi Mehndi Guide: Best Mehendi Artist, Bridal Mehndi Design Services, Doorstep Service &amp; Course Fees
           </h1>
 
           <p className="text-sm sm:text-base text-gray-700 leading-relaxed mb-6 font-sans">
-            Whether you are searching for a certified <strong>mehndi artist near me</strong> in Banaras, booking doorstep 
-            <strong> mehendi home service near me</strong>, comparing <strong>mehndi artist charges with price</strong>, or looking for 
-            the most reputable <strong>mehndi classes near me with fees</strong>, this complete handbook covers everything you need to know.
+            Whether you are searching for the <strong>best mehendi artist in varanasi</strong> or top <strong>mehandi artist in varanasi</strong>, 
+            booking <strong>doorstep service</strong> for <strong>bridal mehndi design services</strong> and <strong>wedding mehendi service</strong>, 
+            comparing <strong>mehndi artist charges with price</strong>, or enrolling in <strong>beginner to advanced mehendi classes</strong> and 
+            <strong>henna course with fees</strong>, this complete handbook covers everything you need to know.
           </p>
 
           <div className="flex flex-wrap items-center justify-between gap-4 pt-6 border-t border-gray-100 text-xs text-gray-600">
@@ -99,7 +104,7 @@ export function ArticlePage({ profile, setView }: ArticlePageProps) {
               </div>
               <div>
                 <p className="font-bold text-[#5d0e0e]">By Artist Sandhya</p>
-                <p className="text-[11px] text-gray-500">Lead Artist at Alankarini Mehndi Art • Varanasi</p>
+                <p className="text-[11px] text-gray-500">Lead Bridal Mehendi Artist at Alankarini Mehndi Art • Varanasi</p>
               </div>
             </div>
             <div className="flex items-center gap-4 text-[11px]">
@@ -107,10 +112,10 @@ export function ArticlePage({ profile, setView }: ArticlePageProps) {
                 <Clock size={13} className="text-[#c5a059]" /> 8 Min Read
               </span>
               <span className="flex items-center gap-1">
-                <Calendar size={13} className="text-[#c5a059]" /> Updated September 2026
+                <Calendar size={13} className="text-[#c5a059]" /> Updated October 2026
               </span>
               <span className="bg-emerald-50 text-emerald-800 font-semibold px-2.5 py-1 rounded-full border border-emerald-200">
-                Verified Guide
+                Verified Local Guide
               </span>
             </div>
           </div>
@@ -143,50 +148,51 @@ export function ArticlePage({ profile, setView }: ArticlePageProps) {
         <section id="artist-near-me" className="bg-white rounded-3xl p-6 sm:p-10 border border-[#c5a059]/25 shadow-sm mb-10">
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#875914] mb-2">
             <Sparkles size={14} />
-            <span>Section 1 • Local Artist Selection</span>
+            <span>Section 1 • Best Mehendi Artist in Varanasi</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#5d0e0e] mb-4">
-            Finding the Best Mehndi Artist in Varanasi &amp; Near You
+            Best Mehendi Artist in Varanasi &amp; Professional Mehandi Artist
           </h2>
 
           <div className="space-y-4 text-sm leading-relaxed text-gray-750">
             <p>
               When a wedding, teej, karwa chauth, or auspicious ceremony approaches, one of the most common searches on Google is 
-              <strong> "mehndi artist near me"</strong>, <strong>"mehendi artist near me"</strong>, or <strong>"mehandi artist in varanasi"</strong>. 
-              While you might spot temporary artists sitting in shopping centers or casual <strong>mehendi artists in mall near me</strong>, 
-              intricate bridal ceremonies demand the proven artistry of a seasoned, dedicated <strong>female mehndi artist near me</strong>.
+              <strong> "best mehendi artist in varanasi"</strong>, <strong>"mehandi artist in varanasi"</strong>, <strong>"mehndi designer in varanasi"</strong>, 
+              or <strong>"best bridal mehendi design in varanasi"</strong>. While you might spot casual artists in shopping centers, 
+              sacred bridal ceremonies demand the proven artistry of a seasoned, dedicated <strong>bridal mehendi artist</strong> and 
+              <strong>professional mehendi artist</strong>.
             </p>
 
             <p>
-              At <strong>Alankarini Mehndi Art Varanasi</strong>, artist Sandhya brings more than 3+ years of professional wedding specialization. 
-              Whether you are looking for a traditional <strong>varanasi mehndi artist</strong> who understands sacred Banarasi motifs (like lotus ponds, 
-              shahnai, kalash, and Radha-Krishna portraits) or an innovative designer adept at modern Gulf and Indo-Arabic fusion, selecting 
-              a reputable <strong>professional mehndi artist near me</strong> ensures flawless symmetry, neat cone pressure, and guaranteed dark maroon stains.
+              At <strong>Alankarini Mehndi Art Varanasi</strong>, lead artist Sandhya is celebrated as the premier <strong>traditional mehendi artist</strong> and 
+              <strong>arabic mehendi artist</strong> with over 3+ years of bridal specialization. Whether you seek authentic <strong>mehendi arabic design in varanasi</strong>, 
+              festive styling from a dedicated <strong>teej mehndi artist in varanasi</strong>, or intricate <strong>customized mehendi design</strong> featuring 
+              Banarasi lotus ponds, shahnai, kalash, and portrait figures, our studio delivers impeccable line symmetry and guaranteed dark maroon stains.
             </p>
 
             <div className="p-4 bg-[#faf7f2] rounded-2xl border border-[#c5a059]/30 my-4">
               <h3 className="font-serif font-bold text-sm text-[#5d0e0e] mb-2">
-                Key Checklist When Choosing a Mehndi Artist Near You:
+                Key Checklist When Choosing the Best Mehendi Artist in Varanasi:
               </h3>
               <ul className="space-y-1.5 text-xs text-gray-700">
                 <li className="flex items-start gap-2">
                   <CheckCircle2 size={14} className="text-emerald-600 shrink-0 mt-0.5" />
-                  <span><strong>100% Chemical-Free Organic Henna:</strong> Ensure the artist does not use toxic black chemical cones with synthetic dyes.</span>
+                  <span><strong>100% Organic Mehendi Cones:</strong> Ensure your mehndi designer in varanasi handcrafts fresh, chemical-free henna cones without toxic PPD.</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle2 size={14} className="text-emerald-600 shrink-0 mt-0.5" />
-                  <span><strong>Real Portfolio Photographs:</strong> Verify unedited photos of custom bride &amp; groom face sketching and full arm coverage.</span>
+                  <span><strong>Customized Bridal Portrayal:</strong> Verify authentic portfolio photos of bride mehendi, groom mehendi, and customized wedding mehendi storytelling.</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle2 size={14} className="text-emerald-600 shrink-0 mt-0.5" />
-                  <span><strong>Availability &amp; Open Hours:</strong> If looking for a <strong>mehandi near me open now</strong>, confirm slot booking in advance to avoid wedding rush delays.</span>
+                  <span><strong>Reliable Doorstep Service:</strong> Check if the artist provides doorstep service across Varanasi hotels, banquets, and homes on your wedding day.</span>
                 </li>
               </ul>
             </div>
 
             <p>
-              Whether you compare local Banaras legends or established centers like <strong>Kanha mehndi art</strong>, Alankarini stands out for our 
-              direct, personal client touch, hygienic natural paste, and customized storytelling layouts tailored to every bride's love journey.
+              Whether you compare local Banaras artists or commercial studios like <strong>Kanha mehndi art</strong>, Alankarini stands out for our 
+              uncompromising focus on handmade organic cones, gentle skin care, and bespoke bridal storytelling tailored to every couple's journey.
             </p>
           </div>
         </section>
@@ -195,27 +201,30 @@ export function ArticlePage({ profile, setView }: ArticlePageProps) {
         <section id="home-service" className="bg-white rounded-3xl p-6 sm:p-10 border border-[#c5a059]/25 shadow-sm mb-10">
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#c5a059] mb-2">
             <MapPin size={14} />
-            <span>Section 2 • Doorstep Convenience</span>
+            <span>Section 2 • Doorstep Service Across Varanasi</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#5d0e0e] mb-4">
-            Doorstep Mehndi Home Service in Varanasi &amp; Instant Booking
+            Doorstep Service: Bridal Mehendi Service &amp; Wedding Mehendi Service in Varanasi
           </h2>
 
           <div className="space-y-4 text-sm leading-relaxed text-gray-750">
             <p>
-              Planning a wedding or sangeet is hectic. Traveling across crowded city streets before your wedding day is stressful. 
-              That is why searches for <strong>"mehendi home service near me"</strong> and <strong>"mehndi near me home service"</strong> have skyrocketed.
+              Planning a wedding, sangeet, or baby shower is an elaborate task. Traveling across crowded city streets before your big day causes unnecessary fatigue. 
+              That is why our <strong>doorstep service</strong> for <strong>bridal mehendi service</strong> and <strong>wedding mehendi service</strong> has become 
+              the preferred choice for brides throughout Varanasi and Banaras.
             </p>
 
             <p>
-              With Alankarini's dedicated <strong>mehendi artist near me home service</strong>, artist Sandhya and her skilled assistant team travel 
-              directly to your residence, bridal hotel suite, or wedding banquet hall anywhere in Varanasi and Banaras.
+              With Alankarini's dedicated <strong>doorstep service</strong>, artist Sandhya and her team of professional mehendi designers arrive directly 
+              at your home, bridal suite, or banquet venue. We offer complete celebration packages covering <strong>bride mehendi</strong>, <strong>groom mehendi</strong>, 
+              <strong>family mehendi service</strong>, <strong>guest mehendi service</strong>, <strong>engagement mehendi</strong>, <strong>sangeet mehendi</strong>, 
+              <strong>haldi function mehendi</strong>, and joyful <strong>baby showermehendi</strong>.
             </p>
 
             {/* Areas served grid */}
             <div className="bg-[#faf7f2] p-5 rounded-2xl border border-[#c5a059]/20 my-4">
               <h4 className="font-serif font-bold text-sm text-[#5d0e0e] mb-2">
-                Local Varanasi Areas Covered with Doorstep Home Service:
+                Local Varanasi Areas Covered with Doorstep Service:
               </h4>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs text-gray-700">
                 <span className="bg-white p-2 rounded-lg border border-gray-200/70">📍 Durgakund &amp; Jawahar Nagar</span>
@@ -231,8 +240,8 @@ export function ArticlePage({ profile, setView }: ArticlePageProps) {
             </div>
 
             <p>
-              Booking your session is simple. Through our verified <strong>online mehndi booking</strong> hotline, you can confirm artist Sandhya's 
-              availability instantly on WhatsApp. We provide upfront date reservations without hidden transport charges.
+              Reserving your wedding service is fast and secure. Through our verified <strong>online mehndi booking</strong> hotline, you can confirm artist Sandhya's 
+              availability instantly on WhatsApp. We provide upfront date reservations without hidden transport charges within Varanasi city limits.
             </p>
 
             <div className="pt-2 flex flex-col sm:flex-row gap-3">
@@ -243,7 +252,7 @@ export function ArticlePage({ profile, setView }: ArticlePageProps) {
                 className="inline-flex items-center justify-center gap-2 bg-[#128C7E] hover:bg-[#075E54] text-white py-3 px-6 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors shadow-sm"
               >
                 <WhatsAppIcon size={16} />
-                <span>Instant Home Service WhatsApp Booking</span>
+                <span>Instant Doorstep Service WhatsApp Booking</span>
               </a>
               <a
                 href={`tel:${cleanPhone}`}
@@ -263,19 +272,19 @@ export function ArticlePage({ profile, setView }: ArticlePageProps) {
             <span>Section 3 • Rates &amp; Packages</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#5d0e0e] mb-4">
-            Transparent Pricing: Mehndi Artist Near Me with Price &amp; Charges
+            Transparent Pricing: Bridal Mehndi Design Services &amp; Doorstep Rates in Varanasi
           </h2>
 
           <div className="space-y-4 text-sm leading-relaxed text-gray-750">
             <p>
               One of the biggest concerns for brides and event planners is unexpected quote inflation. 
               Searches for <strong>"mehndi artist near me with price"</strong>, <strong>"mehendi artist near me with price"</strong>, 
-              <strong>"mehndi near me with price"</strong>, and <strong>"their price"</strong> prove that customers value transparency above all else.
+              <strong>"bridal mehndi design services"</strong>, and <strong>"doorstep service rates"</strong> prove that customers value transparency above all else.
             </p>
 
             <p>
               At Alankarini Mehndi Art, we believe in upfront, ethical pricing. Below is our standard rate reference for bridal, groom, 
-              and guest mehndi services in Varanasi:
+              and guest mehndi services across Varanasi:
             </p>
 
             {/* Price comparison table */}
@@ -290,29 +299,29 @@ export function ArticlePage({ profile, setView }: ArticlePageProps) {
                 </thead>
                 <tbody className="divide-y divide-gray-100 text-gray-700">
                   <tr className="hover:bg-[#faf7f2]/60 transition-colors">
-                    <td className="p-3.5 sm:p-4 font-bold text-[#5d0e0e]">Royal Bridal Mehndi</td>
+                    <td className="p-3.5 sm:p-4 font-bold text-[#5d0e0e]">Bridal Mehndi Design Services (Royal Bridal)</td>
                     <td className="p-3.5 sm:p-4 font-bold text-emerald-800">From ₹5,100</td>
-                    <td className="p-3.5 sm:p-4 text-xs">Full elbow-length hands, custom bride-groom portrait sketches, shahnai/doli scenes, and matching feet designs.</td>
+                    <td className="p-3.5 sm:p-4 text-xs">Full elbow-length hands, traditional bridal mehendi, custom bride-groom portrait sketches, shahnai/doli scenes, and matching feet designs with fresh organic mehendi cones.</td>
                   </tr>
                   <tr className="hover:bg-[#faf7f2]/60 transition-colors">
-                    <td className="p-3.5 sm:p-4 font-bold text-[#5d0e0e]">Semi-Bridal / Engagement</td>
+                    <td className="p-3.5 sm:p-4 font-bold text-[#5d0e0e]">Indo - Arabic Mehndi Design Services &amp; Engagement Mehendi</td>
                     <td className="p-3.5 sm:p-4 font-bold text-emerald-800">₹2,100 – ₹3,500</td>
-                    <td className="p-3.5 sm:p-4 text-xs">Mid-forearm coverage with dense Rajasthani jaali grids, shaded floral mandalas, and wrist cuffs.</td>
+                    <td className="p-3.5 sm:p-4 text-xs">Mid-forearm coverage with dense Rajasthani jaali grids, shaded floral mandalas, arabic bridal mehendi accents, and wrist cuffs.</td>
                   </tr>
                   <tr className="hover:bg-[#faf7f2]/60 transition-colors">
-                    <td className="p-3.5 sm:p-4 font-bold text-[#5d0e0e]">Groom (Dulha) Mehndi</td>
+                    <td className="p-3.5 sm:p-4 font-bold text-[#5d0e0e]">Customized Wedding Mehendi &amp; Groom Mehendi</td>
                     <td className="p-3.5 sm:p-4 font-bold text-emerald-800">₹1,100 – ₹2,100</td>
-                    <td className="p-3.5 sm:p-4 text-xs">Auspicious mandalas, wedding date calligraphed, bride's name hidden in fine lines, and palm accents.</td>
+                    <td className="p-3.5 sm:p-4 text-xs">Auspicious mandalas, wedding date calligraphed, bride's name hidden in fine lines, and subtle palm accents for grooms.</td>
                   </tr>
                   <tr className="hover:bg-[#faf7f2]/60 transition-colors">
-                    <td className="p-3.5 sm:p-4 font-bold text-[#5d0e0e]">Arabic / Indo-Arabic Bel</td>
+                    <td className="p-3.5 sm:p-4 font-bold text-[#5d0e0e]">Arabic Mehndi Design Services &amp; Indo-Arabic Mehendi</td>
                     <td className="p-3.5 sm:p-4 font-bold text-emerald-800">₹500 – ₹1,200</td>
-                    <td className="p-3.5 sm:p-4 text-xs">Flowing diagonal floral trails, negative filling, and finger ornament accents.</td>
+                    <td className="p-3.5 sm:p-4 text-xs">Flowing diagonal floral trails, negative filling, and finger ornament accents crafted by our expert arabic mehendi artist.</td>
                   </tr>
                   <tr className="hover:bg-[#faf7f2]/60 transition-colors">
-                    <td className="p-3.5 sm:p-4 font-bold text-[#5d0e0e]">Guest &amp; Family Mehndi</td>
+                    <td className="p-3.5 sm:p-4 font-bold text-[#5d0e0e]">Family Mehendi Service, Guest Mehendi Service &amp; Baby Showermehendi</td>
                     <td className="p-3.5 sm:p-4 font-bold text-emerald-800">From ₹250 / hand</td>
-                    <td className="p-3.5 sm:p-4 text-xs">Fast, elegant designs for wedding guests, sangeet parties, and festive celebrations.</td>
+                    <td className="p-3.5 sm:p-4 text-xs">Fast, elegant designs for wedding guests, sangeet mehendi, haldi function mehendi, baby showermehendi, and festive gatherings.</td>
                   </tr>
                 </tbody>
               </table>
@@ -332,19 +341,22 @@ export function ArticlePage({ profile, setView }: ArticlePageProps) {
             <span>Section 4 • Academy &amp; Certification</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#5d0e0e] mb-4">
-            Professional Mehndi Training Classes &amp; Academy in Banaras
+            Beginner to Advanced Mehendi Classes &amp; Professional Mehendi Course in Varanasi
           </h2>
 
           <div className="space-y-4 text-sm leading-relaxed text-gray-750">
             <p>
               Looking to transform your artistic passion into a thriving profession? Google is flooded with queries like 
-              <strong> "mehndi class near me"</strong>, <strong>"mehndi training classes near me"</strong>, <strong>"mehndi academy near me"</strong>, 
-              <strong>"professional mehandi classes near me"</strong>, and <strong>"mehndi classes near me with fees"</strong>.
+              <strong> "mehendi classes for beginners"</strong>, <strong>"beginner mehndi classes"</strong>, <strong>"bridal mehendi classes"</strong>, 
+              <strong>"arabic mehendi classes"</strong>, <strong>"advanced mehendi classes"</strong>, <strong>"mehendi design training"</strong>, 
+              <strong>"professional mehendi course"</strong>, <strong>"henna course"</strong>, and <strong>"mehndi coursese with fees"</strong>.
             </p>
 
             <p>
-              At <strong>Alankarini Mehandi Academy</strong>, artist Sandhya conducts an intensive, structured 
-              <strong> 35-day comprehensive mehandi course</strong> designed for both absolute beginners and aspiring bridal professionals.
+              At <strong>Alankarini Mehandi Academy</strong>, artist Sandhya conducts structured 
+              <strong> beginner to advanced mehendi classes</strong> covering <strong>basic mehndi</strong>, <strong>basic mehandi</strong>, 
+              <strong>advanced mehandi</strong>, <strong>kids mehandi classes</strong>, and professional bridal figures over an intensive 35-day curriculum. 
+              We offer both in-person offline studio sessions in Durgakund and interactive <strong>online mehendi classes</strong> for remote learners.
             </p>
 
             {/* Course Terms Callout */}
@@ -364,7 +376,7 @@ export function ArticlePage({ profile, setView }: ArticlePageProps) {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-4">
               <div className="p-4 rounded-2xl border border-[#c5a059]/30 bg-[#faf7f2]">
                 <span className="text-[10px] font-bold uppercase tracking-widest text-[#5d0e0e] bg-[#efe1b4]/70 px-2 py-0.5 rounded">
-                  Online Live Batches (Zoom / Meet)
+                  Online Mehendi Classes (Zoom / Meet)
                 </span>
                 <h5 className="font-serif font-bold text-base text-[#5d0e0e] mt-2">Online Mehandi Batches (35 Days)</h5>
                 <ul className="mt-2 space-y-1.5 text-xs text-gray-700">
@@ -391,30 +403,30 @@ export function ArticlePage({ profile, setView }: ArticlePageProps) {
 
             <div className="space-y-3">
               <div className="p-3.5 rounded-xl bg-white border border-gray-200">
-                <span className="text-xs font-bold text-[#5d0e0e]">Part 1: Basic Mehandi Foundation (15 Essential Topics)</span>
+                <span className="text-xs font-bold text-[#5d0e0e]">Part 1: Basic Mehndi &amp; Basic Mehandi Foundation (15 Essential Topics)</span>
                 <p className="text-xs text-gray-600 mt-1">
-                  Cone rolling &amp; paste making, Arabic elements &amp; shading, flowers design &amp; leaves, basic elements, partition belt design, 
+                  Cone rolling &amp; paste making with organic mehendi cones, Arabic elements &amp; shading, flowers design &amp; leaves, basic elements, partition belt design, 
                   fillup &amp; belt design, negative filling, dark and light patches, birds (parrot &amp; swan), startup design, peacock design, 
                   mandala design, finger design, Indian wedding symbols, and full hand compositions.
                 </p>
               </div>
 
               <div className="p-3.5 rounded-xl bg-white border border-gray-200">
-                <span className="text-xs font-bold text-[#5d0e0e]">Part 2: Semi Portrait &amp; Full Bridal</span>
+                <span className="text-xs font-bold text-[#5d0e0e]">Part 2: Semi Portrait &amp; Bridal Mehendi Classes</span>
                 <p className="text-xs text-gray-600 mt-1">
                   All face structure proportions, half body structure, detailed sketches of eye, hand, lips, and nose, followed by full body Bride and Groom figures.
                 </p>
               </div>
 
               <div className="p-3.5 rounded-xl bg-white border border-gray-200">
-                <span className="text-xs font-bold text-[#5d0e0e]">Part 3: Special Mastery Session (Chemistry &amp; Flow)</span>
+                <span className="text-xs font-bold text-[#5d0e0e]">Part 3: Special Mastery Session (Chemistry &amp; Mehendi Cones Flow)</span>
                 <p className="text-xs text-gray-600 mt-1">
                   Mixology masterclass, cone making (perfect size &amp; flow secrets), paste making (dark stain, long result formula), and complete doubt-solving.
                 </p>
               </div>
 
               <div className="p-3.5 rounded-xl bg-white border border-gray-200">
-                <span className="text-xs font-bold text-[#5d0e0e]">Part 4: Instagram Handling &amp; Business Growth</span>
+                <span className="text-xs font-bold text-[#5d0e0e]">Part 4: Instagram Handling &amp; Business Growth for Mehndi Designers</span>
                 <p className="text-xs text-gray-600 mt-1">
                   How to make reels that go viral, hashtag strategy &amp; timing tricks, how to connect with bridal clients in DMs, and personal branding tips for artists.
                 </p>
@@ -437,31 +449,31 @@ export function ArticlePage({ profile, setView }: ArticlePageProps) {
         <section id="tools-stencils" className="bg-white rounded-3xl p-6 sm:p-10 border border-[#c5a059]/25 shadow-sm mb-10">
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#c5a059] mb-2">
             <Package size={14} />
-            <span>Section 5 • Learning Supplies &amp; Tools</span>
+            <span>Section 5 • Learning Supplies &amp; Organic Cones</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#5d0e0e] mb-4">
-            Practice Essentials: Acrylic Hands &amp; Books vs Henna Stencils
+            Practice Essentials: Acrylic Hands &amp; Organic Mehendi Cones vs Stencils
           </h2>
 
           <div className="space-y-4 text-sm leading-relaxed text-gray-750">
             <p>
               When beginners start learning henna or preparing for festive gatherings, queries like 
-              <strong> "mehndi stencil near me"</strong>, <strong>"mehendi stencil stickers"</strong>, <strong>"buy mehndi stencil"</strong>, 
+              <strong> "mehndi stencil near me"</strong>, <strong>"mehendi stencil stickers"</strong>, <strong>"organic mehendi cones"</strong>, 
               <strong>"bridal mehendi stencil"</strong>, and <strong>"acrylic hand for mehndi practice"</strong> are very common.
             </p>
 
             <p>
-              Here is what aspiring artists and customers should know about learning tools versus stencil stickers:
+              Here is what aspiring artists and bridal clients should know about learning tools, handmade <strong>mehendi cones</strong>, and temporary stickers:
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
               <div className="p-4 rounded-2xl bg-[#faf7f2] border border-[#c5a059]/30">
                 <h4 className="font-serif font-bold text-sm text-[#5d0e0e] mb-2">
-                  1. Washable Acrylic Hands &amp; Practice Books
+                  1. Washable Acrylic Hands &amp; Practice Sheets
                 </h4>
                 <p className="text-xs text-gray-700 leading-relaxed">
-                  For anyone joining a <strong>mehndi course near me</strong>, practicing on an <strong>acrylic hand for mehndi practice</strong> and 
-                  structured <strong>mehndi book practice</strong> sheets is the single most effective way to build muscle memory. 
+                  For anyone joining a <strong>mehndi course near me</strong> or <strong>heena class</strong>, practicing on an <strong>acrylic hand for mehndi practice</strong> and 
+                  structured practice books is the single most effective way to build muscle memory. 
                   Acrylic boards can be wiped clean with a wet cloth hundreds of times, allowing you to master fine line pressure, circles, 
                   humps, and bridal jaalis before applying paste onto living skin.
                 </p>
@@ -469,12 +481,12 @@ export function ArticlePage({ profile, setView }: ArticlePageProps) {
 
               <div className="p-4 rounded-2xl bg-[#faf7f2] border border-[#5d0e0e]/20">
                 <h4 className="font-serif font-bold text-sm text-[#5d0e0e] mb-2">
-                  2. Pre-Cut Henna Stencils &amp; Sticker Sheets
+                  2. Handcrafted Organic Mehendi Cones
                 </h4>
                 <p className="text-xs text-gray-700 leading-relaxed">
-                  Searches for <strong>mehndi stickers near me shop</strong> or <strong>mehendi shop near me</strong> often seek adhesive plastic cutout stencils. 
-                  While stencils are fun for young children or emergency touchups, they cannot recreate the intricate depth, personalized bride-groom portraits, 
-                  or anatomical flow of true freehand bridal art. In our academy, students learn 100% freehand mastery.
+                  Avoid synthetic black chemical cones sold in retail markets. At Alankarini, our <strong>mehendi cones</strong> are rolled by hand using 
+                  micro-fine cellophane tips and filled with triple-sifted Rajasthani henna, eucalyptus oil, and cajeput oil. This ensures smooth flow for 
+                  razor-sharp outlines and guarantees a dark mahogany stain for every bride.
                 </p>
               </div>
             </div>
@@ -485,48 +497,55 @@ export function ArticlePage({ profile, setView }: ArticlePageProps) {
         <section id="design-trends" className="bg-white rounded-3xl p-6 sm:p-10 border border-[#c5a059]/25 shadow-sm mb-10">
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#c5a059] mb-2">
             <Palette size={14} />
-            <span>Section 6 • Aesthetics &amp; Innovations</span>
+            <span>Section 6 • Aesthetics &amp; Design Directory</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#5d0e0e] mb-4">
-            Trending Mehndi Styles: Arabic (Aerobic), Katseye &amp; Modern Tattoos
+            Trending Styles: Arabic Mehndi Design Services, Moroccan, Pakistani &amp; Fusion
           </h2>
 
           <div className="space-y-4 text-sm leading-relaxed text-gray-750">
             <p>
-              Henna fashion evolves with every wedding season. Several fascinating search trends have emerged recently:
+              Henna fashion evolves with every wedding season. Our master studio in Varanasi specializes in all timeless traditions and modern global movements:
             </p>
 
             <ul className="space-y-3 text-xs sm:text-sm text-gray-750">
               <li className="p-3.5 rounded-xl bg-[#faf7f2] border border-[#c5a059]/20">
-                <strong className="text-[#5d0e0e]">"Aerobic Mehndi Design" &amp; Arabic Floral Art:</strong>
+                <strong className="text-[#5d0e0e]">Arabic Mehndi Design Services &amp; Mehendi Arabic Design in Varanasi:</strong>
                 <p className="mt-1 text-xs text-gray-650">
-                  Many users type <strong>"aerobic mehndi design"</strong> or <strong>"aerobics mehndi"</strong> when looking for flowing 
-                  <strong> arabic floral mehndi designs</strong>! These patterns feature bold contour lines, shaded lotus petals, negative space fills, 
-                  and diagonal wrist-to-finger trails that look chic, modern, and uncluttered.
+                  Often searched as <strong>"aerobic mehndi design"</strong> or <strong>"mehendi arabic design in varanasi"</strong>, our Arabic henna services feature bold 
+                  contour lines, shaded lotus petals, negative space fills, and flowing diagonal wrist-to-finger trails that look chic, modern, and uncluttered.
                 </p>
               </li>
 
               <li className="p-3.5 rounded-xl bg-[#faf7f2] border border-[#c5a059]/20">
-                <strong className="text-[#5d0e0e]">"Katseye Mehndi Design":</strong>
+                <strong className="text-[#5d0e0e]">Indian Mehendi, Indian Mehandi &amp; Traditional Designs:</strong>
                 <p className="mt-1 text-xs text-gray-650">
-                  Inspired by global pop trends and Gen-Z aesthetics, <strong>katseye mehndi designs</strong> focus on minimalist fingertip ornaments, 
-                  delicate starburst mandalas on the back of the palm, and aesthetic symmetry perfect for cocktail dresses and Indo-Western attire.
+                  Our <strong>Indian mehndi design services</strong> feature dense, uninterrupted storytelling: royal peacocks, shahnai, kalash, sacred lotus blooms, 
+                  and intricate Radha-Krishna portraits that adorn bridal palms up to the elbows with auspicious grace.
                 </p>
               </li>
 
               <li className="p-3.5 rounded-xl bg-[#faf7f2] border border-[#c5a059]/20">
-                <strong className="text-[#5d0e0e]">Classical Mehndi &amp; Mehendi Corner Layouts:</strong>
+                <strong className="text-[#5d0e0e]">Indo - Arabic Mehndi Design Services &amp; Indo-Arabic Mehendi:</strong>
                 <p className="mt-1 text-xs text-gray-650">
-                  Traditionalists love <strong>classical mehndi</strong> featuring Rajasthani shehnai, doli, peacock plumage, and ornate 
-                  <strong> mehendi corner designs</strong> that frame wrists and ankles like royal jewellery.
+                  Combining sweeping Gulf floral contours with fine Rajasthani crosshatch jaali work, <strong>Indo Arabic mehandi</strong> offers the perfect balance 
+                  of boldness and intricacy for engagement ceremonies and sangeet nights.
                 </p>
               </li>
 
               <li className="p-3.5 rounded-xl bg-[#faf7f2] border border-[#c5a059]/20">
-                <strong className="text-[#5d0e0e]">Semi-Permanent Mahendi Tattoos:</strong>
+                <strong className="text-[#5d0e0e]">Moroccan Mehandi, Pakistani Mehandi Design &amp; Western Mehandi:</strong>
                 <p className="mt-1 text-xs text-gray-650">
-                  Searching for a painless, natural body art alternative? <strong>Mahendi tattoo</strong> designs on the collarbone, wrist, or shoulder 
-                  provide rich organic maroon stains that last 10–14 days without needles or harmful chemicals.
+                  We offer unique international styles including geometric diamond grids from <strong>Moroccan mehandi</strong>, delicate open lace and floral cuffs 
+                  from <strong>Pakistani mehandi design</strong>, and minimalist finger jewellery strips from <strong>Western mehandi</strong> and <strong>Indo Western mehandi</strong>.
+                </p>
+              </li>
+
+              <li className="p-3.5 rounded-xl bg-[#faf7f2] border border-[#c5a059]/20">
+                <strong className="text-[#5d0e0e]">Occasionally and Festival Mehendi with Teej Mehndi Artist in Varanasi:</strong>
+                <p className="mt-1 text-xs text-gray-650">
+                  During festive seasons, artist Sandhya provides doorstep visits across Varanasi as a top <strong>teej mehndi artist in varanasi</strong> for 
+                  Hariyali Teej, Hartalika Teej, Karwa Chauth, Raksha Bandhan, and Diwali with fast, vibrant patterns.
                 </p>
               </li>
             </ul>
@@ -537,23 +556,23 @@ export function ArticlePage({ profile, setView }: ArticlePageProps) {
         <section id="studio-location" className="bg-white rounded-3xl p-6 sm:p-10 border border-[#c5a059]/25 shadow-sm mb-10">
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#c5a059] mb-2">
             <MapPin size={14} />
-            <span>Section 7 • Studio &amp; Admissions</span>
+            <span>Section 7 • Studio &amp; Makeup Artist Coordination</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#5d0e0e] mb-4">
-            Alankarini Mehndi Art Studio Location &amp; Admission Helpline
+            Alankarini Studio Location, Make-up Artist Coordination &amp; Booking
           </h2>
 
           <div className="space-y-4 text-sm leading-relaxed text-gray-750">
             <p>
-              Whether you want to visit our studio in Banaras for an in-person bridal consultation or register for the 35-day academy batch, 
-              here is our physical address and direct contact information:
+              Whether you want to visit our studio in Banaras for an in-person bridal consultation, coordinate with your <strong>make-up artist</strong> for 
+              <strong>special occasion makeup</strong> schedules, or register for the 35-day academy batch, here is our location and helpline details:
             </p>
 
             <div className="p-5 bg-[#faf7f2] rounded-2xl border border-[#c5a059]/30 space-y-3 text-xs sm:text-sm">
               <div className="flex items-start gap-2.5">
                 <MapPin size={16} className="text-[#5d0e0e] shrink-0 mt-0.5" />
                 <div>
-                  <strong className="text-[#5d0e0e]">Studio Address:</strong>
+                  <strong className="text-[#5d0e0e]">Studio Address (Best Mehendi Artist in Varanasi):</strong>
                   <p className="text-gray-600 mt-0.5">{profile.location}</p>
                   <p className="text-[11px] text-gray-500">(Centrally located near Durgakund Temple, Lanka, and Assi Ghat)</p>
                 </div>
@@ -574,7 +593,7 @@ export function ArticlePage({ profile, setView }: ArticlePageProps) {
               <div className="flex items-start gap-2.5">
                 <WhatsAppIcon size={16} className="text-emerald-600 shrink-0 mt-0.5" />
                 <div>
-                  <strong className="text-[#5d0e0e]">WhatsApp Inquiry:</strong>
+                  <strong className="text-[#5d0e0e]">WhatsApp Inquiry &amp; Doorstep Booking:</strong>
                   <p className="text-gray-600 mt-0.5">
                     <a href={`https://wa.me/${cleanWhatsapp}`} target="_blank" rel="noopener noreferrer" className="text-emerald-700 font-bold underline">
                       Message +91 9336814631 on WhatsApp

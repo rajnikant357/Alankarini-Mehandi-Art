@@ -207,21 +207,26 @@ export default function App({ initialView }: { initialView?: string } = {}) {
                   </div>
 
                   {/* Right Side: Content & Specializations */}
-                  <div className="md:col-span-8 lg:col-span-8 text-center md:text-left">
+                  <div className="md:col-span-8 lg:col-span-8">
                     <span className="text-[#875914] font-medium italic text-sm font-serif">Auspicious Art Traditions</span>
-                    <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#5d0e0e] mt-1.5 mb-4">Varanasi's Trusted Mehndi Artist</h2>
+                    <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#5d0e0e] mt-1.5 mb-4">
+                      Best Bridal Mehendi Artist &amp; Mehndi Designer in Varanasi
+                    </h2>
                     <div className="text-gray-750 text-sm sm:text-base leading-relaxed font-sans mb-6">
                       {profile.bio}
                     </div>
 
                     {/* Grid items for specializations */}
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5">
                       {[
-                        'Bridal Specialist',
-                        'Portrait Sketched',
-                        'Indo-Arabic Fusion',
-                        'Festival Layouts',
-                        'Custom Name Accents'
+                        'Bridal Mehndi Design Services',
+                        'Arabic Mehndi Design Services',
+                        'Indo-Arabic Mehendi',
+                        'Doorstep Service in Varanasi',
+                        'Customized Wedding Mehendi',
+                        'Teej Mehndi Artist',
+                        '100% Organic Mehendi Cones',
+                        'Beginner to Advanced Classes'
                       ].map((specialty, i) => (
                         <div key={i} className="bg-[#f5efe4] p-2.5 rounded-xl border border-[#c5a059]/20 flex flex-col items-center justify-center text-center">
                           <Heart size={13} className="text-[#5d0e0e] mb-1" />
@@ -451,6 +456,8 @@ export default function App({ initialView }: { initialView?: string } = {}) {
         {currentView === 'services' && (
           <div className="animate-fade-in">
             <FeaturedServices services={services} profile={profile} setView={setView} previewOnly={false} />
+            <HomeServiceSection profile={profile} setView={setView} />
+            <FaqSection profile={profile} />
           </div>
         )}
 

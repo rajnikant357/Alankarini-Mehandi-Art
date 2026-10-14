@@ -18,11 +18,18 @@ export const DEFAULT_OG_IMAGE = `${SITE_ORIGIN}/Alankarini%20Banner.png`;
 
 export const COMMON_LOCAL_BUSINESS_SCHEMA = {
   '@context': 'https://schema.org',
-  '@type': ['LocalBusiness', 'BeautySalon'],
+  '@type': ['LocalBusiness', 'BeautySalon', 'ProfessionalService'],
   '@id': `${SITE_ORIGIN}/#business`,
   name: 'Alankarini Mehandi Art',
-  alternateName: ['Alankarini Mehndi Art', 'Sandhya Mehandi Artist Varanasi'],
-  description: 'Certified professional mehndi artist in Varanasi by Sandhya with 3+ years experience. Specializing in bridal mehndi, Arabic designs, Indo-Arabic fusion, and doorstep home service across Varanasi and Banaras.',
+  alternateName: [
+    'Alankarini Mehndi Art',
+    'Best Mehendi Artist in Varanasi',
+    'Best Mehandi Artist in Varanasi',
+    'Sandhya Mehandi Artist Varanasi',
+    'Professional Bridal Mehendi Artist Varanasi',
+    'Mehndi Designer in Varanasi',
+  ],
+  description: 'Best mehandi artist and mehendi designer in Varanasi by Sandhya with 3+ years experience. Specializing in bridal mehndi design services, Arabic mehndi design services, Indian mehendi, Indo-Arabic mehendi, doorstep service, wedding mehendi service, groom mehendi, organic mehendi cones, and certified mehendi classes across Varanasi and Banaras.',
   url: `${SITE_ORIGIN}/`,
   telephone: '+919336814631',
   priceRange: '₹₹',
@@ -74,6 +81,68 @@ export const COMMON_LOCAL_BUSINESS_SCHEMA = {
     { '@type': 'AdministrativeArea', name: 'Shivpur' },
     { '@type': 'AdministrativeArea', name: 'Sarnath' },
   ],
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Mehndi Services & Classes Directory',
+    itemListElement: [
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Bridal Mehndi Design Services',
+          description: 'Best bridal mehendi design in Varanasi including traditional bridal mehendi, customized wedding mehendi, bride mehendi, and groom mehendi with doorstep service.',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Arabic Mehndi Design Services',
+          description: 'Contemporary Arabic mehendi artist styling, mehendi arabic design in Varanasi, Arabic bridal mehendi, floral trails, and negative space patterns.',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Indo - Arabic & Fusion Mehndi Design Services',
+          description: 'Indo - Arabic mehndi design services, Indo-Arabic mehendi, Indo Arabic mehandi, Indo Western mehandi, Moroccan mehandi, Pakistani mehandi design, and Western mehandi.',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Doorstep Wedding & Event Mehndi Service',
+          description: 'Doorstep service in Varanasi for wedding mehendi service, family mehendi service, guest mehendi service, engagement mehendi, sangeet mehendi, haldi function mehendi, and baby showermehendi.',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Teej & Festival Mehndi Service in Varanasi',
+          description: 'Special teej mehndi artist in Varanasi, occasionally and festival mehendi, Karwa Chauth, and Diwali celebration henna designs.',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: '100% Organic Mehendi Cones & Bridal Henna',
+          description: 'Handcrafted fresh triple-filtered organic mehendi cones, chemical-free bridal henna, dark stain formulas, and henna designs.',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Course',
+          name: 'Beginner to Advanced Mehendi Classes & Training',
+          description: 'Certified 35-day professional mehendi course, mehandi class, heena class, henna course, bridal mehendi classes, Arabic mehendi classes, online mehendi classes, and kids mehandi classes.',
+        },
+      },
+    ],
+  },
   sameAs: [
     'https://instagram.com/alankarini_mehandi_art',
     'https://www.google.com/maps?cid=1987876352194443246',
@@ -85,7 +154,7 @@ export const COMMON_WEBSITE_SCHEMA = {
   '@type': 'WebSite',
   '@id': `${SITE_ORIGIN}/#website`,
   name: 'Alankarini Mehandi Art',
-  alternateName: ['Alankarini Mehndi Art', 'Sandhya Mehandi Artist Varanasi'],
+  alternateName: ['Alankarini Mehndi Art', 'Best Mehendi Artist in Varanasi', 'Sandhya Mehandi Artist Varanasi'],
   url: `${SITE_ORIGIN}/`,
 };
 
@@ -93,8 +162,8 @@ export const COURSES_SCHEMA = [
   {
     '@context': 'https://schema.org',
     '@type': 'Course',
-    name: 'Online Mehandi Classes (35-Day Certified Course)',
-    description: 'Comprehensive 35-day online mehandi class training covering Basic Foundation, Bridal Figures & Portraits, Mixology & Dark Stain Formulas, and Instagram Growth. ₹1,500 (Classes only) or ₹2,000 (With Mehndi Starter Kit & Completion Certificate).',
+    name: 'Online Mehendi Classes (35-Day Certified Beginner to Advanced Course)',
+    description: 'Comprehensive 35-day online mehandi class training covering basic mehandi, bridal mehendi classes, Arabic mehendi classes, advanced mehandi, henna course mixology & organic mehendi cones, and Instagram growth. ₹1,500 (Classes only) or ₹2,000 (With Mehndi Starter Kit & Completion Certificate).',
     provider: {
       '@type': 'Organization',
       name: 'Alankarini Mehandi Art',
@@ -127,7 +196,7 @@ export const COURSES_SCHEMA = [
     '@context': 'https://schema.org',
     '@type': 'Course',
     name: 'Offline Mehandi Class in Banaras (35-Day Varanasi Studio Course)',
-    description: 'Hands-on 35-day offline studio training in Durgakund, Varanasi. Practical bridal symmetry, live model practice, henna chemistry, and Instagram branding. ₹3,500 (Classes only) or ₹4,000 (With Take-Home Mehndi Kit & Completion Certificate).',
+    description: 'Hands-on 35-day offline studio training in Durgakund, Varanasi. Practical beginner to advanced mehendi classes, bridal mehendi classes, Arabic mehendi classes, kids mehandi classes, cone handling mastery, and live model practice. ₹3,500 (Classes only) or ₹4,000 (With Take-Home Mehndi Kit & Completion Certificate).',
     provider: {
       '@type': 'Organization',
       name: 'Alankarini Mehandi Art',
@@ -165,42 +234,42 @@ export const HOMEPAGE_FAQS_SCHEMA = {
   mainEntity: [
     {
       '@type': 'Question',
-      name: 'What is the contact phone number for Sandhya Mehandi Artist in Varanasi?',
+      name: 'Who is the best mehendi artist in Varanasi for bridal mehndi design services?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'You can call or WhatsApp artist Sandhya directly at +91 9336814631 for bridal mehndi bookings, doorstep mehndi home service across Varanasi/Banaras, or mehandi classes admission.',
+        text: 'Sandhya Chauhan at Alankarini Mehandi Art is recognized as the best mehendi artist in Varanasi, offering specialized bridal mehndi design services, traditional bridal mehendi, customized wedding mehendi, bride mehendi, groom mehendi, and 100% natural organic mehendi cones for dark stains. Call +91 9336814631 to book.',
       },
     },
     {
       '@type': 'Question',
-      name: 'Do you provide mehandi artist home service in Varanasi / Banaras?',
+      name: 'Do you provide doorstep service for wedding mehendi service in Varanasi?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Yes! Alankarini Mehandi Art provides doorstep mehndi home service across all areas of Varanasi and Banaras, including Durgakund, Lanka, Assi Ghat, Sigra, Bhelupur, Godowlia, Mahmoorganj, Shivpur, and Sarnath. Call +91 9336814631 to reserve your home visit date.',
+        text: 'Yes! Alankarini Mehandi Art provides dedicated doorstep service across all Varanasi and Banaras localities including Durgakund, Lanka, Assi Ghat, Sigra, Bhelupur, Godowlia, Mahmoorganj, Shivpur, and Sarnath. Our doorstep wedding mehendi service covers bride mehendi, family mehendi service, guest mehendi service, engagement mehendi, sangeet mehendi, and haldi function mehendi.',
       },
     },
     {
       '@type': 'Question',
-      name: 'Are online mehandi classes available, and what is the fee?',
+      name: 'What styles of mehndi design services do you offer in Varanasi?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Yes, our comprehensive 35-day mehandi course is available both online and offline with an identical 4-module syllabus. Online classes: ₹1,500 (Classes only) or ₹2,000 (Includes Mehndi Kit & Completion Certificate). Offline studio classes in Durgakund, Varanasi: ₹3,500 (Classes only) or ₹4,000 (Includes Mehndi Kit & Completion Certificate). Call/WhatsApp +91 9336814631 for batch details.',
+        text: 'We provide Arabic mehndi design services, Indian mehndi design services, Indo - Arabic mehndi design services, Indo-Arabic mehendi, Indo Western mehandi, Moroccan mehandi, Pakistani mehandi design, Western mehandi, traditional designs, baby showermehendi, and customized wedding mehendi.',
       },
     },
     {
       '@type': 'Question',
-      name: 'Where can I join an offline mehandi class in Banaras?',
+      name: 'Are you available as a teej mehndi artist in Varanasi and for festivals?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Our offline mehandi classes are conducted at Nawabganj, Jawahar Nagar Colony, Durgakund, Varanasi (Banaras), UP 221005. Offline students receive direct 1-on-1 practical training, cone handling mastery, and live model bridal sessions.',
+        text: 'Yes, Sandhya is a highly sought-after teej mehndi artist in Varanasi and offers festive mehendi services for Karwa Chauth, Diwali, Hariyali Teej, Hartalika Teej, Eid, and special occasion family gatherings.',
       },
     },
     {
       '@type': 'Question',
-      name: 'Why choose Alankarini Mehandi Art in Varanasi?',
+      name: 'What are the options and fees for mehendi classes in Varanasi?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Artist Sandhya brings over 3+ years of bridal expertise, 100% triple-filtered chemical-free organic henna for deep maroon stains, customized bride-groom portrait sketches, and reliable doorstep home service in Varanasi. Call +91 9336814631 for a consultation.',
+        text: 'We offer beginner to advanced mehendi classes both online and offline (35-day certified professional mehendi course). Online Mehendi Classes: ₹1,500 (Classes only) or ₹2,000 (With Mehndi Starter Kit & Certificate). Offline Studio Classes in Durgakund, Varanasi: ₹3,500 (Classes only) or ₹4,000 (With Take-Home Kit & Certificate). Call/WhatsApp +91 9336814631.',
       },
     },
   ],
@@ -226,7 +295,7 @@ export const GUIDE_ARTICLE_SCHEMA = {
     },
   },
   datePublished: '2026-09-18',
-  dateModified: '2026-10-11',
+  dateModified: '2026-10-14',
   mainEntityOfPage: `${SITE_ORIGIN}/guide`,
 };
 
@@ -245,16 +314,16 @@ export function makeBreadcrumb(items: { name: string; url: string }[]) {
 
 export const SEO_ROUTES: Record<string, RouteSeoConfig> = {
   home: {
-    title: 'Mehandi Artist in Varanasi | Alankarini Mehandi Art',
-    description: 'Looking for a professional mehandi artist in Varanasi? Alankarini Mehandi Art offers bridal, Arabic, Indo-Arabic and customized mehndi designs. Explore our work and book your appointment.',
+    title: 'Best Mehendi Artist in Varanasi | Mehandi Artist & Doorstep Service',
+    description: 'Looking for the best mehendi & mehandi artist in Varanasi? Alankarini offers bridal mehndi design services, Arabic mehendi, doorstep service, wedding mehendi, & certified mehendi courses.',
     canonical: `${SITE_ORIGIN}/`,
-    h1: 'Professional Mehandi Artist in Varanasi',
-    ogTitle: 'Mehandi Artist in Varanasi | Alankarini Mehandi Art',
-    ogDescription: 'Looking for a professional mehandi artist in Varanasi? Alankarini Mehandi Art offers bridal, Arabic, Indo-Arabic and customized mehndi designs. Book your appointment.',
+    h1: 'Best Mehendi Artist in Varanasi | Professional Mehandi Artist',
+    ogTitle: 'Best Mehendi Artist in Varanasi | Professional Mehandi Artist',
+    ogDescription: 'Looking for the best mehandi artist in Varanasi? Alankarini Mehandi Art offers bridal mehndi design services, Arabic mehendi, doorstep service, and certified courses.',
     ogImage: DEFAULT_OG_IMAGE,
     ogType: 'business.business',
-    twitterTitle: 'Mehandi Artist in Varanasi | Alankarini Mehandi Art',
-    twitterDescription: 'Professional mehandi artist in Varanasi by Sandhya. Bridal mehndi, doorstep home service & certified 35-day mehandi classes.',
+    twitterTitle: 'Best Mehendi Artist in Varanasi | Mehandi Artist & Doorstep Service',
+    twitterDescription: 'Best mehandi & mehendi artist in Varanasi by Sandhya. Bridal mehndi design services, Arabic mehendi, doorstep service & 35-day classes.',
     twitterImage: DEFAULT_OG_IMAGE,
     structuredData: [
       COMMON_WEBSITE_SCHEMA,
@@ -264,16 +333,16 @@ export const SEO_ROUTES: Record<string, RouteSeoConfig> = {
   },
 
   classes: {
-    title: 'Mehndi Classes in Varanasi | Alankarini Mehandi Art',
-    description: 'Learn mehndi art with Alankarini Mehandi Art in Varanasi. Explore available courses, training details, duration, fees and enrollment information.',
+    title: 'Mehndi Classes in Varanasi | Beginner to Advanced Mehendi Course',
+    description: 'Join top mehandi classes in Varanasi & certified online mehendi classes. Learn basic mehandi, bridal mehendi classes, Arabic mehendi classes, advanced mehandi & cone making.',
     canonical: `${SITE_ORIGIN}/classes`,
-    h1: 'Mehndi Classes in Varanasi',
-    ogTitle: 'Mehndi Classes in Varanasi | Alankarini Mehandi Art',
-    ogDescription: 'Learn mehndi art with Alankarini Mehandi Art in Varanasi. Explore available courses, training details, duration, fees and enrollment information.',
+    h1: 'Mehndi Classes & Certified Courses in Varanasi',
+    ogTitle: 'Mehndi Classes in Varanasi | Beginner to Advanced Mehendi Course',
+    ogDescription: 'Learn professional mehndi designing with beginner to advanced mehendi classes, bridal mehendi classes, Arabic mehendi classes, and online henna courses.',
     ogImage: DEFAULT_OG_IMAGE,
     ogType: 'website',
-    twitterTitle: 'Mehndi Classes in Varanasi | Alankarini Mehandi Art',
-    twitterDescription: 'Join certified 35-day online & offline mehandi classes in Varanasi. 4-module syllabus, cone handling mastery & certificates.',
+    twitterTitle: 'Mehndi Classes in Varanasi | Beginner to Advanced Mehendi Course',
+    twitterDescription: 'Certified 35-day beginner to advanced mehendi classes in Varanasi. Hands-on bridal mehendi, Arabic mehendi classes, henna mixology & certificates.',
     twitterImage: DEFAULT_OG_IMAGE,
     structuredData: [
       ...COURSES_SCHEMA,
@@ -334,16 +403,16 @@ export const SEO_ROUTES: Record<string, RouteSeoConfig> = {
   },
 
   services: {
-    title: 'Mehndi Services & Packages in Varanasi | Alankarini Mehandi Art',
-    description: 'Professional bridal, Arabic, Indo-Arabic, and festival mehndi services with doorstep home service across Varanasi by Alankarini Mehandi Art.',
+    title: 'Bridal Mehndi Design Services in Varanasi | Best Mehendi Artist',
+    description: 'Best bridal mehendi design in Varanasi & doorstep service. Arabic mehndi design services, Indian mehndi, Indo-Arabic, wedding mehendi service & organic mehendi cones.',
     canonical: `${SITE_ORIGIN}/services`,
-    h1: 'Mehndi Services & Packages in Varanasi',
-    ogTitle: 'Mehndi Services & Packages in Varanasi | Alankarini Mehandi Art',
-    ogDescription: 'Professional bridal, Arabic, Indo-Arabic, and festival mehndi services with doorstep home service across Varanasi by Alankarini Mehandi Art.',
+    h1: 'Bridal Mehndi Design Services & Doorstep Wedding Service in Varanasi',
+    ogTitle: 'Bridal Mehndi Design Services in Varanasi | Best Mehendi Artist',
+    ogDescription: 'Best bridal mehendi design in Varanasi, Arabic mehndi design services, wedding mehendi service, groom mehendi, and doorstep service across Banaras.',
     ogImage: DEFAULT_OG_IMAGE,
     ogType: 'website',
-    twitterTitle: 'Mehndi Services & Packages in Varanasi | Alankarini',
-    twitterDescription: 'Explore bridal, Arabic, Indo-Arabic & customized mehndi packages with doorstep home service across Varanasi.',
+    twitterTitle: 'Bridal Mehndi Design Services in Varanasi | Best Mehendi Artist',
+    twitterDescription: 'Best bridal mehendi design in Varanasi & doorstep service. Arabic mehndi design services, Indo-Arabic, groom mehendi & organic cones.',
     twitterImage: DEFAULT_OG_IMAGE,
     structuredData: [
       COMMON_LOCAL_BUSINESS_SCHEMA,
@@ -351,6 +420,7 @@ export const SEO_ROUTES: Record<string, RouteSeoConfig> = {
         { name: 'Home', url: `${SITE_ORIGIN}/` },
         { name: 'Services', url: `${SITE_ORIGIN}/services` },
       ]),
+      HOMEPAGE_FAQS_SCHEMA,
     ],
   },
 

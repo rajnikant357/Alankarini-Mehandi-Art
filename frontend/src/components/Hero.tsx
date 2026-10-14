@@ -25,17 +25,17 @@ export function Hero({ profile, setView }: HeroProps) {
             {/* Elegant upper subheader */}
             <div className="inline-flex items-center gap-2 self-center lg:self-start px-3.5 py-1.5 rounded-full bg-[#efe1b4]/50 text-[#5d0e0e] text-xs font-bold tracking-wider uppercase mb-5 border border-[#c5a059]/30">
               <Award size={14} className="text-[#c5a059]" />
-              <span>Certified Mehandi Artist in Varanasi &amp; Banaras • {profile.experience} Excellence</span>
+              <span>Best Mehendi Artist in Varanasi &amp; Banaras • Doorstep Service • {profile.experience} Excellence</span>
             </div>
 
             {/* Main Tagline Heading optimized for Google Rank */}
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-serif font-black text-[#5d0e0e] leading-tight tracking-tight">
-              Professional <span className="text-[#875914] italic font-normal">Mehandi Artist</span> in Varanasi
+              Best <span className="text-[#875914] italic font-normal">Mehandi &amp; Mehendi Artist</span> in Varanasi
             </h1>
 
             {/* Core Keyword Intro Subtitle */}
             <p className="mt-4 text-gray-700 text-sm sm:text-base font-sans leading-relaxed">
-              Welcome to <strong>Alankarini Mehandi Art</strong> by certified artist Sandhya (3+ years experience). Specializing in royal bridal mehndi, Arabic &amp; Indo-Arabic designs, customized portraits, doorstep <strong>mehndi home service</strong> across Varanasi, and certified <strong>mehandi classes</strong>.
+              Welcome to <strong>Alankarini Mehandi Art</strong> by certified artist Sandhya, recognized as the premier <strong>bridal mehendi artist</strong> and <strong>mehndi designer in Varanasi</strong>. We specialize in bespoke <strong>bridal mehndi design services</strong>, <strong>Arabic mehndi design services</strong>, <strong>Indo - Arabic mehndi design services</strong>, <strong>traditional designs</strong>, and reliable <strong>doorstep service</strong> across Varanasi and Banaras. From <strong>customized wedding mehendi</strong>, <strong>traditional bridal mehendi</strong>, and <strong>groom mehendi</strong> to 100% organic <strong>mehendi cones</strong> and certified <strong>beginner to advanced mehendi classes</strong>, we bring royal elegance to your celebrations.
             </p>
 
             {/* Quick Location & Trust Details */}
@@ -46,12 +46,22 @@ export function Hero({ profile, setView }: HeroProps) {
               </div>
               <div className="flex items-center gap-1.5 bg-[#f5efe4] border border-[#c5a059]/30 py-1.5 px-3 rounded-lg">
                 <Calendar size={15} className="text-[#c5a059]" />
-                <span>Mehndi Home Service in Banaras</span>
+                <span>Doorstep Service across Banaras</span>
               </div>
               <div className="flex items-center gap-1.5 bg-emerald-50 border border-emerald-200 text-emerald-800 py-1.5 px-3 rounded-lg font-semibold">
                 <Phone size={14} className="text-emerald-700" />
                 <a href={`tel:${cleanPhone}`} className="hover:underline">Hotline: +91 9336814631</a>
               </div>
+            </div>
+
+            {/* Keyword Quick Badges */}
+            <div className="mt-3.5 flex flex-wrap gap-1.5 items-center justify-center lg:justify-start text-[11px] font-semibold text-[#5d0e0e]">
+              <span className="bg-[#fcf8f0] border border-[#c5a059]/30 px-2.5 py-1 rounded-md">✨ Bridal Mehndi Design Services</span>
+              <span className="bg-[#fcf8f0] border border-[#c5a059]/30 px-2.5 py-1 rounded-md">🌿 Arabic Mehndi Design Services</span>
+              <span className="bg-[#fcf8f0] border border-[#c5a059]/30 px-2.5 py-1 rounded-md">🌸 Indo-Arabic Mehendi</span>
+              <span className="bg-[#fcf8f0] border border-[#c5a059]/30 px-2.5 py-1 rounded-md">👑 Customized Wedding Mehendi</span>
+              <span className="bg-[#fcf8f0] border border-[#c5a059]/30 px-2.5 py-1 rounded-md">🎉 Teej Mehndi Artist in Varanasi</span>
+              <span className="bg-[#fcf8f0] border border-[#c5a059]/30 px-2.5 py-1 rounded-md">🎓 Beginner to Advanced Classes</span>
             </div>
 
             {/* CTAs */}
@@ -135,7 +145,7 @@ export function Hero({ profile, setView }: HeroProps) {
                 <source media="(min-width: 641px)" srcSet="/images/cover.webp" type="image/webp" />
                 <img
                   src={profile.coverPhoto}
-                  alt="Alankarini Mehndi Art - Sandhya Bridal Mehndi Specialist in Varanasi"
+                  alt="Best Mehendi Artist in Varanasi - Sandhya Bridal Mehndi Specialist"
                   width={448}
                   height={560}
                   loading="eager"

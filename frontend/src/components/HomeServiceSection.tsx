@@ -42,28 +42,28 @@ export function HomeServiceSection({ profile, setView }: HomeServiceSectionProps
           <div className="lg:col-span-7 space-y-6">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#efe1b4]/50 text-[#5d0e0e] text-xs font-bold tracking-widest uppercase border border-[#c5a059]/30 font-sans">
               <Home size={15} className="text-[#c5a059]" />
-              <span>Doorstep Mehndi Artist Home Service • Varanasi &amp; Banaras</span>
+              <span>Doorstep Service • Wedding Mehendi Service in Varanasi &amp; Banaras</span>
             </div>
 
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-black text-[#5d0e0e] leading-tight">
-              Best Mehandi Artist Home Service in Varanasi
+              Best Mehandi Artist &amp; Doorstep Service in Varanasi
             </h2>
 
             <p className="text-gray-700 font-sans text-sm sm:text-base leading-relaxed">
-              Skip the stress of traveling to salons during busy celebrations! Sandhya provides premium 
-              <strong> mehandi artist home service</strong> right at your doorstep anywhere in Varanasi and Banaras. 
-              Whether it is your royal wedding bridal mehndi, family sangeet group, baby shower, or festival celebrations like Karwa Chauth and Teej, we arrive fully equipped with fresh, 100% natural organic henna.
+              Skip the stress of traveling to salons during busy wedding celebrations! Sandhya provides the finest 
+              <strong> mehandi artist in Varanasi</strong> with premium <strong>doorstep service</strong> right at your hotel, banquet, or home across Varanasi and Banaras. 
+              Our comprehensive <strong>wedding service</strong> covers <strong>bridal mehndi design services</strong>, <strong>Arabic mehndi design services</strong>, <strong>traditional bridal mehendi</strong>, <strong>bride mehendi</strong>, <strong>groom mehendi</strong>, <strong>family mehendi service</strong>, <strong>guest mehendi service</strong>, <strong>engagement mehendi</strong>, <strong>sangeet mehendi</strong>, <strong>haldi function mehendi</strong>, and <strong>baby showermehendi</strong>. We also serve as your top-choice <strong>teej mehndi artist in Varanasi</strong> for <strong>occasionally and festival mehendi</strong> using 100% pure organic <strong>mehendi cones</strong>.
             </p>
 
             {/* Why Choose Home Service List */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
               {[
-                { title: 'Zero Travel Hassle', desc: 'Relax comfortably in your home or wedding hotel suite.' },
-                { title: '100% Pure Organic Henna', desc: 'Fresh triple-filtered paste mixed with nilgiri & eucalyptus oil.' },
-                { title: 'Punctual & Reliable', desc: 'Guaranteed on-time arrival across all Varanasi localities.' },
-                { title: 'Family & Group Packages', desc: 'Affordable group rates for bridesmaids, sisters & guests.' },
-                { title: 'Custom Portrait Sketches', desc: 'Personalized Radha-Krishna, Dulha-Dulhan & names.' },
-                { title: 'Safe & Hygienic Artistry', desc: 'Clean cones, sterilized application, zero harmful chemicals.' }
+                { title: 'Doorstep Wedding Service', desc: 'Doorstep service directly to your hotel suite, home, or wedding mandap in Varanasi.' },
+                { title: '100% Organic Mehendi Cones', desc: 'Fresh triple-filtered henna cones with eucalyptus and tea tree oil for dark maroon stains.' },
+                { title: 'Bride & Groom Mehendi', desc: 'Customized wedding mehendi portraits, bride-groom varmala sketches, and royal motifs.' },
+                { title: 'Family & Guest Mehendi Service', desc: 'Fast, graceful designs for sangeet groups, haldi ceremonies, sisters, and guests.' },
+                { title: 'Teej & Festival Mehendi', desc: 'Specialist teej mehndi artist in Varanasi for Karwa Chauth, Teej, Eid, and festive rituals.' },
+                { title: 'Makeup Artist Coordination', desc: 'Seamless scheduling alongside your make-up artist for special occasion makeup & styling.' }
               ].map((feature, idx) => (
                 <div key={idx} className="bg-white p-3.5 rounded-xl border border-[#c5a059]/20 shadow-xs flex items-start gap-2.5">
                   <CheckCircle2 size={16} className="text-[#5d0e0e] shrink-0 mt-0.5" />

@@ -19,32 +19,32 @@ export function FaqSection({ profile }: FaqSectionProps) {
 
   const faqs: FAQItem[] = [
     {
-      question: "What is the booking phone number for Sandhya Mehndi Artist in Varanasi?",
-      answer: `You can reach artist Sandhya directly by calling or messaging on WhatsApp at +91 9336814631. We are available all 7 days from 08:00 AM to 09:00 PM for bridal reservations, doorstep home service visits across Varanasi/Banaras, and mehandi classes admissions.`
+      question: "Who is the best mehendi artist in Varanasi for bridal mehndi design services?",
+      answer: `Sandhya Chauhan at Alankarini Mehandi Art is recognized as the best mehendi artist in Varanasi. With 3+ years of bridal specialization, we offer royal bridal mehndi design services, traditional bridal mehendi, customized wedding mehendi with bride and groom portrait sketches, Arabic bridal mehendi, and 100% pure organic mehendi cones for dark maroon stains. Call or WhatsApp +91 9336814631 to schedule your consultation.`
     },
     {
-      question: "Do you offer doorstep mehndi home service in Varanasi and Banaras?",
-      answer: `Yes! Alankarini Mehndi Art provides professional doorstep mehandi artist home service across all areas of Varanasi and Banaras, including Durgakund, Lanka, Assi Ghat, Sigra, Bhelupur, Godowlia, Mahmoorganj, Cantt, Shivpur, and Sarnath. We travel to your home, hotel, or wedding resort with fresh organic henna.`
+      question: "Do you offer doorstep service for wedding mehendi service in Varanasi and Banaras?",
+      answer: `Yes! Alankarini Mehndi Art provides reliable doorstep service across all areas of Varanasi and Banaras, including Durgakund, Lanka, Assi Ghat, Sigra, Bhelupur, Godowlia, Mahmoorganj, Cantt, Shivpur, and Sarnath. Our doorstep wedding mehendi service covers bride mehendi, groom mehendi, family mehendi service, guest mehendi service, engagement mehendi, sangeet mehendi, and haldi function mehendi.`
     },
     {
-      question: "What are the fees for online mehandi classes and offline classes?",
-      answer: `Our mehandi classes run for a comprehensive duration of 35 days with the exact same 4-part syllabus for every student. Online Batches: Online Go Batch at ₹1,500 (classes only) and Online Plus Batch at ₹2,000 (includes full Henna Starter Kit & Course Completion Certificate). Offline Studio Classes in Banaras (Durgakund): Offline Go Batch at ₹3,500 (classes only) and Offline Plus Batch at ₹4,000 (includes take-home Henna Starter Kit & Course Completion Certificate). Call +91 9336814631 to enroll.`
+      question: "What design styles do your mehndi design services cover in Varanasi?",
+      answer: `We provide a comprehensive array of styles: Arabic mehndi design services, Indian mehndi design services, Indo - Arabic mehndi design services, Indo-Arabic mehendi, Indo Western mehandi, Moroccan mehandi, Pakistani mehandi design, Western mehandi, traditional designs, baby showermehendi, and customized wedding mehendi tailored to your bridal attire.`
     },
     {
-      question: "What is included in the 35-day mehandi class syllabus?",
-      answer: `All students receive the identical 35-day curriculum covering 4 main modules: 1) Basic Mehandi Foundation (cone rolling & paste making, Arabic shading, flowers/leaves, partition & fillup belt designs, negative filling, dark/light patches, birds/parrot/swan, startup, peacock, mandala, finger, wedding symbols & full hand designs), 2) Semi Portrait & Full Bridal (face & half body structures, eye/hand/lips/nose anatomy, full body Bride and Groom), 3) Special Mastery Session (mixology, cone flow secrets, dark stain formula, doubt solving), and 4) Instagram Handling & Growth (viral reels, hashtag timing, client DM conversions, personal branding).`
+      question: "Are you available as a teej mehndi artist in Varanasi and for festivals?",
+      answer: `Yes, Sandhya is Varanasi's premier teej mehndi artist in Varanasi for Hariyali Teej, Hartalika Teej, Karwa Chauth, Diwali, Raksha Bandhan, and Eid. We provide fast, graceful occasionally and festival mehendi designs with home visits and studio slots.`
     },
     {
-      question: "How do the online mehandi classes work?",
-      answer: `Our online mehandi classes are held live via Zoom or Google Meet with high-definition camera close-ups. You receive personal 1-on-1 hand corrections, interactive doubt clearing, downloadable practice sheets, and lifetime access to recorded lessons. You can learn from anywhere at your own pace.`
+      question: "What are the fees for mehendi classes from beginner to advanced in Varanasi?",
+      answer: `Our mehandi classes run for a comprehensive duration of 35 days with an identical 4-module syllabus. Online Mehendi Classes: Online Go Batch at ₹1,500 (classes only) and Online Plus Batch at ₹2,000 (includes full Henna Starter Kit & Course Completion Certificate). Offline Studio Classes in Banaras (Durgakund): Offline Go Batch at ₹3,500 (classes only) and Offline Plus Batch at ₹4,000 (includes take-home Henna Starter Kit & Course Completion Certificate). Call +91 9336814631 to enroll.`
     },
     {
-      question: "Where can I attend an offline mehandi class near me in Banaras?",
-      answer: `Our offline mehandi classes are conducted at our dedicated studio in Nawabganj, Jawahar Nagar Colony, Durgakund, Varanasi (Banaras), UP 221005. Studio batches offer direct hands-on training, physical pressure control, acrylic board practice, and live bridal model sessions.`
+      question: "Do you make and provide 100% organic mehendi cones?",
+      answer: `Yes! Every mehendi cone is hand-rolled fresh in our Durgakund studio using certified triple-filtered organic Sojat henna powder, distilled water, sugar, and natural essential oils (eucalyptus, cajeput, and tea tree). There are zero chemical dyes, zero PPD, and zero toxic preservatives, guaranteeing skin-friendly application and a deep, long-lasting maroon stain.`
     },
     {
-      question: "Is your henna paste 100% natural and safe for sensitive skin?",
-      answer: `Absolutely. Sandhya uses triple-filtered pure organic Lawsonia inermis henna powder blended with premium natural eucalyptus, tea tree, and nilgiri essential oils. There are zero synthetic dyes, zero PPD, and zero chemicals. It yields an authentic, long-lasting rich dark maroon-black stain.`
+      question: "Can you coordinate timing with my bridal make-up artist for special occasion makeup?",
+      answer: `Certainly! We regularly coordinate wedding timelines alongside brides' chosen make-up artist and hairstylist. We ensure your bridal henna application finishes with adequate drying time before your special occasion makeup and lehenga dressing sessions begin.`
     }
   ];
 

@@ -322,23 +322,22 @@ export function MehandiClassesSection({ profile, setView, previewOnly = false }:
         <div className="text-center max-w-3xl mx-auto mb-12">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#efe1b4]/50 text-[#5d0e0e] text-xs font-bold tracking-widest uppercase mb-3 border border-[#c5a059]/30 font-sans">
             <GraduationCap size={15} className="text-[#c5a059]" />
-            <span>Alankarini Mehandi Academy • 35-Day Certified Batches</span>
+            <span>Alankarini Mehandi Academy • Beginner to Advanced Mehendi Classes • 35-Day Course</span>
           </div>
           
           {previewOnly ? (
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-black text-[#5d0e0e] leading-tight">
-              Online &amp; Offline Mehandi Classes in Varanasi
+              Beginner to Advanced Mehendi Classes in Varanasi
             </h2>
           ) : (
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-black text-[#5d0e0e] leading-tight">
-              Mehndi Classes in Varanasi
+              Mehndi Classes &amp; Professional Mehendi Course in Varanasi
             </h1>
           )}
           
           <p className="mt-4 text-[#2d2d2d] text-sm sm:text-base font-sans leading-relaxed">
-            Looking for <strong>online mehandi classes</strong> or an <strong>offline mehandi class near me in Banaras</strong>? 
-            Learn certified bridal henna art from Sandhya with personal 1-on-1 guidance, flexible batch timings, an intensive 
-            <strong> 35-day comprehensive syllabus</strong>, and transparent, <strong>affordable mehandi class fees</strong>.
+            Looking for <strong>mehendi classes for beginners</strong>, an authentic <strong>heena class</strong>, or complete <strong>beginner to advanced mehendi classes</strong>? 
+            Alankarini Mehandi Academy offers a certified <strong>professional mehendi course</strong>, <strong>henna course</strong>, <strong>bridal mehendi classes</strong>, <strong>Arabic mehendi classes</strong>, <strong>advanced mehendi classes</strong>, and interactive <strong>online mehendi classes</strong>. Master <strong>basic mehendi</strong> fundamentals, <strong>mehendi design training</strong>, organic <strong>mehendi cones</strong> mixology, and <strong>kids mehandi classes</strong> with personalized 1-on-1 mentorship by artist Sandhya.
           </p>
 
           {/* Quick Course Highlights Badges */}
@@ -349,7 +348,11 @@ export function MehandiClassesSection({ profile, setView, previewOnly = false }:
             </div>
             <div className="inline-flex items-center gap-1.5 bg-[#f5efe4] border border-[#c5a059]/40 py-1.5 px-3.5 rounded-xl">
               <BookOpen size={14} className="text-[#c5a059]" />
-              <span>Same Master Syllabus for All</span>
+              <span>Beginner to Advanced Syllabus</span>
+            </div>
+            <div className="inline-flex items-center gap-1.5 bg-[#f5efe4] border border-[#c5a059]/40 py-1.5 px-3.5 rounded-xl">
+              <Sparkles size={14} className="text-[#c5a059]" />
+              <span>Online &amp; Varanasi Studio</span>
             </div>
             <div className="inline-flex items-center gap-1.5 bg-emerald-50 border border-emerald-200 py-1.5 px-3.5 rounded-xl text-emerald-800">
               <Phone size={13} className="text-emerald-700 animate-pulse" />

@@ -10,7 +10,6 @@
 *.p12
 
 # Memory & Agent Logs / Context
-memory.md
 .agents/
 .gemini/
 .antigravity/
