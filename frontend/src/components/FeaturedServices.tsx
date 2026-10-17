@@ -1,4 +1,5 @@
-import { Sparkles, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Sparkles, ArrowRight, CheckCircle2, Eye, X } from 'lucide-react';
 import { MehndiService, ProfileInfo } from '../types';
 import { WhatsAppIcon } from './WhatsAppIcon';
 import { formatRupeeAmount } from '../lib/format';
@@ -14,6 +15,19 @@ export function FeaturedServices({ services, profile, setView, previewOnly = fal
   // Use first 3 or 4 items for the preview on Home page, otherwise show everything
   const itemsToShow = previewOnly ? services.slice(0, 3) : services;
   const cleanWhatsapp = profile.whatsapp.replace(/[^0-9+]/g, '');
+  const [activeLightbox, setActiveLightbox] = useState<MehndiService | null>(null);
+
+  // Close lightbox on Escape key
+  useEffect(() => {
+    if (!activeLightbox) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setActiveLightbox(null);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activeLightbox]);
 
   return (
     <section className={`py-12 lg:py-20 ${previewOnly ? 'bg-[#f5efe4]' : 'bg-[#faf7f2]'}`}>
@@ -54,7 +68,19 @@ export function FeaturedServices({ services, profile, setView, previewOnly = fal
               className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-[#c5a059]/15 flex flex-col group h-full"
             >
               {/* Image Cover */}
-              <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
+              <div 
+                onClick={() => setActiveLightbox(service)}
+                className="relative aspect-[4/3] overflow-hidden bg-gray-100 cursor-pointer"
+                role="button"
+                tabIndex={0}
+                aria-label={`View enlarged photo for ${service.title}`}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setActiveLightbox(service);
+                  }
+                }}
+              >
                 <img
                   src={service.imageUrl}
                   alt={`${service.title} in Varanasi by Sandhya - Best Mehendi Artist`}
@@ -65,10 +91,18 @@ export function FeaturedServices({ services, profile, setView, previewOnly = fal
                   className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-750"
                   referrerPolicy="no-referrer"
                 />
+
+                {/* Backdrop Overlay */}
+                <div className="absolute inset-0 bg-[#5d0e0e]/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                  <span className="p-3 bg-[#faf3df] text-[#5d0e0e] rounded-full shadow-lg transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider">
+                    <Eye size={16} />
+                    <span>View</span>
+                  </span>
+                </div>
                 
                 {/* Float Badge */}
                 {service.startingPrice && (
-                  <div className="absolute top-4 right-4 bg-[#5d0e0e] text-[#faf3df] text-xs font-semibold py-1.5 px-3 rounded-full border border-[#c5a059]/30 shadow-md">
+                  <div className="absolute top-4 right-4 bg-[#5d0e0e] text-[#faf3df] text-xs font-semibold py-1.5 px-3 rounded-full border border-[#c5a059]/30 shadow-md z-10">
                     {formatRupeeAmount(service.startingPrice) ?? service.startingPrice}
                   </div>
                 )}
@@ -89,8 +123,17 @@ export function FeaturedServices({ services, profile, setView, previewOnly = fal
                 </div>
 
                 {/* Card footer actions */}
-                <div className="pt-4 border-t border-[#efe1b4]/40 mt-4">
-                  {!previewOnly ? (
+                <div className="pt-4 border-t border-[#efe1b4]/40 mt-4 flex flex-col gap-2.5">
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setActiveLightbox(service)}
+                      className="inline-flex items-center justify-center gap-1.5 bg-[#f5efe4] hover:bg-[#efe1b4] text-[#5d0e0e] border border-[#c5a059]/30 font-sans font-semibold text-xs py-2.5 px-3 rounded-xl tracking-wider uppercase transition-colors cursor-pointer"
+                      title="View Details"
+                    >
+                      <Eye size={14} />
+                      <span>View</span>
+                    </button>
                     <a
                       href={`https://wa.me/${cleanWhatsapp}?text=Hello%20Sandhya,%20I%20am%20interested%20in%20your%20"${encodeURIComponent(service.title)}"%20Mehndi%20service.%20Please%20share%20details.`}
                       target="_blank"
@@ -100,13 +143,14 @@ export function FeaturedServices({ services, profile, setView, previewOnly = fal
                           (window as unknown as { dataLayer: object[] }).dataLayer.push({ event: 'contact_whatsapp_click', service: service.title });
                         }
                       }}
-                      className="w-full inline-flex items-center justify-center gap-2 bg-[#5d0e0e] hover:bg-[#7c1818] text-[#faf3df] hover:text-[#faf7f2] font-sans font-semibold text-xs py-2.5 px-4 rounded-lg tracking-wider uppercase transition-colors"
+                      className="flex-1 inline-flex items-center justify-center gap-2 bg-[#5d0e0e] hover:bg-[#7c1818] text-[#faf3df] hover:text-[#faf7f2] font-sans font-semibold text-xs py-2.5 px-4 rounded-xl tracking-wider uppercase transition-all duration-200 shadow-xs hover:shadow-md cursor-pointer"
                     >
-                      <WhatsAppIcon size={12} />
-                      <span>Inquire On WhatsApp</span>
+                      <WhatsAppIcon size={13} />
+                      <span>Inquire Now</span>
                     </a>
-                  ) : (
-                    <div className="flex items-center gap-1.5 text-[#875914] text-xs font-semibold tracking-wider uppercase">
+                  </div>
+                  {previewOnly && (
+                    <div className="flex items-center justify-center gap-1.5 text-[#875914] text-[11px] font-semibold tracking-wider uppercase pt-0.5">
                       <CheckCircle2 size={12} />
                       <span>100% Organic Mehendi Cones</span>
                     </div>
@@ -292,6 +336,106 @@ export function FeaturedServices({ services, profile, setView, previewOnly = fal
         )}
 
       </div>
+
+      {/* LIGHTBOX MODAL */}
+      {activeLightbox && (
+        <div 
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-3 sm:p-6 backdrop-blur-sm animate-fade-in transition-all"
+          onClick={() => setActiveLightbox(null)}
+          role="dialog"
+          aria-modal="true"
+          aria-label={activeLightbox.title}
+        >
+          {/* Viewport Top-Right Close Button */}
+          <button
+            onClick={() => setActiveLightbox(null)}
+            className="fixed top-3 right-3 sm:top-5 sm:right-5 z-[120] bg-black/80 hover:bg-black text-[#faf3df] hover:text-white p-2.5 sm:p-3 rounded-full transition-all border border-white/25 cursor-pointer shadow-xl flex items-center gap-1.5 active:scale-95"
+            aria-label="Close Lightbox"
+            title="Close (Esc)"
+          >
+            <X size={20} className="sm:w-5 sm:h-5" />
+            <span className="text-xs font-sans uppercase font-bold tracking-wider hidden sm:inline">Close</span>
+          </button>
+
+          <div 
+            className="relative max-w-4xl w-full flex flex-col md:flex-row overflow-hidden bg-[#faf7f2] rounded-2xl sm:rounded-3xl shadow-2xl border border-[#c5a059]/30 max-h-[92vh] z-[110]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Card Top-Right Close Button (Prominently visible directly on the dialog) */}
+            <button
+              onClick={() => setActiveLightbox(null)}
+              className="absolute top-3 right-3 z-30 bg-[#5d0e0e]/85 hover:bg-[#5d0e0e] text-[#faf3df] hover:text-white p-2 rounded-full transition-all shadow-md border border-[#c5a059]/40 cursor-pointer flex items-center justify-center active:scale-95"
+              aria-label="Close"
+              title="Close"
+            >
+              <X size={18} />
+            </button>
+
+            {/* Visuals left */}
+            <div className="relative md:w-3/5 bg-black flex items-center justify-center overflow-hidden aspect-square md:aspect-auto md:h-[65vh]">
+              <img
+                src={activeLightbox.imageUrl}
+                alt={activeLightbox.title}
+                className="w-full h-full object-contain"
+                referrerPolicy="no-referrer"
+              />
+            </div>
+
+            {/* Typography right */}
+            <div className="md:w-2/5 p-5 sm:p-6 md:p-8 flex flex-col justify-between h-auto md:h-[65vh] overflow-y-auto">
+              <div>
+                <span className="inline-flex items-center gap-1 bg-[#efe1b4]/60 text-[#5d0e0e] text-[10px] uppercase tracking-widest font-bold px-2.5 py-1 rounded-md mb-3 border border-[#c5a059]/20 font-sans">
+                  <Sparkles size={11} className="text-[#c5a059]" />
+                  Service Showcase
+                </span>
+
+                <h3 className="text-xl sm:text-2xl font-serif font-black text-[#5d0e0e] leading-snug flex items-center justify-between gap-2">
+                  <span>{activeLightbox.title}</span>
+                  {activeLightbox.startingPrice && (
+                    <span className="text-base sm:text-lg font-bold text-[#c5a059] shrink-0 font-sans bg-[#efe1b4]/30 px-2 py-0.5 rounded-lg border border-[#c5a059]/15">
+                      {formatRupeeAmount(activeLightbox.startingPrice) ?? activeLightbox.startingPrice}
+                    </span>
+                  )}
+                </h3>
+
+                <div className="h-1 w-12 bg-[#c5a059] my-3 rounded-full"></div>
+
+                {activeLightbox.description && (
+                  <p className="text-[#2d2d2d] font-sans text-xs sm:text-sm leading-relaxed mb-5 font-light">
+                    {activeLightbox.description}
+                  </p>
+                )}
+
+                <div className="flex items-center gap-1.5 text-[#875914] text-xs font-semibold tracking-wider uppercase mb-4">
+                  <CheckCircle2 size={13} />
+                  <span>100% Organic Fresh Henna Cones</span>
+                </div>
+              </div>
+
+              {/* Instant WhatsApp booking with reference to exact service title */}
+              <div className="pt-4 border-t border-[#efe1b4]/40 mt-auto flex flex-col gap-2.5">
+                <a
+                  href={`https://wa.me/${cleanWhatsapp}?text=Hello%20Sandhya,%20I%20am%20interested%20in%20your%20"${encodeURIComponent(activeLightbox.title)}"%20Mehndi%20service.%20Please%20share%20details.`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full inline-flex items-center justify-center gap-2 bg-[#128C7E] hover:bg-[#075E54] text-white py-3 px-4 rounded-xl font-sans font-semibold text-xs tracking-wider uppercase shadow-md hover:shadow-lg transition-all"
+                >
+                  <WhatsAppIcon size={14} />
+                  <span>Inquire On WhatsApp</span>
+                </a>
+                <button
+                  type="button"
+                  onClick={() => setActiveLightbox(null)}
+                  className="w-full inline-flex items-center justify-center gap-1.5 py-2.5 px-4 rounded-xl border border-gray-300 hover:bg-gray-100 text-gray-700 font-sans font-semibold text-xs tracking-wider uppercase transition-colors cursor-pointer"
+                >
+                  <X size={14} />
+                  <span>Close</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

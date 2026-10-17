@@ -393,6 +393,26 @@ export default function App({ initialView }: { initialView?: string } = {}) {
               </div>
             </section>
 
+            {/* SEO Authority Overview Narrative (Moved down homepage so visitors enjoy a clean hero without text clutter) */}
+            <section className="py-12 bg-white border-t border-[#c5a059]/15">
+              <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="bg-[#faf7f2] rounded-2xl p-6 sm:p-8 border border-[#c5a059]/25 shadow-xs">
+                  <div className="flex items-center gap-2 mb-2.5">
+                    <Award size={16} className="text-[#c5a059]" />
+                    <span className="text-[#875914] text-xs font-bold uppercase tracking-widest font-sans">
+                      Authentic Varanasi Henna Heritage
+                    </span>
+                  </div>
+                  <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#5d0e0e] mb-3">
+                    Welcome to Alankarini Mehandi Art in Varanasi
+                  </h3>
+                  <p className="text-gray-700 text-sm sm:text-base font-sans leading-relaxed">
+                    Welcome to <strong>Alankarini Mehandi Art</strong> by certified artist Sandhya, recognized as the premier <strong>bridal mehendi artist</strong> and <strong>mehndi designer in Varanasi</strong>. We specialize in bespoke <strong>bridal mehndi design services</strong>, <strong>Arabic mehndi design services</strong>, <strong>Indo - Arabic mehndi design services</strong>, <strong>traditional designs</strong>, and reliable <strong>doorstep service</strong> across Varanasi and Banaras. From <strong>customized wedding mehendi</strong>, <strong>traditional bridal mehendi</strong>, and <strong>groom mehendi</strong> to 100% organic <strong>mehendi cones</strong> and certified <strong>beginner to advanced mehendi classes</strong>, we bring royal elegance to your celebrations.
+                  </p>
+                </div>
+              </div>
+            </section>
+
             {/* SEO FAQ Section */}
             <FaqSection profile={profile} />
 
