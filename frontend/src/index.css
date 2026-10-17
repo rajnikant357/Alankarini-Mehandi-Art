@@ -3,6 +3,7 @@
 @theme {
   --font-serif: "Georgia", serif;
   --font-sans: "Helvetica Neue", Arial, sans-serif;
+  --font-price: "Outfit", "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
   --color-maroon-950: #3a050a;
   --color-maroon-900: #5d0e0e;
   --color-maroon-805: #7c1818;
@@ -15,6 +16,12 @@
   --color-cream-50: #faf7f2;
   --color-cream-100: #f5efe4;
   --color-cream-200: #ece2cd;
+}
+
+.font-price {
+  font-family: var(--font-price);
+  font-feature-settings: "tnum" 1;
+  font-variant-numeric: tabular-nums;
 }
 
 @layer utilities {
@@ -59,4 +66,22 @@
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #5d0e0e;
+}
+
+/* Blinking animation for workshop join now badge */
+@keyframes badge-blink {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 0 14px rgba(220, 38, 38, 0.85);
+  }
+  50% {
+    opacity: 0.35;
+    transform: scale(0.96);
+    box-shadow: 0 0 3px rgba(220, 38, 38, 0.2);
+  }
+}
+
+.animate-badge-blink {
+  animation: badge-blink 1.2s ease-in-out infinite;
 }

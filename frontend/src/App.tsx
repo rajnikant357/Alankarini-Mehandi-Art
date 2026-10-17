@@ -22,6 +22,9 @@ import { GallerySection } from './components/GallerySection';
 import { MehandiClassesSection } from './components/MehandiClassesSection';
 import { HomeServiceSection } from './components/HomeServiceSection';
 import { FaqSection } from './components/FaqSection';
+import { WorkshopAnnouncementBanner } from './components/WorkshopAnnouncementBanner';
+import { WorkshopPopupModal } from './components/WorkshopPopupModal';
+import { DecemberBatchHomeSection } from './components/DecemberBatchHomeSection';
 
 import { ContactForm } from './components/ContactForm';
 import { ArticlePage } from './components/ArticlePage';
@@ -129,6 +132,38 @@ export default function App({ initialView }: { initialView?: string } = {}) {
   useEffect(() => {
     applyRouteMetadata(currentView);
   }, [currentView]);
+
+  // Workshop announcement popup card (appears 5 seconds after coming to the website)
+  const [isWorkshopPopupOpen, setIsWorkshopPopupOpen] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      if (sessionStorage.getItem('alankarini_workshop_popup_dismissed') === 'true') {
+        return;
+      }
+    } catch {
+      // Ignore if sessionStorage is not accessible
+    }
+
+    const timer = setTimeout(() => {
+      setIsWorkshopPopupOpen(true);
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleCloseWorkshopPopup = () => {
+    setIsWorkshopPopupOpen(false);
+    try {
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('alankarini_workshop_popup_dismissed', 'true');
+      }
+    } catch {
+      // Ignore if sessionStorage is not accessible
+    }
+  };
+
   const {
     profile,
     services,
@@ -170,6 +205,9 @@ export default function App({ initialView }: { initialView?: string } = {}) {
           {/* VIEW 1: HOME PANEL */}
         {currentView === 'home' && (
           <div className="animate-fade-in">
+            {/* Workshop Announcement Bar above Hero Section (Compact on mobile) */}
+            <WorkshopAnnouncementBanner profile={profile} setView={setView} variant={1} compactOnMobile={true} />
+
             {/* Hero Section */}
             <Hero profile={profile} setView={setView} />
 
@@ -239,12 +277,21 @@ export default function App({ initialView }: { initialView?: string } = {}) {
                 </div>
               </div>
             </section>
+            
+            {/* 15-Day Advance Mehndi Workshop Announcement Bar (Under Auspicious Art Traditions) */}
+            <WorkshopAnnouncementBanner profile={profile} setView={setView} variant={1} />
 
             {/* Featured Services Preview Section (Popular Mehndi Services) */}
             <FeaturedServices services={services} profile={profile} setView={setView} previewOnly={true} />
 
+            {/* December 2026 Batch Announcement (Minimal Section) */}
+            <DecemberBatchHomeSection profile={profile} setView={setView} />
+
             {/* Gallery Preview Grid (Gallery Masterpieces) */}
             <GallerySection gallery={gallery} profile={profile} setView={setView} previewOnly={true} />
+
+            {/* 15-Day Advance Mehndi Workshop Announcement Bar (Under Gallery Masterpieces) */}
+            <WorkshopAnnouncementBanner profile={profile} setView={setView} variant={2} />
 
             {/* Doorstep Mehndi Home Service in Varanasi / Banaras (Best Mehandi Artist Home Service in Varanasi) */}
             <HomeServiceSection profile={profile} setView={setView} />
@@ -392,6 +439,9 @@ export default function App({ initialView }: { initialView?: string } = {}) {
 
               </div>
             </section>
+            
+            {/* 15-Day Advance Mehndi Workshop Announcement Bar (Under Real Client Testimonials) */}
+            <WorkshopAnnouncementBanner profile={profile} setView={setView} variant={3} />
 
             {/* SEO Authority Overview Narrative (Moved down homepage so visitors enjoy a clean hero without text clutter) */}
             <section className="py-12 bg-white border-t border-[#c5a059]/15">
@@ -453,7 +503,10 @@ export default function App({ initialView }: { initialView?: string } = {}) {
         {/* VIEW: CLASSES & FEES ACADEMY */}
         {currentView === 'classes' && (
           <div className="animate-fade-in">
+            {/* Workshop Announcement Bar on Classes Page (View Details hidden because visitor is already on Classes page) */}
+            <WorkshopAnnouncementBanner profile={profile} setView={setView} variant={1} showViewDetails={false} />
             <MehandiClassesSection profile={profile} setView={setView} previewOnly={false} />
+            <WorkshopAnnouncementBanner profile={profile} setView={setView} variant={2} showViewDetails={false} />
             <HomeServiceSection profile={profile} setView={setView} />
             <FaqSection profile={profile} />
           </div>
@@ -787,6 +840,13 @@ export default function App({ initialView }: { initialView?: string } = {}) {
  
       {/* Floating Call & WhatsApp Action Buttons for Mobile */}
       <MobileFloatingActions profile={profile} currentView={currentView} />
+
+      {/* Workshop Announcement Popup Modal (appears 5s after visiting website) */}
+      <WorkshopPopupModal
+        isOpen={isWorkshopPopupOpen}
+        onClose={handleCloseWorkshopPopup}
+        profile={profile}
+      />
 
     </div>
   );

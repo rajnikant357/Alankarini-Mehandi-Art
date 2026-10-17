@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { Phone, MapPin, Calendar, Award, Heart, Sparkles, GraduationCap, ArrowRight } from 'lucide-react';
 import { ProfileInfo } from '../types';
 import { WhatsAppIcon } from './WhatsAppIcon';
@@ -10,6 +11,24 @@ interface HeroProps {
 export function Hero({ profile, setView }: HeroProps) {
   const cleanPhone = profile.phone.replace(/[^0-9+]/g, '');
   const cleanWhatsapp = profile.whatsapp.replace(/[^0-9+]/g, '');
+
+  const mobileHeroSlides = [
+    { src: profile.coverPhoto || '/images/cover.webp', alt: 'Best Mehndi Artist in Varanasi - Bridal Design' },
+    { src: '/images/gallery/gallery-1.webp', alt: 'Royal Indian Bridal Mehndi Art' },
+    { src: '/images/gallery/gallery-4.webp', alt: 'Radha Krishna Custom Portrait Mehndi' },
+    { src: '/images/gallery/gallery-5.webp', alt: 'Contemporary Arabic Floral Mehndi' },
+    { src: '/images/gallery/gallery-7.webp', alt: 'Traditional Festive Mehndi Art' },
+    { src: '/images/gallery/gallery-2.webp', alt: 'Intricate Palm Henna Design' }
+  ];
+
+  const [activeSlide, setActiveSlide] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveSlide((prev) => (prev + 1) % mobileHeroSlides.length);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, [mobileHeroSlides.length]);
 
   const marqueeItems = [
     {
@@ -65,11 +84,31 @@ export function Hero({ profile, setView }: HeroProps) {
   return (
     <>
       <section id="hero-section" className="relative bg-[#faf7f2] py-12 lg:py-20 overflow-hidden">
+        {/* Mobile Background Slideshow (Only for Mobile Views, 95% Visibility) */}
+        <div className="lg:hidden absolute inset-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true">
+          {mobileHeroSlides.map((slide, index) => (
+            <img
+              key={slide.src}
+              src={slide.src}
+              alt={slide.alt}
+              width={640}
+              height={960}
+              loading={index === 0 ? "eager" : "lazy"}
+              decoding="async"
+              className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-1000 ease-in-out ${
+                index === activeSlide ? 'opacity-95' : 'opacity-0'
+              }`}
+            />
+          ))}
+          {/* Subtle light overlay to blend edges while letting 95% photo vibrancy shine through */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#faf7f2]/35 via-transparent to-[#faf7f2]/45"></div>
+        </div>
+
         {/* Decorative background vectors */}
         <div className="absolute top-0 right-0 w-96 h-96 bg-[#c5a059] rounded-full filter blur-[120px] opacity-10 -mr-20 -mt-20"></div>
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#5d0e0e] rounded-full filter blur-[120px] opacity-[0.06] -ml-20 -mb-20"></div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             
             {/* Text Content Area */}
@@ -81,8 +120,8 @@ export function Hero({ profile, setView }: HeroProps) {
               </div>
 
               {/* Main Tagline Heading optimized for Google Rank */}
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-serif font-black text-[#5d0e0e] leading-tight tracking-tight">
-                Best <span className="text-[#875914] italic font-normal">Mehendi Artist</span> in Varanasi
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-serif font-black text-[#5d0e0e] leading-tight tracking-tight [paint-order:stroke_fill] [-webkit-text-stroke:1px_#faf5ec] lg:[-webkit-text-stroke:0px] [text-shadow:-1px_-1px_0_#faf5ec,1px_-1px_0_#faf5ec,-1px_1px_0_#faf5ec,1px_1px_0_#faf5ec] lg:[text-shadow:none]">
+                Best <span className="text-[#875914] italic font-normal [paint-order:stroke_fill] [-webkit-text-stroke:1px_#faf5ec] lg:[-webkit-text-stroke:0px]">Mehendi Artist</span> in Varanasi
               </h1>
 
               {/* 2 Enhanced Feature Cards: Mehendi Services & Mehendi Classes */}
@@ -201,7 +240,7 @@ export function Hero({ profile, setView }: HeroProps) {
 
                   {/* Card Footer */}
                   <div className="mt-2.5 pt-2 border-t border-[#c5a059]/25 flex items-center justify-between text-xs font-bold text-[#5d0e0e] group-hover:text-[#875914] transition-colors">
-                    <span className="text-[11px] text-[#705634] font-medium">From ₹1,500 • 35 Days</span>
+                    <span className="text-[11px] text-[#705634] font-medium">From <span className="font-price font-bold">₹1,500</span> • 35 Days</span>
                     <span className="inline-flex items-center gap-1 text-[#5d0e0e] group-hover:text-[#875914]">
                       <span>View Courses</span>
                       <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform" />
@@ -254,8 +293,8 @@ export function Hero({ profile, setView }: HeroProps) {
               </div>
             </div>
 
-          {/* Graphical Frame Area (Cover Photo) */}
-          <div className="lg:col-span-5 relative flex justify-center">
+          {/* Graphical Frame Area (Cover Photo - Desktop Only, Hidden on Mobile) */}
+          <div className="hidden lg:flex lg:col-span-5 relative justify-center">
             {/* Framing borders */}
             <div className="absolute top-4 left-4 right-4 bottom-4 border border-[#c5a059]/30 rounded-2xl transform translate-x-2 translate-y-2 pointer-events-none"></div>
             
@@ -278,7 +317,7 @@ export function Hero({ profile, setView }: HeroProps) {
               </picture>
               
               {/* Hover watermark / accent overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#5d0e0e]/80 via-transparent to-transparent flex flex-col justify-end p-6 pointer-events-none">
+              <div className="absolute inset-0 bg-gradient-to-t from-[#5d0e0e]/80 via-transparent to-transparent hidden sm:flex flex-col justify-end p-6 pointer-events-none">
                 <span className="text-[10px] uppercase tracking-widest text-[#faf3df]/80 font-medium font-sans">Varanasi's Authentic</span>
                 <span className="text-[#faf3df] font-serif text-lg font-bold sm:text-xl">Alankarini Traditional Henna</span>
               </div>
