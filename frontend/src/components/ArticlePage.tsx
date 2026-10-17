@@ -20,6 +20,8 @@ import {
 } from 'lucide-react';
 import { ProfileInfo } from '../types';
 import { WhatsAppIcon } from './WhatsAppIcon';
+import { WorkshopAnnouncementBanner } from './WorkshopAnnouncementBanner';
+import { DecemberBatchAnnouncementBanner } from './DecemberBatchAnnouncementBanner';
 
 interface ArticlePageProps {
   profile: ProfileInfo;
@@ -265,6 +267,11 @@ export function ArticlePage({ profile, setView }: ArticlePageProps) {
           </div>
         </section>
 
+        {/* Inbetween Announcement: 15-Day Advance Mehndi Workshop */}
+        <div className="mb-10">
+          <WorkshopAnnouncementBanner profile={profile} setView={setView} variant={1} />
+        </div>
+
         {/* SECTION 3: Transparent Price Guide & Charges */}
         <section id="price-charges" className="bg-white rounded-3xl p-6 sm:p-10 border border-[#c5a059]/25 shadow-sm mb-10">
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#c5a059] mb-2">
@@ -445,6 +452,11 @@ export function ArticlePage({ profile, setView }: ArticlePageProps) {
           </div>
         </section>
 
+        {/* Inbetween Announcement: December Batch 40-Day Basic to Bridal */}
+        <div className="mb-10">
+          <DecemberBatchAnnouncementBanner profile={profile} setView={setView} variant={1} />
+        </div>
+
         {/* SECTION 5: Practice Tools & Stencils vs Freehand */}
         <section id="tools-stencils" className="bg-white rounded-3xl p-6 sm:p-10 border border-[#c5a059]/25 shadow-sm mb-10">
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#c5a059] mb-2">
@@ -551,6 +563,11 @@ export function ArticlePage({ profile, setView }: ArticlePageProps) {
             </ul>
           </div>
         </section>
+
+        {/* Inbetween Announcement: 15-Day Advance Mehndi Workshop */}
+        <div className="mb-10">
+          <WorkshopAnnouncementBanner profile={profile} setView={setView} variant={2} />
+        </div>
 
         {/* SECTION 7: Studio Location & Contact Helpline */}
         <section id="studio-location" className="bg-white rounded-3xl p-6 sm:p-10 border border-[#c5a059]/25 shadow-sm mb-10">

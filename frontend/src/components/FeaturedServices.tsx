@@ -41,7 +41,7 @@ export function FeaturedServices({ services, profile, setView, previewOnly = fal
             </span>
           ) : (
             <span className="text-xs font-bold tracking-widest uppercase text-[#875914] font-sans">
-              🌸 Comprehensive Wedding Mehendi Service &amp; Doorstep Service
+              🌸 Comprehensive Wedding &amp; Festive Henna Catalog
             </span>
           )}
           {previewOnly ? (
@@ -50,13 +50,13 @@ export function FeaturedServices({ services, profile, setView, previewOnly = fal
             </h2>
           ) : (
             <h1 className="text-3xl sm:text-4xl font-serif font-bold text-[#5d0e0e] mt-2">
-              Bridal Mehndi Design Services &amp; Wedding Mehendi in Varanasi
+              Our Mehendi Services &amp; Packages in Varanasi
             </h1>
           )}
           <p className="mt-4 text-[#2d2d2d] text-sm sm:text-base font-sans leading-relaxed opacity-90">
             {previewOnly
               ? "Every bridal sketch, Arabic floral vine, and festive motif is handcrafted with expert precision by artist Sandhya. We use fresh 100% natural organic mehendi cones to ensure deep maroon stains for your auspicious day."
-              : "Welcome to Varanasi's leading destination for bridal mehndi design services, Arabic mehndi design services, Indo - Arabic mehndi design services, Indian mehendi, and doorstep service. Whether you need traditional bridal mehendi, customized wedding mehendi with portrait sketches, groom mehendi, family mehendi service, or festival henna, Sandhya delivers certified excellence across all of Varanasi."}
+              : "Explore artist Sandhya's bespoke bridal packages, Arabic designs, traditional motifs, and doorstep home services in Varanasi. Every pattern is crafted with 100% natural organic henna for deep, rich stains."}
           </p>
         </div>
 

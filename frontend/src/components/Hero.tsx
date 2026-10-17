@@ -13,11 +13,10 @@ export function Hero({ profile, setView }: HeroProps) {
   const cleanWhatsapp = profile.whatsapp.replace(/[^0-9+]/g, '');
 
   const mobileHeroSlides = [
-    { src: profile.coverPhoto || '/images/cover.webp', alt: 'Best Mehndi Artist in Varanasi - Bridal Design' },
     { src: '/images/gallery/gallery-1.webp', alt: 'Royal Indian Bridal Mehndi Art' },
     { src: '/images/gallery/gallery-4.webp', alt: 'Radha Krishna Custom Portrait Mehndi' },
+    { src: '/images/gallery/gallery-3.webp', alt: 'Bride & Groom Portrait Hand Mehndi' },
     { src: '/images/gallery/gallery-5.webp', alt: 'Contemporary Arabic Floral Mehndi' },
-    { src: '/images/gallery/gallery-7.webp', alt: 'Traditional Festive Mehndi Art' },
     { src: '/images/gallery/gallery-2.webp', alt: 'Intricate Palm Henna Design' }
   ];
 

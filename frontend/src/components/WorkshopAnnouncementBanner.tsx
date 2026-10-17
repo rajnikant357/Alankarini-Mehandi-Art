@@ -157,13 +157,13 @@ export function WorkshopAnnouncementBanner({
       )}
 
       {/* ---------------- DESKTOP VIEW (hidden md:flex) ---------------- */}
-      <div className="hidden md:flex max-w-7xl mx-auto px-6 lg:px-8 h-[100px] items-center justify-between gap-4 relative z-10">
+      <div className={`hidden md:flex max-w-7xl mx-auto px-6 lg:px-8 ${compactOnMobile ? 'h-[76px]' : 'h-[96px]'} items-center justify-between gap-4 relative z-10`}>
         
         {/* Left Side: Sandhya Image + Workshop Badge + Title & Urgency */}
         <div className="flex items-center gap-4">
           
           {/* Sandhya Portrait in Gold Ring */}
-          <div className="relative w-[72px] h-[72px] rounded-full overflow-hidden border-2 border-[#c5a059] shadow-md shrink-0 bg-[#2b0407] ring-2 ring-[#c5a059]/30">
+          <div className={`relative ${compactOnMobile ? 'w-[54px] h-[54px]' : 'w-[68px] h-[68px]'} rounded-full overflow-hidden border-2 border-[#c5a059] shadow-md shrink-0 bg-[#2b0407] ring-2 ring-[#c5a059]/30`}>
             <img
               src="/sandhya.png"
               alt="Artist Sandhya Chauhan - Master Mehndi Trainer"
@@ -174,7 +174,7 @@ export function WorkshopAnnouncementBanner({
               className="w-full h-full object-cover object-top scale-105"
             />
             {/* Live Indicator Pip */}
-            <span className="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 rounded-full border-2 border-[#5d0e0e] shadow-xs"></span>
+            <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 rounded-full border border-[#5d0e0e] shadow-xs"></span>
           </div>
 
           {/* Workshop Badge PNG */}
@@ -185,7 +185,7 @@ export function WorkshopAnnouncementBanner({
             height={60}
             loading="lazy"
             decoding="async"
-            className="h-14 w-auto object-contain shrink-0 drop-shadow-md"
+            className={`${compactOnMobile ? 'h-11' : 'h-14'} w-auto object-contain shrink-0 drop-shadow-md`}
           />
 
           {/* Title & Urgency Message */}
@@ -195,7 +195,7 @@ export function WorkshopAnnouncementBanner({
                 <Sparkles size={10} className="text-[#c5a059]" />
                 Limited Batch
               </span>
-              <h3 className="font-serif font-black text-lg text-[#faf3df] leading-tight tracking-tight">
+              <h3 className={`font-serif font-black ${compactOnMobile ? 'text-base lg:text-lg' : 'text-lg'} text-[#faf3df] leading-tight tracking-tight`}>
                 15-Day Advance Mehandi Workshop
               </h3>
             </div>

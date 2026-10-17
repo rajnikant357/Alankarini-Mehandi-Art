@@ -23,6 +23,7 @@ import { MehandiClassesSection } from './components/MehandiClassesSection';
 import { HomeServiceSection } from './components/HomeServiceSection';
 import { FaqSection } from './components/FaqSection';
 import { WorkshopAnnouncementBanner } from './components/WorkshopAnnouncementBanner';
+import { DecemberBatchAnnouncementBanner } from './components/DecemberBatchAnnouncementBanner';
 import { WorkshopPopupModal } from './components/WorkshopPopupModal';
 import { DecemberBatchHomeSection } from './components/DecemberBatchHomeSection';
 
@@ -296,6 +297,9 @@ export default function App({ initialView }: { initialView?: string } = {}) {
             {/* Doorstep Mehndi Home Service in Varanasi / Banaras (Best Mehandi Artist Home Service in Varanasi) */}
             <HomeServiceSection profile={profile} setView={setView} />
 
+            {/* December Batch Announcement Bar (Under Doorstep Service) */}
+            <DecemberBatchAnnouncementBanner profile={profile} setView={setView} variant={2} />
+
             {/* Online & Offline Mehandi Classes Preview Section (Class Info) */}
             <MehandiClassesSection profile={profile} setView={setView} previewOnly={true} />
 
@@ -439,9 +443,6 @@ export default function App({ initialView }: { initialView?: string } = {}) {
 
               </div>
             </section>
-            
-            {/* 15-Day Advance Mehndi Workshop Announcement Bar (Under Real Client Testimonials) */}
-            <WorkshopAnnouncementBanner profile={profile} setView={setView} variant={3} />
 
             {/* SEO Authority Overview Narrative (Moved down homepage so visitors enjoy a clean hero without text clutter) */}
             <section className="py-12 bg-white border-t border-[#c5a059]/15">
@@ -462,6 +463,9 @@ export default function App({ initialView }: { initialView?: string } = {}) {
                 </div>
               </div>
             </section>
+
+            {/* December Batch Announcement Bar (Under Authentic Varanasi Henna Heritage) */}
+            <DecemberBatchAnnouncementBanner profile={profile} setView={setView} variant={3} />
 
             {/* SEO FAQ Section */}
             <FaqSection profile={profile} />
@@ -503,40 +507,76 @@ export default function App({ initialView }: { initialView?: string } = {}) {
         {/* VIEW: CLASSES & FEES ACADEMY */}
         {currentView === 'classes' && (
           <div className="animate-fade-in">
-            {/* Workshop Announcement Bar on Classes Page (View Details hidden because visitor is already on Classes page) */}
-            <WorkshopAnnouncementBanner profile={profile} setView={setView} variant={1} showViewDetails={false} />
+            {/* Dec Batch Announcement Bar above Classes Header */}
+            <DecemberBatchAnnouncementBanner profile={profile} setView={setView} variant={1} showViewDetails={false} compactOnMobile={true} />
             <MehandiClassesSection profile={profile} setView={setView} previewOnly={false} />
             <WorkshopAnnouncementBanner profile={profile} setView={setView} variant={2} showViewDetails={false} />
             <HomeServiceSection profile={profile} setView={setView} />
             <FaqSection profile={profile} />
+            <DecemberBatchAnnouncementBanner profile={profile} setView={setView} variant={2} showViewDetails={false} />
           </div>
         )}
 
         {/* VIEW: ULTIMATE MEHNDI GUIDE & DIRECTORY */}
         {currentView === 'guide' && (
           <div className="animate-fade-in">
+            {/* Workshop Announcement Bar above Guide Header */}
+            <WorkshopAnnouncementBanner profile={profile} setView={setView} variant={1} compactOnMobile={true} />
             <ArticlePage profile={profile} setView={setView} />
+            <DecemberBatchAnnouncementBanner profile={profile} setView={setView} variant={3} />
           </div>
         )}
-                {/* VIEW 2: PORTFOLIO GALLERY */}
+
+        {/* VIEW 2: PORTFOLIO GALLERY */}
         {currentView === 'gallery' && (
           <div className="animate-fade-in">
+            {/* Dec Batch Announcement Bar above Gallery (Swapped) */}
+            <DecemberBatchAnnouncementBanner profile={profile} setView={setView} variant={1} compactOnMobile={true} />
             <GallerySection gallery={gallery} profile={profile} setView={setView} previewOnly={false} />
+            <DecemberBatchAnnouncementBanner profile={profile} setView={setView} variant={2} />
           </div>
         )}
 
         {/* VIEW 3: DETAILED SERVICES LIST */}
         {currentView === 'services' && (
           <div className="animate-fade-in">
+            {/* Workshop Announcement Bar above Services */}
+            <WorkshopAnnouncementBanner profile={profile} setView={setView} variant={1} compactOnMobile={true} />
             <FeaturedServices services={services} profile={profile} setView={setView} previewOnly={false} />
+            <DecemberBatchAnnouncementBanner profile={profile} setView={setView} variant={1} />
             <HomeServiceSection profile={profile} setView={setView} />
+
+            {/* SEO Authority Overview Narrative (Bottom of Services Page Before FAQs) */}
+            <section className="py-12 bg-white border-y border-[#c5a059]/15">
+              <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="bg-[#faf7f2] rounded-2xl p-6 sm:p-8 border border-[#c5a059]/25 shadow-xs">
+                  <div className="flex items-center gap-2 mb-2.5">
+                    <Award size={16} className="text-[#c5a059]" />
+                    <span className="text-[#875914] text-xs font-bold uppercase tracking-widest font-sans">
+                      Comprehensive Wedding Mehendi &amp; Doorstep Service
+                    </span>
+                  </div>
+                  <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#5d0e0e] mb-3">
+                    Bridal Mehndi Design Services &amp; Wedding Mehendi in Varanasi
+                  </h2>
+                  <p className="text-gray-700 text-sm sm:text-base font-sans leading-relaxed">
+                    Welcome to Varanasi's leading destination for bridal mehndi design services, Arabic mehndi design services, Indo - Arabic mehndi design services, Indian mehendi, and doorstep service. Whether you need traditional bridal mehendi, customized wedding mehendi with portrait sketches, groom mehendi, family mehendi service, or festival henna, Sandhya delivers certified excellence across all of Varanasi.
+                  </p>
+                </div>
+              </div>
+            </section>
+
             <FaqSection profile={profile} />
+            <DecemberBatchAnnouncementBanner profile={profile} setView={setView} variant={2} />
           </div>
         )}
 
         {/* VIEW 4: ABOUT US — Artist Story + Business Mission */}
         {currentView === 'about' && (
           <div className="animate-fade-in">
+            {/* Workshop Announcement Bar above About Header */}
+            <WorkshopAnnouncementBanner profile={profile} setView={setView} variant={1} compactOnMobile={true} />
+
             {/* Artist Profile Section (About Sandhya - TOP) */}
             <section className="py-12 lg:py-20 bg-[#faf7f2] border-b border-[#c5a059]/10">
               <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -647,6 +687,9 @@ export default function App({ initialView }: { initialView?: string } = {}) {
               </div>
             </section>
 
+            {/* December Batch Announcement Bar (Between About Sandhya and Story/Mission) */}
+            <DecemberBatchAnnouncementBanner profile={profile} setView={setView} variant={1} />
+
             {/* About Us Business Section (BOTTOM) */}
             <section className="py-14 lg:py-20 bg-white">
               <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -675,26 +718,37 @@ export default function App({ initialView }: { initialView?: string } = {}) {
                 </div>
               </div>
             </section>
+
+            {/* December Batch Announcement Bar (Bottom of About Page) */}
+            <DecemberBatchAnnouncementBanner profile={profile} setView={setView} variant={2} />
           </div>
         )}
 
         {/* VIEW 5: CONTACT & BOOKING FORM */}
         {currentView === 'contact' && (
           <div className="animate-fade-in">
+            {/* Dec Batch Announcement Bar above Contact (Swapped) */}
+            <DecemberBatchAnnouncementBanner profile={profile} setView={setView} variant={1} compactOnMobile={true} />
             <ContactForm profile={profile} setView={setView} />
+            <DecemberBatchAnnouncementBanner profile={profile} setView={setView} variant={2} />
           </div>
         )}
 
         {/* VIEW: BLOG LISTING */}
         {currentView === 'blog' && (
           <div className="animate-fade-in">
+            {/* Dec Batch Announcement Bar above Blog (Swapped) */}
+            <DecemberBatchAnnouncementBanner profile={profile} setView={setView} variant={1} compactOnMobile={true} />
             <BlogListingPage setView={setView} />
+            <DecemberBatchAnnouncementBanner profile={profile} setView={setView} variant={2} />
           </div>
         )}
 
         {/* VIEW: INDIVIDUAL BLOG POST */}
         {currentView.startsWith('blog:') && (
           <div className="animate-fade-in">
+            {/* Workshop Announcement Bar above Blog Post */}
+            <WorkshopAnnouncementBanner profile={profile} setView={setView} variant={1} compactOnMobile={true} />
             {currentView === 'blog:rajnikant-gaurav' ? (
               <BlogPage setView={setView} />
             ) : (() => {
@@ -706,6 +760,7 @@ export default function App({ initialView }: { initialView?: string } = {}) {
                 <BlogListingPage setView={setView} />
               );
             })()}
+            <DecemberBatchAnnouncementBanner profile={profile} setView={setView} variant={2} />
           </div>
         )}
 

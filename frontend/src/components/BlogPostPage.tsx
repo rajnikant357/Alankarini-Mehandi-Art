@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { BlogArticle, BLOG_ARTICLES } from '../data/blogArticles';
 import { ProfileInfo } from '../types';
+import { DecemberBatchAnnouncementBanner } from './DecemberBatchAnnouncementBanner';
 
 interface BlogPostPageProps {
   article: BlogArticle;
@@ -209,6 +210,11 @@ export function BlogPostPage({ article, profile, setView }: BlogPostPageProps) {
               )}
             </section>
           ))}
+
+          {/* Inbetween Announcement: Dec Batch */}
+          <div className="my-8">
+            <DecemberBatchAnnouncementBanner profile={profile} setView={setView} variant={1} />
+          </div>
 
           {/* Contextual Internal Links Section */}
           <div className="bg-[#f5efe4]/60 p-6 rounded-2xl border border-[#c5a059]/30 my-8 space-y-3">
