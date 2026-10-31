@@ -337,7 +337,7 @@ export const BLOG_ARTICLES: BlogArticle[] = [
           ],
           checklist: [
             'Offline Studio Classes (Durgakund, Varanasi): Ideal for students in Varanasi seeking direct, in-person posture correction, real-time feedback on live models, and tactile practice with studio materials. Fee: ₹3,500 (Classes only) or ₹4,000 (Includes take-home professional kit & certificate).',
-            'Online Live Classes: Tailored for remote students, homemakers, and working professionals across India who require flexible scheduling, step-by-step video guidance, and 1-on-1 WhatsApp assignment reviews. Fee: ₹1,500 (Classes only) or ₹2,000 (Includes complete starter kit & certificate).'
+            'Online Live Classes: Tailored for remote students, homemakers, and working professionals across India who require flexible scheduling, step-by-step video guidance, and 1-on-1 WhatsApp assignment reviews. Fee: ₹2,000 (Classes only) or ₹2,500 (Includes complete starter kit & certificate).'
           ]
         },
         {

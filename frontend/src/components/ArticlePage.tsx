@@ -61,7 +61,7 @@ export function ArticlePage({ profile, setView }: ArticlePageProps) {
     },
     {
       q: 'What is the fee and duration for beginner to advanced mehendi classes in Varanasi?',
-      a: 'Alankarini Mehandi Academy offers a 35-day comprehensive henna course and mehendi design training with an identical 4-module syllabus. Online Batches: Online Go Batch at ₹1,500 (classes only) and Online Plus Batch at ₹2,000 (includes Henna Starter Kit delivered + Completion Certificate). Offline Studio Classes in Durgakund, Banaras: Offline Go Batch at ₹3,500 (classes only) and Offline Plus Batch at ₹4,000 (includes take-home kit + physical certificate).'
+      a: 'Alankarini Mehandi Academy offers a 35-day comprehensive henna course and mehendi design training with an identical 4-module syllabus. Online Batches: Online Go Batch at ₹2,000 (classes only) and Online Plus Batch at ₹2,500 (includes Henna Starter Kit delivered + Completion Certificate). Offline Studio Classes in Durgakund, Banaras: Offline Go Batch at ₹3,500 (classes only) and Offline Plus Batch at ₹4,000 (includes take-home kit + physical certificate).'
     },
     {
       q: 'What styles are covered under Arabic mehndi design services and Indo-Arabic mehendi?',
@@ -373,9 +373,9 @@ export function ArticlePage({ profile, setView }: ArticlePageProps) {
                 <span>Uniform 35-Day Syllabus with Transparent Kit &amp; Certificate Policy</span>
               </h4>
               <p className="text-xs sm:text-sm text-gray-700 leading-relaxed">
-                The 35-day course syllabus is <strong>100% identical for every student</strong>. Only ₹2,000 (Online) and ₹4,000 (Offline) paying 
+                The 35-day course syllabus is <strong>100% identical for every student</strong>. Only ₹2,500 (Online) and ₹4,000 (Offline) paying 
                 students receive the complete <strong>Henna Starter Kit</strong> and official <strong>Course Completion Certificate</strong>. 
-                Students paying the lower fees of ₹1,500 (Online) and ₹3,500 (Offline) receive full access to all lectures and live learning without kit and certificate.
+                Students paying the lower fees of ₹2,000 (Online) and ₹3,500 (Offline) receive full access to all lectures and live learning without kit and certificate.
               </p>
             </div>
 
@@ -387,8 +387,8 @@ export function ArticlePage({ profile, setView }: ArticlePageProps) {
                 </span>
                 <h5 className="font-serif font-bold text-base text-[#5d0e0e] mt-2">Online Mehandi Batches (35 Days)</h5>
                 <ul className="mt-2 space-y-1.5 text-xs text-gray-700">
-                  <li>• <strong>Online Go Batch (₹1,500):</strong> Classes Only (Learn full 35-day syllabus; no kit, no certificate)</li>
-                  <li>• <strong>Online Plus Batch (₹2,000):</strong> Complete Pack (Full classes + Henna Kit delivered + Completion Certificate)</li>
+                  <li>• <strong>Online Go Batch (₹2,000):</strong> Classes Only (Learn full 35-day syllabus; no kit, no certificate)</li>
+                  <li>• <strong>Online Plus Batch (₹2,500):</strong> Complete Pack (Full classes + Henna Kit delivered + Completion Certificate)</li>
                 </ul>
               </div>
 

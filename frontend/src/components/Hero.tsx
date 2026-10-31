@@ -239,7 +239,7 @@ export function Hero({ profile, setView }: HeroProps) {
 
                   {/* Card Footer */}
                   <div className="mt-2.5 pt-2 border-t border-[#c5a059]/25 flex items-center justify-between text-xs font-bold text-[#5d0e0e] group-hover:text-[#875914] transition-colors">
-                    <span className="text-[11px] text-[#705634] font-medium">From <span className="font-price font-bold">₹1,500</span> • 35 Days</span>
+                    <span className="text-[11px] text-[#705634] font-medium">From <span className="font-price font-bold">₹2,000</span> • 35 Days</span>
                     <span className="inline-flex items-center gap-1 text-[#5d0e0e] group-hover:text-[#875914]">
                       <span>View Courses</span>
                       <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform" />

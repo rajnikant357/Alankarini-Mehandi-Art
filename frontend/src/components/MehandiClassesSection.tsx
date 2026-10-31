@@ -38,7 +38,7 @@ export function MehandiClassesSection({ profile, setView, previewOnly = false }:
       name: 'Online Go Batch',
       batchQueryName: 'Online Go batch',
       mode: 'Live Interactive Video Batches (Zoom / Google Meet)',
-      fee: '₹1,500',
+      fee: '₹2,000',
       originalFee: '₹2,999',
       duration: '35 Days',
       subheading: 'Classes to Learn (No Kit, No Certificate)',
@@ -61,7 +61,7 @@ export function MehandiClassesSection({ profile, setView, previewOnly = false }:
       name: 'Online Plus Batch',
       batchQueryName: 'Online Plus batch',
       mode: 'Live Video Batches + Home-Delivered Henna Kit',
-      fee: '₹2,000',
+      fee: '₹2,500',
       originalFee: '₹3,999',
       duration: '35 Days',
       subheading: 'Complete Training with full Henna Kit & Certificate',
@@ -549,7 +549,7 @@ export function MehandiClassesSection({ profile, setView, previewOnly = false }:
               </li>
               <li className="flex items-center gap-2">
                 <CheckCircle2 size={16} className="text-emerald-600 shrink-0" />
-                <span><strong>Online Go:</strong> <span className="font-price font-bold">₹1,500</span> (Classes only) • <strong>Online Plus:</strong> <span className="font-price font-bold">₹2,000</span> (With Kit &amp; Certificate)</span>
+                <span><strong>Online Go:</strong> <span className="font-price font-bold">₹2,000</span> (Classes only) • <strong>Online Plus:</strong> <span className="font-price font-bold">₹2,500</span> (With Kit &amp; Certificate)</span>
               </li>
             </ul>
           </div>
@@ -720,9 +720,9 @@ export function MehandiClassesSection({ profile, setView, previewOnly = false }:
                       </h4>
                       <p className="text-xs sm:text-sm text-gray-700 font-sans mt-1 leading-relaxed">
                         Every student completes the entire <strong>35-day 4-part master syllabus</strong>.
-                        Only students enrolling in the <strong>₹2,000 (Online)</strong> or <strong>₹4,000 (Offline)</strong> tier receive the 
+                        Only students enrolling in the <strong>₹2,500 (Online)</strong> or <strong>₹4,000 (Offline)</strong> tier receive the 
                         <strong> Henna Starter Kit</strong> and the verified <strong>Course Completion Certificate</strong>. 
-                        The lower-fee <strong>₹1,500 (Online)</strong> and <strong>₹3,500 (Offline)</strong> tiers are exclusively for students who only want to learn the art (classes only, no kit and no certificate).
+                        The lower-fee <strong>₹2,000 (Online)</strong> and <strong>₹3,500 (Offline)</strong> tiers are exclusively for students who only want to learn the art (classes only, no kit and no certificate).
                       </p>
                     </div>
                   </div>
@@ -875,7 +875,7 @@ export function MehandiClassesSection({ profile, setView, previewOnly = false }:
                       Official Completion Certificate &amp; Mehndi Starter Kit
                     </h4>
                     <p className="text-xs text-gray-700 font-sans mt-0.5 leading-relaxed">
-                      Students enrolled in the <strong>₹2,000 (Online)</strong> or <strong>₹4,000 (Offline)</strong> packages receive an official course completion certificate signed by Sandhya, plus our complete Henna Starter Kit with triple-filtered Rajasthani sojat powder, pure essential oils, rolling paper, and acrylic boards.
+                      Students enrolled in the <strong>₹2,500 (Online)</strong> or <strong>₹4,000 (Offline)</strong> packages receive an official course completion certificate signed by Sandhya, plus our complete Henna Starter Kit with triple-filtered Rajasthani sojat powder, pure essential oils, rolling paper, and acrylic boards.
                     </p>
                   </div>
                 </div>

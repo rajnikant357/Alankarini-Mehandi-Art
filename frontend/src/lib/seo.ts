@@ -163,7 +163,7 @@ export const COURSES_SCHEMA = [
     '@context': 'https://schema.org',
     '@type': 'Course',
     name: 'Online Mehendi Classes (35-Day Certified Beginner to Advanced Course)',
-    description: 'Comprehensive 35-day online mehandi class training covering basic mehandi, bridal mehendi classes, Arabic mehendi classes, advanced mehandi, henna course mixology & organic mehendi cones, and Instagram growth. ₹1,500 (Classes only) or ₹2,000 (With Mehndi Starter Kit & Completion Certificate).',
+    description: 'Comprehensive 35-day online mehandi class training covering basic mehandi, bridal mehendi classes, Arabic mehendi classes, advanced mehandi, henna course mixology & organic mehendi cones, and Instagram growth. ₹2,000 (Classes only) or ₹2,500 (With Mehndi Starter Kit & Completion Certificate).',
     provider: {
       '@type': 'Organization',
       name: 'Alankarini Mehandi Art',
@@ -174,14 +174,14 @@ export const COURSES_SCHEMA = [
       {
         '@type': 'Offer',
         name: 'Online Class (Classes Only)',
-        price: '1500',
+        price: '2000',
         priceCurrency: 'INR',
         category: 'Online Mehandi Course',
       },
       {
         '@type': 'Offer',
         name: 'Online Class (With Mehndi Kit & Certificate)',
-        price: '2000',
+        price: '2500',
         priceCurrency: 'INR',
         category: 'Certified Online Mehandi Course',
       },
@@ -269,7 +269,7 @@ export const HOMEPAGE_FAQS_SCHEMA = {
       name: 'What are the options and fees for mehendi classes in Varanasi?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'We offer beginner to advanced mehendi classes both online and offline (35-day certified professional mehendi course). Online Mehendi Classes: ₹1,500 (Classes only) or ₹2,000 (With Mehndi Starter Kit & Certificate). Offline Studio Classes in Durgakund, Varanasi: ₹3,500 (Classes only) or ₹4,000 (With Take-Home Kit & Certificate). Call/WhatsApp +91 9336814631.',
+        text: 'We offer beginner to advanced mehendi classes both online and offline (35-day certified professional mehendi course). Online Mehendi Classes: ₹2,000 (Classes only) or ₹2,500 (With Mehndi Starter Kit & Certificate). Offline Studio Classes in Durgakund, Varanasi: ₹3,500 (Classes only) or ₹4,000 (With Take-Home Kit & Certificate). Call/WhatsApp +91 9336814631.',
       },
     },
   ],

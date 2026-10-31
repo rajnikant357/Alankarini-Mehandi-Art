@@ -36,7 +36,7 @@ export function FaqSection({ profile }: FaqSectionProps) {
     },
     {
       question: "What are the fees for mehendi classes from beginner to advanced in Varanasi?",
-      answer: `Our mehandi classes run for a comprehensive duration of 35 days with an identical 4-module syllabus. Online Mehendi Classes: Online Go Batch at ₹1,500 (classes only) and Online Plus Batch at ₹2,000 (includes full Henna Starter Kit & Course Completion Certificate). Offline Studio Classes in Banaras (Durgakund): Offline Go Batch at ₹3,500 (classes only) and Offline Plus Batch at ₹4,000 (includes take-home Henna Starter Kit & Course Completion Certificate). Call +91 9336814631 to enroll.`
+      answer: `Our mehandi classes run for a comprehensive duration of 35 days with an identical 4-module syllabus. Online Mehendi Classes: Online Go Batch at ₹2,000 (classes only) and Online Plus Batch at ₹2,500 (includes full Henna Starter Kit & Course Completion Certificate). Offline Studio Classes in Banaras (Durgakund): Offline Go Batch at ₹3,500 (classes only) and Offline Plus Batch at ₹4,000 (includes take-home Henna Starter Kit & Course Completion Certificate). Call +91 9336814631 to enroll.`
     },
     {
       question: "Do you make and provide 100% organic mehendi cones?",

@@ -326,8 +326,8 @@ I look forward to discussing your available packages! Sent from Alankarini websi
                   >
                     <option value="Bridal Specialist Mehndi">Bridal Specialist Mehndi</option>
                     <option value="Mehndi Home Service (Varanasi / Banaras)">Mehndi Home Service (Varanasi / Banaras)</option>
-                    <option value="Online Go Batch (₹1,500 - 35 Days)">Online Go Batch (₹1,500 - 35 Days)</option>
-                    <option value="Online Plus Batch (₹2,000 - With Kit & Certificate)">Online Plus Batch (₹2,000 - With Kit & Certificate)</option>
+                    <option value="Online Go Batch (₹2,000 - 35 Days)">Online Go Batch (₹2,000 - 35 Days)</option>
+                    <option value="Online Plus Batch (₹2,500 - With Kit & Certificate)">Online Plus Batch (₹2,500 - With Kit & Certificate)</option>
                     <option value="Offline Go Batch (₹3,500 - Studio Banaras)">Offline Go Batch (₹3,500 - Studio Banaras)</option>
                     <option value="Offline Plus Batch (₹4,000 - Studio with Kit & Certificate)">Offline Plus Batch (₹4,000 - Studio with Kit & Certificate)</option>
                     <option value="Bride & Groom Portrait Designs">Bride & Groom Portrait Designs</option>
